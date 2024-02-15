@@ -1,6 +1,7 @@
 package SocialMedia.Entities;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,25 +10,31 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data 
-@NoArgsConstructor 
+@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 
 @Entity
 @Table
-public class AccountType implements Serializable{
-	private static final long serialVersionUID = 3808802474750908577L;
-	
+public class Notification implements Serializable{
+	private static final long serialVersionUID = -4421076874655461723L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
-	private int typeId;
+	private int notifyId;
 	
 	@Column
-	private String typeName;
-
+	private String content;
+	
+	@Column
+	private boolean isSeen;
+	
+	@Column
+	private LocalDateTime notificationTimeAt;
 }
