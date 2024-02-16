@@ -2,10 +2,14 @@ package SocialMedia.Entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -55,4 +59,8 @@ public class Account implements Serializable{
 	@Column
 	private boolean isBanned;
 
+	@Column
+	@ElementCollection
+	@JoinTable(name = "accountImages", joinColumns = @JoinColumn(name = "username"))
+    private List<String> images;
 }
