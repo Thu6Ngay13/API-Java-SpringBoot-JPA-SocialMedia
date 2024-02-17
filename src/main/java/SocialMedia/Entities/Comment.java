@@ -15,19 +15,18 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table
 public class Comment implements Serializable{
-
 	private static final long serialVersionUID = -7685804469201358300L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
-	private int commentId;
+	private long commentId;
 	
-	@Column(name = "Content", columnDefinition = "nvarchar(MAX)")
-	private String content;
+	@Column(columnDefinition = "nvarchar(300)")
+	private String text;
 	
-	@Column(name = "Image", columnDefinition = "varchar(2000)")
-	private String image;
+	@Column(columnDefinition = "nvarchar(100)")
+	private String mediaURL;
 	
 	@Column
 	private boolean isDeleted;

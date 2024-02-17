@@ -19,8 +19,8 @@ public class Mode implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
-	private int modeId;
+	private long modeId;
 	
-	@Column
+	@Column(columnDefinition = "nvarchar(50)")
 	private String modeType;
 }

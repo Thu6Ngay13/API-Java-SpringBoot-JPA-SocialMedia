@@ -25,9 +25,9 @@ public class AccountType implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
-	private int typeId;
+	private long typeId;
 	
-	@Column
+	@Column(columnDefinition = "nvarchar(50)")
 	private String typeName;
 
 }

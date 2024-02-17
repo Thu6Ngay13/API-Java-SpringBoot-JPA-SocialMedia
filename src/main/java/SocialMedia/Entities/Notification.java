@@ -27,9 +27,9 @@ public class Notification implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
-	private int notifyId;
+	private long notifyId;
 	
-	@Column
+	@Column(columnDefinition = "nvarchar(300)")
 	private String content;
 	
 	@Column

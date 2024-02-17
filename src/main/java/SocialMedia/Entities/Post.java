@@ -22,13 +22,13 @@ public class Post implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
-	private int postId;
+	private long postId;
 	
-	@Column(name = "Content", columnDefinition = "nvarchar(MAX)")
-	private String content;
+	@Column(columnDefinition = "nvarchar(300)")
+	private String text;
 	
-	@Column(name = "Media", columnDefinition = "varchar(2000)")
-	private String media;
+	@Column(columnDefinition = "nvarchar(100)")
+	private String mediaURL;
 	
 	@Column
 	private boolean isDeleted;

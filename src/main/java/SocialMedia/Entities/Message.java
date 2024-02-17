@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -24,14 +26,15 @@ public class Message implements Serializable{
 	private static final long serialVersionUID = -8932391282476049113L;
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
-	private int messageId;
+	private long messageId;
 	
-	@Column
+	@Column(columnDefinition = "nvarchar(300)")
 	private String text;
 	
-	@Column
-	private String imageURL;
+	@Column(columnDefinition = "nvarchar(100)")
+	private String mediaURL;
 	
 	@Column
 	private boolean isSeen;

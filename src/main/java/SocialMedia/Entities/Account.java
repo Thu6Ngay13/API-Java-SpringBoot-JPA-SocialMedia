@@ -26,31 +26,31 @@ public class Account implements Serializable{
 	private static final long serialVersionUID = 3808802474750908577L;
 	
 	@Id
-	@Column
+	@Column(columnDefinition = "varchar(50)")
 	private String username;
 	
-	@Column
+	@Column(columnDefinition = "varchar(50)")
 	private String password;
 	
-	@Column
+	@Column(columnDefinition = "nvarchar(50)")
 	private String fullname; 
 	
-	@Column
+	@Column(columnDefinition = "nvarchar(50)")
 	private String gender;
 	
 	@Column
 	private LocalDateTime dateOfBirth;
 	
-	@Column
+	@Column(columnDefinition = "nvarchar(100)")
 	private String avatarURL;
 	
-	@Column
+	@Column(columnDefinition = "nvarchar(50)")
 	private String email;
 	
-	@Column
+	@Column(columnDefinition = "nvarchar(50)")
 	private String phoneNumber;
 	
-	@Column
+	@Column(columnDefinition = "nvarchar(50)")
 	private String token;
 	
 	@Column
