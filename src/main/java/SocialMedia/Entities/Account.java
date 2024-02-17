@@ -58,9 +58,4 @@ public class Account implements Serializable{
 	
 	@Column
 	private boolean isBanned;
-
-	@Column
-	@ElementCollection
-	@JoinTable(name = "accountImages", joinColumns = @JoinColumn(name = "username"))
-    private List<String> images;
 }
