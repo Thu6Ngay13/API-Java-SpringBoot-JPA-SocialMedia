@@ -33,4 +33,8 @@ public class Comment implements Serializable{
 	
 	@Column
 	private LocalDateTime commentTimeAt;
+	
+	@ManyToOne
+	@JoinColumn(name = "postId")
+	private Post post;
 }
