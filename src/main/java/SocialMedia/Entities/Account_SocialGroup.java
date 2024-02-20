@@ -10,18 +10,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Entity
 @Data 
 @NoArgsConstructor 
 @AllArgsConstructor
-@Table(name = "Friend")
-public class Friend implements Serializable{
-	private static final long serialVersionUID = 3808802474750908577L;
-	
+@Table(name = "Account_SocialGroup")
+public class Account_SocialGroup implements Serializable{
+
+	private static final long serialVersionUID = 1548184746034474471L;
+
 	@EmbeddedId
-	private FriendId friendId;
+	private Account_SocialGroup_id id;
 	
-	@Column
-	private boolean IsAccepted;
+	@Column(name = "isAccepted")
+	private boolean isAccepted;
 }

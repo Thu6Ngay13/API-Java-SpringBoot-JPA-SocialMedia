@@ -52,6 +52,10 @@ public class SocialGroup implements Serializable{
 	@OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
 	private Set<Post> posts;
 	
-	@ManyToMany(mappedBy = "socialGroups")
-	private Set<Account> accounts;
+	@ManyToMany(mappedBy = "joinedSocialGroups")
+	private Set<Account> joinedAccounts;
+	
+	@ManyToOne
+	@JoinColumn(name = "holderUsername")
+	private Account holderAccount;
 }

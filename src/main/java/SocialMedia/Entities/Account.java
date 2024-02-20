@@ -2,7 +2,6 @@ package SocialMedia.Entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -74,22 +73,25 @@ public class Account implements Serializable{
 	private Set<Notification> notifications;
 	
 	@OneToMany(mappedBy = "posterAccount", fetch = FetchType.LAZY)
-	private List<Post> posts;
+	private Set<Post> posts;
 	
 	@OneToMany(mappedBy = "sharerAccount", fetch = FetchType.LAZY)
-	private List<Post> shares;
+	private Set<Post> shares;
 	
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
 	private Set<Comment> comments;
-	
-	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
-	private Set<Friend> friends;
+
+	@ManyToMany
+	@JoinTable(name = "Friend",
+		joinColumns = {@JoinColumn(name = "petitionerId") },
+		inverseJoinColumns = {@JoinColumn(name = "requestedPersonId")})
+	private Set<Account> requestedPersonAccounts;
 	
 	@ManyToMany
 	@JoinTable(name = "Account_SocialGroup",
 		joinColumns = {@JoinColumn(name = "username") },
 		inverseJoinColumns = {@JoinColumn(name = "groupId")})
-	private Set<SocialGroup> socialGroups;
+	private Set<SocialGroup> joinedSocialGroups;
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "Account_Conversation",
@@ -100,8 +102,9 @@ public class Account implements Serializable{
 	@ManyToMany
 	@JoinTable(name = "Account_Block_Account",
 		joinColumns = {@JoinColumn(name = "username") },
-		inverseJoinColumns = {@JoinColumn(name = "blockUsername")})
-	private Set<Account> BlockAccounts;
+		inverseJoinColumns = {@JoinColumn(name = "blockedUsername")})
+	private Set<Account> blockedAccounts;
 	
-	
+	@OneToMany(mappedBy = "holderAccount", fetch = FetchType.LAZY)
+	private Set<SocialGroup> holdedSocialGroups;
 }
