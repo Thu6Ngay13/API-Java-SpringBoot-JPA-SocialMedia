@@ -49,7 +49,7 @@ public class SocialGroup implements Serializable{
 	@JoinColumn(name = "modeId")
 	private Mode mode;
 	
-	@OneToMany(mappedBy = "groupId", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
 	private Set<Post> posts;
 	
 	@ManyToMany(mappedBy = "socialGroups")

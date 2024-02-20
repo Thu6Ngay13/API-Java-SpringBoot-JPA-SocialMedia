@@ -42,9 +42,9 @@ public class Conversation implements Serializable{
 	@Column
 	private LocalDateTime creationTimeAt;
 	
-	@OneToMany(mappedBy = "conservation", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "conversation", fetch = FetchType.LAZY)
 	private Set<Message> messages;
 	
-	@ManyToMany(mappedBy = "conservations")
+	@ManyToMany(mappedBy = "conversations")
 	private Set<Account> accounts;
 }
