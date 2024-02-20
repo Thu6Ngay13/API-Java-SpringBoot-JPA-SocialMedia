@@ -1,6 +1,7 @@
 package SocialMedia.Entities;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,4 +24,10 @@ public class Mode implements Serializable{
 	
 	@Column(columnDefinition = "nvarchar(50)")
 	private String modeType;
+	
+	@OneToMany(mappedBy = "mode", fetch = FetchType.LAZY)
+	private Set<Post> posts;
+	
+	@OneToMany(mappedBy = "mode", fetch = FetchType.LAZY)
+	private Set<SocialGroup> groups;
 }

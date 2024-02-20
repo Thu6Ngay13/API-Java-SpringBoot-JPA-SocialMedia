@@ -2,6 +2,7 @@ package SocialMedia.Entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,4 +36,26 @@ public class Post implements Serializable{
 	
 	@Column
 	private LocalDateTime postTimeAt;
+	
+	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+	private Set<Comment> comments;
+	
+	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+	private Set<Report> reports;
+	
+	@ManyToOne
+	@JoinColumn(name = "sharerId")
+	private Account sharerAccount;
+	
+	@ManyToOne
+	@JoinColumn(name = "posterId")
+	private Account posterAccount;
+	
+	@ManyToOne
+	@JoinColumn(name = "modeId")
+	private Mode mode;
+	
+	@ManyToOne
+	@JoinColumn(name = "groupId")
+	private SocialGroup group;
 }
