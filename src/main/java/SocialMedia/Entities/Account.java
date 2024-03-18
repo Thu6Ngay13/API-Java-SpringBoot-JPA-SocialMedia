@@ -53,6 +53,18 @@ public class Account implements Serializable{
 	@Column(columnDefinition = "nvarchar(50)")
 	private String phoneNumber;
 	
+	@Column(columnDefinition = "nvarchar(100)")
+    private String description;
+    
+	@Column(columnDefinition = "nvarchar(100)")
+	private String company;
+	
+	@Column(columnDefinition = "nvarchar(100)")
+    private String location;
+	
+	@Column
+    private boolean isSingle;
+	
 	@Column(columnDefinition = "nvarchar(50)")
 	private String token;
 	
