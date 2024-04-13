@@ -81,8 +81,8 @@ public class Account implements Serializable{
 			inverseJoinColumns = {@JoinColumn(name = "typeId")})
 	private Set<AccountType> accountTypes;
 	
-	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
-	private Set<Notification> notifications;
+	@OneToMany(mappedBy = "accountCreate", fetch = FetchType.LAZY)
+	private Set<Notification> notificationCreates;
 	
 	@OneToMany(mappedBy = "posterAccount", fetch = FetchType.LAZY)
 	private Set<Post> posts;
@@ -98,6 +98,12 @@ public class Account implements Serializable{
 		joinColumns = {@JoinColumn(name = "petitionerId") },
 		inverseJoinColumns = {@JoinColumn(name = "requestedPersonId")})
 	private Set<Account> requestedPersonAccounts;
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "Notification_Receipt",
+		joinColumns = {@JoinColumn(name = "username") },
+		inverseJoinColumns = {@JoinColumn(name = "notifyId")})
+	private Set<Notification> notificationReceipts;
 	
 	@ManyToMany
 	@JoinTable(name = "Account_SocialGroup",
