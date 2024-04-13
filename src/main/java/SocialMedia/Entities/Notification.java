@@ -2,6 +2,7 @@ package SocialMedia.Entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -37,8 +39,11 @@ public class Notification implements Serializable{
 	
 	@Column
 	private LocalDateTime notificationTimeAt;
+
+	@ManyToMany(mappedBy = "notificationReceipts")
+	private Set<Account> accountReceipts;
 	
 	@ManyToOne
 	@JoinColumn(name="username")
-	private Account account;
+	private Account accountCreate;
 }
