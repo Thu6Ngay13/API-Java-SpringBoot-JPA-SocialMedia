@@ -38,7 +38,7 @@ public class Post implements Serializable{
 	private LocalDateTime postTimeAt;
 	
 	@Column
-	private String sharedPostId;
+	private long sharedPostId;
 	
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
 	private Set<Comment> comments;
