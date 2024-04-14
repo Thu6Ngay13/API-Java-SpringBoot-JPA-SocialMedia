@@ -29,7 +29,7 @@ public class Report implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
-	private int reportId;
+	private long reportId;
 	
 	@Column(columnDefinition = "nvarchar(300)")
 	private String text;
