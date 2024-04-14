@@ -125,4 +125,7 @@ public class Account implements Serializable{
 	
 	@OneToMany(mappedBy = "holderAccount", fetch = FetchType.LAZY)
 	private Set<SocialGroup> holdedSocialGroups;
+	
+	@OneToMany(mappedBy = "senderAccount", fetch = FetchType.LAZY)
+	private Set<Message> messages;
 }

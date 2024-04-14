@@ -51,5 +51,7 @@ public class Message implements Serializable{
 	@JoinColumn(name="conversationId")
 	private Conversation conversation;
 	
-	
+	@ManyToOne 
+	@JoinColumn(name="username")
+	private Account senderAccount;
 }
