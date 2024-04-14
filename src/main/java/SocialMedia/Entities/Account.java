@@ -74,13 +74,6 @@ public class Account implements Serializable{
 	@Column
 	private boolean isBanned;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(
-			name = "Account_AccountType",
-			joinColumns = {@JoinColumn(name = "username")},
-			inverseJoinColumns = {@JoinColumn(name = "typeId")})
-	private Set<AccountType> accountTypes;
-	
 	@OneToMany(mappedBy = "accountCreate", fetch = FetchType.LAZY)
 	private Set<Notification> notificationCreates;
 	
@@ -92,32 +85,39 @@ public class Account implements Serializable{
 	
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
 	private Set<Comment> comments;
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "Account_AccountType",
+			joinColumns = {@JoinColumn(name = "username")},
+			inverseJoinColumns = {@JoinColumn(name = "typeId")})
+	private Set<AccountType> accountTypes;
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "Friend",
 		joinColumns = {@JoinColumn(name = "petitionerId") },
 		inverseJoinColumns = {@JoinColumn(name = "requestedPersonId")})
 	private Set<Account> requestedPersonAccounts;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "Notification_Receipt",
 		joinColumns = {@JoinColumn(name = "username") },
 		inverseJoinColumns = {@JoinColumn(name = "notifyId")})
 	private Set<Notification> notificationReceipts;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "Account_SocialGroup",
 		joinColumns = {@JoinColumn(name = "username") },
 		inverseJoinColumns = {@JoinColumn(name = "groupId")})
 	private Set<SocialGroup> joinedSocialGroups;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "Account_Conversation",
 		joinColumns = {@JoinColumn(name = "username") },
 		inverseJoinColumns = {@JoinColumn(name = "conversationId")})
 	private Set<Conversation> conversations;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "Account_Block_Account",
 		joinColumns = {@JoinColumn(name = "username") },
 		inverseJoinColumns = {@JoinColumn(name = "blockedUsername")})

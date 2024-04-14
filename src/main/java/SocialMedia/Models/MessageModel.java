@@ -11,8 +11,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ConversationModel {
-    private String avatar;
+public class MessageModel {
+    private String viewType;
+    private String username;
     private String fullname;
-    private long conversationId;
+    private String messageSendingAt;
+    private String text;
+    private String media;
+    private Boolean seen;
+
 }

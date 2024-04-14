@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ConversationModel {
+public class YourFriendModel {
     private String avatar;
-    private String fullname;
-    private long conversationId;
+    private String username;
+    private String fullName;
 }

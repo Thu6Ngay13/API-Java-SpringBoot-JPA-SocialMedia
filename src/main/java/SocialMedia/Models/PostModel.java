@@ -11,8 +11,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ConversationModel {
+public class PostModel {
     private String avatar;
-    private String fullname;
-    private long conversationId;
+    private String username;
+    private String fullName;
+    private String postingTimeAt;
+    private int mode;
+    private String postText;
+    private String postImage;
+    private boolean liked;
 }

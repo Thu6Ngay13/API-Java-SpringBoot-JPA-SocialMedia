@@ -11,8 +11,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ConversationModel {
-    private String avatar;
-    private String fullname;
-    private long conversationId;
+public class NotificationModel {
+	private String avatar;
+	private String username;
+    private String fullName;
+    private String content;
+    private Boolean isSeen;
+    private String notifyTimeAt;
 }

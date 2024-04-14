@@ -10,7 +10,7 @@ import SocialMedia.Entities.Notification;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long>{
-	@Query("SELECT a.notificationReceipts FROM Account a WHERE a.username = :username")
+	@Query("SELECT n FROM Notification n JOIN n.accountReceipts a WHERE a.username = :username")
     List<Notification> findAllNotificationReceipts(String username);
 	
 }
