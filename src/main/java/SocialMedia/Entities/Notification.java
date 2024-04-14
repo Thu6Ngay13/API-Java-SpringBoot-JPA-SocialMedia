@@ -32,7 +32,7 @@ public class Notification implements Serializable{
 	private long notifyId;
 	
 	@Column(columnDefinition = "nvarchar(300)")
-	private String content;
+	private String text;
 	
 	@Column
 	private boolean isSeen;
