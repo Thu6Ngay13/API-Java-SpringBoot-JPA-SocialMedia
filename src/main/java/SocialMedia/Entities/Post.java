@@ -61,4 +61,7 @@ public class Post implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "groupId")
 	private SocialGroup group;
+	
+	@ManyToMany(mappedBy = "likedPosts")
+	private Set<Account> accountLikes;
 }

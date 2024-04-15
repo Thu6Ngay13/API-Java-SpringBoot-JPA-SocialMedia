@@ -128,4 +128,10 @@ public class Account implements Serializable{
 	
 	@OneToMany(mappedBy = "senderAccount", fetch = FetchType.LAZY)
 	private Set<Message> messages;
+	
+	@ManyToMany
+	@JoinTable(name = "LikePost",
+		joinColumns = {@JoinColumn(name = "username") },
+		inverseJoinColumns = {@JoinColumn(name = "postId")})
+	private Set<Post> likedPosts;
 }
