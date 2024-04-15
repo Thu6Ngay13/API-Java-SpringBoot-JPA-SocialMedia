@@ -86,7 +86,7 @@ public class Account implements Serializable{
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
 	private Set<Comment> comments;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(
 			name = "Account_AccountType",
 			joinColumns = {@JoinColumn(name = "username")},

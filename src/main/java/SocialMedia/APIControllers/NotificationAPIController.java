@@ -39,7 +39,7 @@ public class NotificationAPIController {
 			notificationModel.setUsername(notification.getAccountCreate().getUsername());
 			notificationModel.setFullName(notification.getAccountCreate().getFullname());
 			notificationModel.setContent(notification.getContent());
-			notificationModel.setIsSeen(notificationModel.getIsSeen());
+			notificationModel.setIsSeen(notification.isSeen());
 			notificationModel.setNotifyTimeAt(notification.getNotificationTimeAt().toString());
 			notificationModels.add(notificationModel);
 		}
