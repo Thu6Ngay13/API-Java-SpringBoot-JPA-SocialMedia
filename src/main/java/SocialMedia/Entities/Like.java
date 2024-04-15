@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data 
 @NoArgsConstructor 
 @AllArgsConstructor
-@Table(name = "LikePost")
+@Table(name = "Account_like_Post")
 public class Like implements Serializable{
 	
 	private static final long serialVersionUID = 3865344730191002728L;

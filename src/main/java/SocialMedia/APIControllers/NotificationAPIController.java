@@ -25,7 +25,7 @@ public class NotificationAPIController {
 	INotificationService notificationService;
 	
 	@GetMapping("/notification/{username}")
-	public ResponseEntity<?> Home(
+	public ResponseEntity<?> getNotificationReceiptsWithUsername(
 			@PathVariable(value = "username") String username, 
 			HttpServletRequest request, 
 			Model model) {
@@ -38,7 +38,7 @@ public class NotificationAPIController {
 			notificationModel.setAvatar(notification.getAccountCreate().getAvatarURL());
 			notificationModel.setUsername(notification.getAccountCreate().getUsername());
 			notificationModel.setFullName(notification.getAccountCreate().getFullname());
-			notificationModel.setContent(notification.getContent());
+			notificationModel.setText(notification.getText());
 			notificationModel.setIsSeen(notification.isSeen());
 			notificationModel.setNotifyTimeAt(notification.getNotificationTimeAt().toString());
 			notificationModels.add(notificationModel);

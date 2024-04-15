@@ -37,31 +37,27 @@ public class Post implements Serializable{
 	@Column
 	private LocalDateTime postTimeAt;
 	
-	@Column
-	private long sharedPostId;
-	
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
 	private Set<Comment> comments;
 	
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
 	private Set<Report> reports;
 	
-	@ManyToOne
-	@JoinColumn(name = "sharerId")
-	private Account sharerAccount;
-	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "posterId")
 	private Account posterAccount;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "modeId")
 	private Mode mode;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "groupId")
 	private SocialGroup group;
 	
-	@ManyToMany(mappedBy = "likedPosts")
+	@ManyToMany(mappedBy = "postShares", fetch = FetchType.LAZY)
+	private Set<Account> sharerAccounts;
+	
+	@ManyToMany(mappedBy = "likedPosts", fetch = FetchType.LAZY)
 	private Set<Account> accountLikes;
 }

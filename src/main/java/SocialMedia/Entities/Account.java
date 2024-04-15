@@ -80,19 +80,9 @@ public class Account implements Serializable{
 	@OneToMany(mappedBy = "posterAccount", fetch = FetchType.LAZY)
 	private Set<Post> posts;
 	
-	@OneToMany(mappedBy = "sharerAccount", fetch = FetchType.LAZY)
-	private Set<Post> shares;
-	
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
 	private Set<Comment> comments;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(
-			name = "Account_AccountType",
-			joinColumns = {@JoinColumn(name = "username")},
-			inverseJoinColumns = {@JoinColumn(name = "typeId")})
-	private Set<AccountType> accountTypes;
-
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "Friend",
 		joinColumns = {@JoinColumn(name = "petitionerId") },
@@ -100,10 +90,11 @@ public class Account implements Serializable{
 	private Set<Account> requestedPersonAccounts;
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(name = "Notification_Receipt",
-		joinColumns = {@JoinColumn(name = "username") },
-		inverseJoinColumns = {@JoinColumn(name = "notifyId")})
-	private Set<Notification> notificationReceipts;
+	@JoinTable(
+			name = "Account_AccountType",
+			joinColumns = {@JoinColumn(name = "username")},
+			inverseJoinColumns = {@JoinColumn(name = "typeId")})
+	private Set<AccountType> accountTypes;
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "Account_SocialGroup",
@@ -116,22 +107,35 @@ public class Account implements Serializable{
 		joinColumns = {@JoinColumn(name = "username") },
 		inverseJoinColumns = {@JoinColumn(name = "conversationId")})
 	private Set<Conversation> conversations;
+
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(name = "Account_Block_Account",
+	@JoinTable(name = "Account_share_Post",
+		joinColumns = {@JoinColumn(name = "username") },
+		inverseJoinColumns = {@JoinColumn(name = "postId")})
+	private Set<Post> postShares;
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "Account_receipt_Notification",
+		joinColumns = {@JoinColumn(name = "username") },
+		inverseJoinColumns = {@JoinColumn(name = "notifyId")})
+	private Set<Notification> notificationReceipts;
+		
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "Account_block_Account",
 		joinColumns = {@JoinColumn(name = "username") },
 		inverseJoinColumns = {@JoinColumn(name = "blockedUsername")})
 	private Set<Account> blockedAccounts;
+	
+	@ManyToMany
+	@JoinTable(name = "Account_like_Post",
+		joinColumns = {@JoinColumn(name = "username") },
+		inverseJoinColumns = {@JoinColumn(name = "postId")})
+	private Set<Post> likedPosts;
 	
 	@OneToMany(mappedBy = "holderAccount", fetch = FetchType.LAZY)
 	private Set<SocialGroup> holdedSocialGroups;
 	
 	@OneToMany(mappedBy = "senderAccount", fetch = FetchType.LAZY)
-	private Set<Message> messages;
-	
-	@ManyToMany
-	@JoinTable(name = "LikePost",
-		joinColumns = {@JoinColumn(name = "username") },
-		inverseJoinColumns = {@JoinColumn(name = "postId")})
-	private Set<Post> likedPosts;
+	private Set<Message> sendMessages;
 }

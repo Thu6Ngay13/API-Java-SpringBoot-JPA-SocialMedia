@@ -16,8 +16,8 @@ public class PostModel {
     private String username;
     private String fullName;
     private String postingTimeAt;
-    private int mode;
+    private long mode;
     private String postText;
-    private String postImage;
+    private String postMedia;
     private boolean liked;
 }

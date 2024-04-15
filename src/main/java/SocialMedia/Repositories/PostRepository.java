@@ -10,7 +10,7 @@ import SocialMedia.Entities.Post;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-	@Query("SELECT p FROM Post p WHERE p.posterAccount.username = :username")
+	@Query("SELECT p FROM Post p")
     List<Post> findAllPosts(String username);
 	
 }

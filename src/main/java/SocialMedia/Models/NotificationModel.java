@@ -15,7 +15,7 @@ public class NotificationModel {
 	private String avatar;
 	private String username;
     private String fullName;
-    private String content;
+    private String text;
     private Boolean isSeen;
     private String notifyTimeAt;
 }
