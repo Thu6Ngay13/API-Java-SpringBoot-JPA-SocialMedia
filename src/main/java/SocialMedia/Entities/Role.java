@@ -5,15 +5,15 @@ import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 @Data 
 @NoArgsConstructor 
@@ -21,18 +21,18 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table
-public class AccountType implements Serializable{
-	private static final long serialVersionUID = 3808802474750908577L;
+public class Role implements Serializable{
 	
+	private static final long serialVersionUID = -2654028452547691602L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
-	private long typeId;
+	private long roleId;
 	
 	@Column(columnDefinition = "nvarchar(50)")
-	private String typeName;
+	private String roleName;
 	
-	@ManyToMany(mappedBy = "accountTypes") 
+	@OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
 	private Set<Account> accounts;
-
 }

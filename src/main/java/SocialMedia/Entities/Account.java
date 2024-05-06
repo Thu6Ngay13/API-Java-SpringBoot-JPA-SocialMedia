@@ -1,9 +1,15 @@
 package SocialMedia.Entities;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import SocialMedia.Auth.Registration.Token.ConfirmationToken;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,9 +18,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,17 +30,18 @@ import lombok.NoArgsConstructor;
 @Data 
 @NoArgsConstructor 
 @AllArgsConstructor
-
 @Entity
 @Table
-public class Account implements Serializable{
-	private static final long serialVersionUID = 3808802474750908577L;
-	
+@Builder
+public class Account implements UserDetails{
+
+	private static final long serialVersionUID = -2714773135927699660L;
+
 	@Id
 	@Column(columnDefinition = "varchar(50)")
 	private String username;
 	
-	@Column(columnDefinition = "varchar(50)")
+	@Column(columnDefinition = "varchar(1000)")
 	private String password;
 	
 	@Column(columnDefinition = "nvarchar(50)")
@@ -65,9 +74,6 @@ public class Account implements Serializable{
 	@Column
     private boolean isSingle;
 	
-	@Column(columnDefinition = "nvarchar(50)")
-	private String token;
-	
 	@Column
 	private boolean enable;
 	
@@ -89,12 +95,9 @@ public class Account implements Serializable{
 		inverseJoinColumns = {@JoinColumn(name = "usernameFriend")})
 	private Set<Account> friends;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(
-			name = "Account_AccountType",
-			joinColumns = {@JoinColumn(name = "username")},
-			inverseJoinColumns = {@JoinColumn(name = "typeId")})
-	private Set<AccountType> accountTypes;
+	@ManyToOne
+	@JoinColumn(name = "roleId")
+	private Role role;
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "Account_SocialGroup",
@@ -137,4 +140,35 @@ public class Account implements Serializable{
 	
 	@OneToMany(mappedBy = "senderAccount", fetch = FetchType.LAZY)
 	private Set<Message> sendMessages;
+	
+	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+	private Set<ConfirmationToken> confirmationTokens;
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+//		SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.name());
+//        return Collections.singleton(authority);
+		return null;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
 }
