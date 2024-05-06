@@ -45,6 +45,6 @@ public class Conversation implements Serializable{
 	@OneToMany(mappedBy = "conversation", fetch = FetchType.LAZY)
 	private Set<Message> messages;
 	
-	@ManyToMany(mappedBy = "conversations")
+	@ManyToMany(mappedBy = "conversations", fetch = FetchType.LAZY)
 	private Set<Account> accounts;
 }

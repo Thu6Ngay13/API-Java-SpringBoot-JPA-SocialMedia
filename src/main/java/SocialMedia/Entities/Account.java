@@ -85,9 +85,9 @@ public class Account implements Serializable{
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "Friend",
-		joinColumns = {@JoinColumn(name = "petitionerId") },
-		inverseJoinColumns = {@JoinColumn(name = "requestedPersonId")})
-	private Set<Account> requestedPersonAccounts;
+		joinColumns = {@JoinColumn(name = "usernameYou") },
+		inverseJoinColumns = {@JoinColumn(name = "usernameFriend")})
+	private Set<Account> friends;
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(
@@ -108,7 +108,6 @@ public class Account implements Serializable{
 		inverseJoinColumns = {@JoinColumn(name = "conversationId")})
 	private Set<Conversation> conversations;
 
-	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "Account_share_Post",
 		joinColumns = {@JoinColumn(name = "username") },
@@ -127,7 +126,7 @@ public class Account implements Serializable{
 		inverseJoinColumns = {@JoinColumn(name = "blockedUsername")})
 	private Set<Account> blockedAccounts;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "Account_like_Post",
 		joinColumns = {@JoinColumn(name = "username") },
 		inverseJoinColumns = {@JoinColumn(name = "postId")})

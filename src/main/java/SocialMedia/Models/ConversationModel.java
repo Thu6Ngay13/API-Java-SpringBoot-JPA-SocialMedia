@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ConversationModel {
-    private String avatar;
-    private String fullname;
     private long conversationId;
+    private String conversationAvatar;
+    private String conversationName;
 }

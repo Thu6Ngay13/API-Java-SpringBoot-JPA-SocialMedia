@@ -1,5 +1,9 @@
 package SocialMedia.Services;
 
-public interface IConversationService {
+import java.util.List;
 
+import SocialMedia.Entities.Conversation;
+
+public interface IConversationService {
+	List<Conversation> findAllConversations(String username);
 }
