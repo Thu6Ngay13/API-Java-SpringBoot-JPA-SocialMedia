@@ -11,13 +11,11 @@ import SocialMedia.Entities.Account;
 
 public interface AccountRepository extends JpaRepository<Account, String> {
 	
-	public Optional<Account> findByUsername(String username);
-	
-    public Optional<Account> findByEmail(String email);
+	Optional<Account> findByUsername(String username);
+    Optional<Account> findByEmail(String email);
 
     @Transactional
     @Modifying
-    @Query("UPDATE Account a " +
-            "SET a.enable = TRUE WHERE a.email = ?1")
+    @Query("UPDATE Account a SET a.enable = TRUE WHERE a.email = ?1")
     int enableUser(String email);
 }

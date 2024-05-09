@@ -21,16 +21,15 @@ import SocialMedia.Services.IFriendService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/friend")
 public class FriendAPIController {
 	@Autowired
 	IFriendService friendService;
 
-	@GetMapping("/friend/yourfriend/{username}")
+	@GetMapping("/yourfriend/{username}")
 	public ResponseEntity<?> getYourFriendsWithUsername(
 			@PathVariable(value = "username") String username, 
-			HttpServletRequest request, 
-			Model model) {
+			HttpServletRequest request) {
 		
 		List<Account> friends = friendService.findAllYourFriends(username);
 		List<FriendModel> friendModels = new ArrayList<>();

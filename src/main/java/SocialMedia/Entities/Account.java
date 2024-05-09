@@ -2,11 +2,9 @@ package SocialMedia.Entities;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import SocialMedia.Auth.Registration.Token.ConfirmationToken;
@@ -86,18 +84,18 @@ public class Account implements UserDetails{
 	@OneToMany(mappedBy = "posterAccount", fetch = FetchType.LAZY)
 	private Set<Post> posts;
 	
-	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "commenterAccount", fetch = FetchType.LAZY)
 	private Set<Comment> comments;
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "roleId")
+	private Role role;
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "Friend",
 		joinColumns = {@JoinColumn(name = "usernameYou") },
 		inverseJoinColumns = {@JoinColumn(name = "usernameFriend")})
 	private Set<Account> friends;
-	
-	@ManyToOne
-	@JoinColumn(name = "roleId")
-	private Role role;
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "Account_SocialGroup",
