@@ -19,16 +19,15 @@ import SocialMedia.Services.INotificationService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/notification")
 public class NotificationAPIController {
 	@Autowired
 	INotificationService notificationService;
 	
-	@GetMapping("/notification/{username}")
+	@GetMapping("/{username}")
 	public ResponseEntity<?> getNotificationReceiptsWithUsername(
 			@PathVariable(value = "username") String username, 
-			HttpServletRequest request, 
-			Model model) {
+			HttpServletRequest request) {
 		
 		List<Notification> notifications = notificationService.findAllNotificationReceipts(username);
 		List<NotificationModel> notificationModels = new ArrayList<>();

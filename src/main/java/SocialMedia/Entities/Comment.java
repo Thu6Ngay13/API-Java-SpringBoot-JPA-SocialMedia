@@ -40,5 +40,5 @@ public class Comment implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name = "username")
-	private Account account;
+	private Account commenterAccount;
 }

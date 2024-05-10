@@ -19,16 +19,15 @@ import SocialMedia.Services.IPostService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/post")
 public class PostAPIController {
 	@Autowired
 	IPostService postService;
 	
-	@GetMapping("/post/{username}")
+	@GetMapping("/{username}")
 	public ResponseEntity<?> getPostWithUsername(
 			@PathVariable(value = "username") String username, 
-			HttpServletRequest request, 
-			Model model) {
+			HttpServletRequest request) {
 		
 		List<Post> posts = postService.findAllPosts(username);
 		List<PostModel> postModels = new ArrayList<>();
