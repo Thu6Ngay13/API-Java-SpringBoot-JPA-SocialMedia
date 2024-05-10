@@ -2,6 +2,7 @@ package SocialMedia.Auth.Registration;
 
 import java.time.LocalDateTime;
 
+import SocialMedia.Enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

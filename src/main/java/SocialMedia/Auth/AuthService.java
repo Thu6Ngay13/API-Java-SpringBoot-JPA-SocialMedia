@@ -4,10 +4,8 @@ import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ProblemDetail;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +23,7 @@ import SocialMedia.Auth.Registration.Token.ConfirmationToken;
 import SocialMedia.Auth.Registration.Token.ConfirmationTokenService;
 import SocialMedia.Entities.Account;
 import SocialMedia.Entities.RefreshToken;
+import SocialMedia.Enums.Role;
 import SocialMedia.Repositories.AccountRepository;
 import SocialMedia.Security.JWTService;
 import SocialMedia.Services.AccountServiceImpl;
@@ -68,6 +67,7 @@ public class AuthService {
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .enable(false)
+                    .role(Role.USER)
                     .build();
             repository.save(user);
 
@@ -120,6 +120,7 @@ public class AuthService {
                 .username(account.getUsername())
                 .email(account.getEmail())
                 .avatarurl(account.getAvatarURL())
+                .role(account.getRole())
                 .error(false)
                 .success(true)
                 .message("Successfully!")

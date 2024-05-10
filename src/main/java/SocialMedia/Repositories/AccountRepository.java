@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import SocialMedia.Entities.Account;
+import SocialMedia.Enums.Role;
 
 public interface AccountRepository extends JpaRepository<Account, String> {
 	
@@ -15,6 +16,7 @@ public interface AccountRepository extends JpaRepository<Account, String> {
 	
     public Optional<Account> findByEmail(String email);
 
+    Account findByRole(Role role);
     @Transactional
     @Modifying
     @Query("UPDATE Account a " +

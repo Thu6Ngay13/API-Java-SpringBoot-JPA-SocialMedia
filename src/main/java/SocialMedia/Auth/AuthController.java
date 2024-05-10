@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import SocialMedia.Auth.Authentication.AuthenticationRequest;
-import SocialMedia.Auth.Authentication.AuthenticationResponse;
 import SocialMedia.Auth.RefreshToken.RefreshTokenRequest;
 import SocialMedia.Auth.Registration.RegisterRequest;
-import SocialMedia.Auth.Registration.RegisterResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -37,9 +35,7 @@ public class AuthController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> authenticate(
-            @RequestBody AuthenticationRequest request
-    ) {
+    public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(service.authenticate(request));
     }
     
