@@ -2,13 +2,16 @@ package SocialMedia.Entities;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import SocialMedia.Auth.Registration.Token.ConfirmationToken;
 import SocialMedia.Enums.Role;
+import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -89,10 +92,6 @@ public class Account implements UserDetails{
 	@OneToMany(mappedBy = "commenterAccount", fetch = FetchType.LAZY)
 	private Set<Comment> comments;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "roleId")
-	private Role role;
-	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "Friend",
 		joinColumns = {@JoinColumn(name = "usernameYou") },
@@ -100,6 +99,7 @@ public class Account implements UserDetails{
 	private Set<Account> friends;
 	
 	@Enumerated(EnumType.STRING)
+	@Basic(fetch = FetchType.LAZY)
 	private Role role;
 	
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

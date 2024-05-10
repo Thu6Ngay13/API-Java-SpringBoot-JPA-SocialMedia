@@ -21,9 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-
 import SocialMedia.Entities.Account;
 import SocialMedia.Entities.Conversation;
 import SocialMedia.Entities.Message;
@@ -33,7 +30,6 @@ import SocialMedia.Response.Response;
 import SocialMedia.Services.IAccountService;
 import SocialMedia.Services.IConversationService;
 import SocialMedia.Services.IMessageService;
-import io.swagger.v3.core.util.Json;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController

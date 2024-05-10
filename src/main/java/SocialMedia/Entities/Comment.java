@@ -34,11 +34,11 @@ public class Comment implements Serializable{
 	@Column
 	private LocalDateTime commentTimeAt;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "postId")
 	private Post post;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "username")
 	private Account commenterAccount;
 }

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -47,11 +48,11 @@ public class Message implements Serializable{
 	@Column
 	private LocalDateTime messageSendingAt;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="conversationId")
 	private Conversation conversation;
 	
-	@ManyToOne 
+	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name="username")
 	private Account senderAccount;
 }
