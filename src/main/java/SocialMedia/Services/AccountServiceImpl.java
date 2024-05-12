@@ -32,8 +32,12 @@ public class AccountServiceImpl implements IAccountService, UserDetailsService {
 		return accountRepository.findByEmail(email)
 				.orElseThrow(() -> new UsernameNotFoundException(String.format(EMAIL_NOT_FOUND_MSG)));
 	}
-
-	public int enableUser(String email) {
-		return accountRepository.enableUser(email);
-	}
+	
+	 public int enableUser(String email) {
+	        return accountRepository.enableUser(email);
+	 }
+	 
+	 public Optional<Account> findByEmail(String email) {
+		 return accountRepository.findByEmail(email);
+	 }
 }
