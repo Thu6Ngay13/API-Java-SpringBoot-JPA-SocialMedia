@@ -2,6 +2,7 @@ package SocialMedia.Auth;
 
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.Random;
 
@@ -60,10 +61,12 @@ public class AuthService {
         }
         Optional<Account> optAccount = repository.findByEmail(request.getEmail());
         if(optAccount.isEmpty()) {
+        	LocalDateTime dateOfBirth = LocalDateTime.parse(request.getDateOfBirth());
+        	System.out.println(dateOfBirth);
             var user = Account.builder()
                     .fullname(request.getFullname())
                     .username(request.getUsername())
-                    .dateOfBirth(request.getDateOfBirth())
+                    .dateOfBirth(dateOfBirth)
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .enable(false)
