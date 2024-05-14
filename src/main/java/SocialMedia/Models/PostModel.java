@@ -20,4 +20,5 @@ public class PostModel {
     private String postText;
     private String postMedia;
     private boolean liked;
+    private long groupId = -1;
 }
