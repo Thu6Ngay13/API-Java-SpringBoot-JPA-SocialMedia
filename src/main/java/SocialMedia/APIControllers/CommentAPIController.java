@@ -23,12 +23,12 @@ import SocialMedia.Services.ICommentService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/comment")
 public class CommentAPIController {
 	@Autowired
 	ICommentService commentService;
 	
-	@GetMapping("/comment/{postId}")
+	@GetMapping("/{postId}")
 	public ResponseEntity<Response> getConversationsWithUsername(
 			@PathVariable(value = "postId") Long postId, 
 			HttpServletRequest request, 
@@ -59,7 +59,7 @@ public class CommentAPIController {
 	}
     
     
-	@PutMapping(path = "/comment/updateComment")
+	@PutMapping(path = "/updateComment")
 	public ResponseEntity<?> updateComment(@RequestBody CommentModel commentModel)
 	{
 		Comment commentOld = commentService.getById(commentModel.getCommentId());
@@ -77,7 +77,7 @@ public class CommentAPIController {
 		}
 	}
 	
-	@PutMapping(path = "/comment/update")
+	@PutMapping(path = "/update")
 	public ResponseEntity<?> updateComment(@Validated @RequestParam("commentId") Long commentId,
 			@Validated @RequestParam("commentText") String commentText)
 	{
@@ -95,7 +95,7 @@ public class CommentAPIController {
 					HttpStatus.OK);
 		}
 	}
-	@PutMapping(path = "/comment/delete/{commentId}")
+	@PutMapping(path = "/delete/{commentId}")
 	public ResponseEntity<?> deleteComment(@PathVariable(value = "commentId") Long commentId, 
 			HttpServletRequest request, 
 			Model model)
