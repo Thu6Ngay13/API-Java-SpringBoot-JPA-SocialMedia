@@ -2,7 +2,6 @@ package SocialMedia.Auth;
 
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.Random;
 
@@ -102,11 +101,11 @@ public class AuthService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
+                        request.getEmailOrUsername(),
                         request.getPassword()
                 )
         );
-        Optional<Account> opt = repository.findByEmail(request.getEmail());
+        Optional<Account> opt = repository.findByEmailOrUsername(request.getEmailOrUsername());
         if(opt.isEmpty()) {
             return AuthenticationResponse.builder().error(true).message("Email or Password wrong!").success(false).build();
         }
@@ -124,6 +123,7 @@ public class AuthService {
                 .email(account.getEmail())
                 .avatarurl(account.getAvatarURL())
                 .role(account.getRole())
+                .avatarurl(account.getAvatarURL())
                 .error(false)
                 .success(true)
                 .message("Successfully!")

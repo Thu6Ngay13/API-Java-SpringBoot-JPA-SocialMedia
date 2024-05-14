@@ -1,7 +1,5 @@
 package SocialMedia.Auth.Authentication;
 
-import java.time.LocalDateTime;
-
 import SocialMedia.Enums.Role;
 import lombok.*;
 
@@ -19,9 +17,5 @@ public class AuthenticationResponse {
     private String username;
     private String email;
     private String avatarurl;
-    private String location;
-    private LocalDateTime dateOfBirth;
-    private String description;
-    private String gender;
     private Role role;
 }

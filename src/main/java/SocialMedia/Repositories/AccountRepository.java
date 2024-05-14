@@ -13,9 +13,17 @@ import SocialMedia.Enums.Role;
 public interface AccountRepository extends JpaRepository<Account, String> {
 	
 	Optional<Account> findByUsername(String username);
+	
     Optional<Account> findByEmail(String email);
-
+    
     Account findByRole(Role role);
+    
+    @Query("SELECT a "
+			+ "FROM Account a "
+			+ "WHERE a.email = :emailOrUsername "
+			+ "or a.username = :emailOrUsername")
+    Optional<Account> findByEmailOrUsername(String emailOrUsername);
+    
     @Transactional
     @Modifying
     @Query("UPDATE Account a SET a.enable = TRUE WHERE a.email = ?1")

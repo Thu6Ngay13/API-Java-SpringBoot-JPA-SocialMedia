@@ -28,8 +28,8 @@ public class AccountServiceImpl implements IAccountService, UserDetailsService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		return accountRepository.findByEmail(email)
+	public UserDetails loadUserByUsername(String emailOrUsername) throws UsernameNotFoundException {
+		return accountRepository.findByEmailOrUsername(emailOrUsername)
 				.orElseThrow(() -> new UsernameNotFoundException(String.format(EMAIL_NOT_FOUND_MSG)));
 	}
 
