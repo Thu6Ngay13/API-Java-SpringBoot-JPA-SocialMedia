@@ -29,7 +29,7 @@ public class Comment implements Serializable{
 	private String mediaURL;
 	
 	@Column
-	private boolean isDeleted;
+	private Boolean isDeleted;
 	
 	@Column
 	private LocalDateTime commentTimeAt;
