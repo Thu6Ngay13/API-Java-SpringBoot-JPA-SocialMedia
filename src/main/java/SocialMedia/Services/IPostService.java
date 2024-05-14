@@ -11,4 +11,6 @@ public interface IPostService {
 
 	void deleteById(Long id);
 	
+	<S extends Post> S save(S entity);
+	
 }

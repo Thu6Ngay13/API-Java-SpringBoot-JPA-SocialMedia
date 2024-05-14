@@ -39,9 +39,9 @@ public class CommentAPIController {
 		
 		for (Comment comment : comments) {
 			CommentModel commentModel = new CommentModel();
-			commentModel.setAvatar(comment.getAccount().getAvatarURL());
-			commentModel.setUsername(comment.getAccount().getUsername());
-			commentModel.setFullName(comment.getAccount().getFullname());
+			commentModel.setAvatar(comment.getCommenterAccount().getAvatarURL());
+			commentModel.setUsername(comment.getCommenterAccount().getUsername());
+			commentModel.setFullName(comment.getCommenterAccount().getFullname());
 			commentModel.setCommentId(comment.getCommentId());
 			commentModel.setCommentText(comment.getText());
 			commentModel.setMediaURL(comment.getMediaURL());

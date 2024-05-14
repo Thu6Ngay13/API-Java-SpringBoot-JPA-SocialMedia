@@ -1,5 +1,9 @@
 package SocialMedia.Services;
 
-public interface IModeService {
+import java.util.Optional;
 
+import SocialMedia.Entities.Mode;
+
+public interface IModeService {
+	Optional<Mode> findByModeId(long modeId);
 }
