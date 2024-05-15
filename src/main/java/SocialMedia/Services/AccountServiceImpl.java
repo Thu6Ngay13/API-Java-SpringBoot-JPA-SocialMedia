@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import SocialMedia.Entities.Account;
+import SocialMedia.Entities.Post;
 import SocialMedia.Repositories.AccountRepository;
 
 @Service
@@ -34,5 +35,10 @@ public class AccountServiceImpl implements IAccountService, UserDetailsService {
 	}
 	public int enableUser(String email) {
 		return accountRepository.enableUser(email);
+	}
+	
+	@Override
+	public <S extends Account> S save(S entity) {
+		return accountRepository.save(entity);
 	}
 }

@@ -33,4 +33,16 @@ public class PostServiceImpl implements IPostService {
 	public <S extends Post> S save(S entity) {
 		return postRepository.save(entity);
 	}
+
+	@Override
+	public void share(String username, long postId) {
+		postRepository.share(username, postId);
+	}
+
+	@Override
+	public int existAccountsharePost(String username, long postId) {
+		return postRepository.existAccountsharePost(username, postId);
+	}
+	
+	
 }
