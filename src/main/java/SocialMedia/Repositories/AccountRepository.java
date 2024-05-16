@@ -1,5 +1,6 @@
 package SocialMedia.Repositories;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,4 +29,11 @@ public interface AccountRepository extends JpaRepository<Account, String> {
     @Modifying
     @Query("UPDATE Account a SET a.enable = TRUE WHERE a.email = ?1")
     int enableUser(String email);
+    
+    @Transactional
+    @Modifying
+    @Query("UPDATE Account a " +
+            "SET a.password = ?1 " +
+            "WHERE a.email = ?2")
+    int updatePassword(String newPassword, String email);
 }

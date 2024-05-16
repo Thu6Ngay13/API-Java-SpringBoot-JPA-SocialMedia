@@ -35,4 +35,10 @@ public class AccountServiceImpl implements IAccountService, UserDetailsService {
 	public int enableUser(String email) {
 		return accountRepository.enableUser(email);
 	}
+
+	@Override
+	public int updatePassword(String newPassword, String email) {
+		return accountRepository.updatePassword(newPassword, email);
+	}
+	
 }
