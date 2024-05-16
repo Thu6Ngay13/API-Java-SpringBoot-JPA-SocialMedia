@@ -2,6 +2,9 @@ package SocialMedia.Services;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.repository.query.Param;
+
 import SocialMedia.Entities.Post;
 
 public interface IPostService {
@@ -13,4 +16,7 @@ public interface IPostService {
 	
 	<S extends Post> S save(S entity);
 	
+	void share(String username, long postId);
+	
+	int existAccountsharePost(String username, long postId);
 }

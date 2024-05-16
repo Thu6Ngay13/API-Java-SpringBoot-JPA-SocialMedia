@@ -3,19 +3,17 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import SocialMedia.Auth.Registration.RegisterRequest;
 import SocialMedia.Entities.Account;
 import SocialMedia.Entities.Mode;
 import SocialMedia.Entities.Post;
@@ -115,4 +113,41 @@ public class PostAPIController {
     	
     }
     
+    @PostMapping("/share/{sharedPostId}")
+    public ResponseEntity<?> share(@PathVariable(value = "sharedPostId") Long sharedPostId,
+    		@RequestBody PostModel postModel)
+    {
+		// Post duoc share
+		Optional<Post> optionalPost = postService.findById(sharedPostId);
+		Post sharedPost = optionalPost.orElse(null);
+		
+		// Nguoi share post
+    	Optional<Account> optionalAccount = accountService.findByUsername(postModel.getUsername());
+    	Account posterAccount = optionalAccount.orElse(null); 
+		
+    	if (postService.existAccountsharePost(posterAccount.getUsername(), sharedPostId)== 0)
+    	{
+    		postService.share(posterAccount.getUsername(), sharedPostId);
+    	}
+		//---------------------------------------------------------------
+		// Create new post
+		Post post = new Post();
+    	post.setText(postModel.getPostText());
+    	// post.setMediaURL(postModel.getPostMedia());
+    	// post.setPostTimeAt(LocalDateTime.parse(postModel.getPostingTimeAt()));
+    	post.setPostTimeAt(LocalDateTime.now());
+    	post.setDeleted(false);
+    	post.setPosterAccount(posterAccount);
+    	
+    	Optional<Mode> optionalMode = modeService.findByModeId(postModel.getMode());
+    	Mode mode = optionalMode.orElse(null);
+    	post.setMode(mode);
+    	postService.save(post);
+        return new ResponseEntity<Response>(
+				new Response(true, "Share thành công", postModel), 
+				HttpStatus.OK
+		);
+    }
 }
+    
+
