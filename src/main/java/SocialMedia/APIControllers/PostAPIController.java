@@ -1,11 +1,19 @@
 package SocialMedia.APIControllers;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -15,9 +23,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import SocialMedia.Config.SocketIOConfig;
 import SocialMedia.Entities.Account;
+import SocialMedia.Entities.Conversation;
+import SocialMedia.Entities.Message;
 import SocialMedia.Entities.Mode;
 import SocialMedia.Entities.Post;
 import SocialMedia.Models.PostModel;
@@ -26,11 +39,15 @@ import SocialMedia.Services.IAccountService;
 import SocialMedia.Services.IModeService;
 import SocialMedia.Services.IPostService;
 import SocialMedia.Services.ISocialGroupService;
+import SocialMedia.Services.IStoreFilesToDriver;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/post")
 public class PostAPIController {
+
+	@Autowired
+	IStoreFilesToDriver storeFiles;
 
 	@Autowired
 	IPostService postService;
@@ -186,4 +203,26 @@ public class PostAPIController {
 			return new ResponseEntity<Response>(new Response(true, "Thành công", postModel), HttpStatus.OK);
 		}
 	}
+	
+	@PostMapping("/media")
+	public ResponseEntity<Response> media(		
+			@RequestParam("media") MultipartFile media) {
+		String mediaUrl = "";
+		try
+		{
+				File file = new File("D:/Lap_trinh_di_dong/File-SocialMedia/" + media.getOriginalFilename());
+				FileOutputStream fos = new FileOutputStream(file);
+				
+				fos.write(media.getBytes());
+				fos.close();
+				mediaUrl = storeFiles.uploadImageToDrive(file);
+				return new ResponseEntity<Response>(new Response(true, "Thành công", mediaUrl), HttpStatus.OK);
+				
+		} catch (IOException | GeneralSecurityException e) {
+			e.printStackTrace();
+			return new ResponseEntity<Response>(new Response(false, "Thất bại", mediaUrl), HttpStatus.OK);
+			
+		}
+	}
+	
 }
