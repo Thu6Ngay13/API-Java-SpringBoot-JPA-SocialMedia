@@ -47,6 +47,11 @@ public class PostServiceImpl implements IPostService {
 	public int existAccountsharePost(String username, long postId) {
 		return postRepository.existAccountsharePost(username, postId);
 	}
+
+	@Override
+	public List<Post> findAllPostByUsernameOrderByPostTimeAtDesc(String username) {
+		return postRepository.findAllPostByUsernameOrderByPostTimeAtDesc(username);
+	}
 	
 	
 }

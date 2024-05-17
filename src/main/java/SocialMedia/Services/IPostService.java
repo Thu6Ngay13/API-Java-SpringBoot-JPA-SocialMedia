@@ -20,5 +20,7 @@ public interface IPostService {
 	
 	int existAccountsharePost(String username, long postId);
 	
+	List<Post> findAllPostByUsernameOrderByPostTimeAtDesc(String username);
+	
 	List<Post> findPostsByGroupId(long groupId);
 }

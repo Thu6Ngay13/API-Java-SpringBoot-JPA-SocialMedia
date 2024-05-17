@@ -21,10 +21,13 @@ import SocialMedia.Auth.Registration.RegisterRequest;
 import SocialMedia.Auth.Registration.RegisterResponse;
 import SocialMedia.Auth.Registration.Token.ConfirmationToken;
 import SocialMedia.Auth.Registration.Token.ConfirmationTokenService;
+import SocialMedia.Auth.ResetPassword.ResetPasswordRequest;
+import SocialMedia.Auth.ResetPassword.ResetPasswordResponse;
 import SocialMedia.Entities.Account;
 import SocialMedia.Entities.RefreshToken;
 import SocialMedia.Enums.Role;
 import SocialMedia.Repositories.AccountRepository;
+import SocialMedia.Response.Response;
 import SocialMedia.Security.JWTService;
 import SocialMedia.Services.AccountServiceImpl;
 import SocialMedia.Services.RefreshTokenService;
@@ -237,10 +240,10 @@ public class AuthService {
             optConfirmationToken.ifPresent(value -> confirmationTokenService.delete(value));
             confirmationTokenService.saveConfirmationToken(confirmationToken);
             emailService.send(email, buildEmail(account.getFullname(), token));
-            return RegisterResponse.builder()
-                    .message("Please Check Email To See OTP!")
-                    .error(false)
+            return Response.builder()
+            		.message("Please Check Email To See OTP!")
                     .success(true)
+                    .result(null)
                     .build();
         }
         return RegisterResponse.builder()
@@ -249,5 +252,32 @@ public class AuthService {
                 .success(false)
                 .build();
 	}
-
+	public Optional<Account> findByEmail(String email) {
+		return accountService.findByEmail(email);
+	}
+	public ResetPasswordResponse resetPassword(ResetPasswordRequest req) {
+        Optional<ConfirmationToken> otpConfirmationToken = confirmationTokenService.getToken(req.getToken());
+        if(otpConfirmationToken.isPresent()) {
+            ConfirmationToken confirmationToken = otpConfirmationToken.get();
+            if(confirmationToken.getConfirmedAt() != null) {
+                return ResetPasswordResponse.builder()
+                        .message("Email Already Confirmed")
+                        .error(true)
+                        .success(false)
+                        .build();
+            }
+            LocalDateTime expiredAt = confirmationToken.getExpiredAt();
+            if(expiredAt.isBefore(LocalDateTime.now())) {
+                return ResetPasswordResponse.builder()
+                        .message("Token Expired")
+                        .error(true)
+                        .success(false)
+                        .build();
+            }
+            confirmationTokenService.setConfirmedAt(req.getToken());
+            accountService.updatePassword(passwordEncoder.encode(req.getNewPassword()), req.getEmail());
+            return ResetPasswordResponse.builder().message("Reset password success").error(false).success(true).build();
+        }
+        return ResetPasswordResponse.builder().message("Token Not Valid!").error(true).success(false).build();
+    }
 }

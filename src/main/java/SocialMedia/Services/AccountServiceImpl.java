@@ -1,6 +1,8 @@
 package SocialMedia.Services;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,7 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import SocialMedia.Entities.Account;
-import SocialMedia.Entities.Post;
 import SocialMedia.Repositories.AccountRepository;
 
 @Service
@@ -36,9 +37,32 @@ public class AccountServiceImpl implements IAccountService, UserDetailsService {
 	public int enableUser(String email) {
 		return accountRepository.enableUser(email);
 	}
+
+	@Override
+	public int updatePassword(String newPassword, String email) {
+		return accountRepository.updatePassword(newPassword, email);
+	}
+	
 	
 	@Override
 	public <S extends Account> S save(S entity) {
 		return accountRepository.save(entity);
 	}
+
+	@Override
+	public long countFriend(String username) {
+		return accountRepository.countFriend(username);
+	}
+
+	@Override
+	public Set<String> getAcceptedFriends(String username) {
+        Set<String> friendsAsYou = accountRepository.findAcceptedFriendsAsYou(username);
+        Set<String> friendsAsFriend = accountRepository.findAcceptedFriendsAsFriend(username);
+
+        Set<String> allAcceptedFriends = new HashSet<>();
+        allAcceptedFriends.addAll(friendsAsYou);
+        allAcceptedFriends.addAll(friendsAsFriend);
+
+        return allAcceptedFriends;
+    }
 }

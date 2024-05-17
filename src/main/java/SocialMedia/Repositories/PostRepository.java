@@ -40,4 +40,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 	@Query(value = "SELECT COUNT(*) FROM Account_share_Post WHERE username = :username and post_id = :postId", nativeQuery = true)
     int existAccountsharePost(@Param("username") String username, @Param("postId") long postId);
 	
+	@Query(value = "Select p from Post p where p.posterAccount.username = :username ORDER BY p.postTimeAt desc")
+	List<Post> findAllPostByUsernameOrderByPostTimeAtDesc(String username);
 }
