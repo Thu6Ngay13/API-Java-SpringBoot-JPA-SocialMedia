@@ -1,5 +1,5 @@
 package SocialMedia.Repositories;
 
-public interface AccountTypeRepository {
+public class AccountTypeRepository {
 
 }

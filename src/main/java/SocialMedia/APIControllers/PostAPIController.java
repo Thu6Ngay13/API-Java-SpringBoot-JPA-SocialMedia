@@ -140,49 +140,6 @@ public class PostAPIController {
 		);
 	}
 	
-    @PostMapping("/create")
-    public ResponseEntity<?> register(@RequestBody PostModel postModel) {
-    	if (postModel.getPostText() == "" && postModel.getPostMedia() == "")
-    	{
-            return new ResponseEntity<Response>(
-    				new Response(false, "Create post false", null), 
-    				HttpStatus.BAD_REQUEST
-    		);
-    	}
-    	else 
-    	{
-    		Post post = new Post();
-        	post.setText(postModel.getPostText());
-        	post.setMediaURL(postModel.getPostMedia());
-        	
-        	//post.setPostTimeAt(LocalDateTime.parse(postModel.getPostingTimeAt()));
-        	post.setPostTimeAt(LocalDateTime.now());
-        	post.setDeleted(false);
-        	
-        	Optional<Account> optionalAccount = accountService.findByUsername(postModel.getUsername());
-        	Account posterAccount = optionalAccount.orElse(null); 
-        	post.setPosterAccount(posterAccount);
-        	
-        	Optional<Mode> optionalMode = modeService.findByModeId(postModel.getMode());
-        	Mode mode = optionalMode.orElse(null);
-        	post.setMode(mode);
-        	
-        	// Bai viet trong group
-        	if (postModel.getMode() == 4)
-        	{
-            	Optional<SocialGroup> optionalSocialGroup = socialGroupService.findByGroupId(postModel.getGroupId());
-            	SocialGroup socialGroup = optionalSocialGroup.orElse(null);
-        		post.setGroup(socialGroup);
-        	}
-        	postService.save(post);
-            return new ResponseEntity<Response>(
-    				new Response(true, "Thành công", postModel), 
-    				HttpStatus.OK
-    		);
-    	}
-    	
-    }
-    
 //    @PostMapping("/share/{sharedPostId}")
 //    public ResponseEntity<?> share(@PathVariable(value = "sharedPostId") Long sharedPostId,
 //    		@RequestBody PostModel postModel)
@@ -221,3 +178,43 @@ public class PostAPIController {
 }
     
 
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createPost(@RequestBody PostModel postModel) {
+    	if (postModel.getPostText() == "" && postModel.getPostMedia() == "")
+    	{
+            return new ResponseEntity<Response>(
+    				new Response(false, "Create post false", null), 
+    				HttpStatus.BAD_REQUEST
+    		);
+    	}
+    	else 
+    	{
+    		Post post = new Post();
+        	post.setText(postModel.getPostText());
+        	post.setMediaURL(postModel.getPostMedia());
+        	
+        	//post.setPostTimeAt(LocalDateTime.parse(postModel.getPostingTimeAt()));
+        	post.setPostTimeAt(LocalDateTime.now());
+        	post.setDeleted(false);
+        	
+        	Optional<Account> optionalAccount = accountService.findByUsername(postModel.getUsername());
+        	Account posterAccount = optionalAccount.orElse(null); 
+        	post.setPosterAccount(posterAccount);
+        	
+        	Optional<Mode> optionalMode = modeService.findByModeId(postModel.getMode());
+        	Mode mode = optionalMode.orElse(null);
+        	post.setMode(mode);
+        	
+        	postService.save(post);
+        	
+        	postModel.setPostId(post.getPostId());
+        	postModel.setPostingTimeAt(post.getPostTimeAt().toString());
+            return new ResponseEntity<Response>(
+    				new Response(true, "Thành công", postModel), 
+    				HttpStatus.OK
+    		);
+    	}
+    	
+    }
+    

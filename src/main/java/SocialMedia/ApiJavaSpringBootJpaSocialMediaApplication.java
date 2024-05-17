@@ -16,7 +16,7 @@ import SocialMedia.Repositories.AccountRepository;
 public class ApiJavaSpringBootJpaSocialMediaApplication implements CommandLineRunner{
 
 	@Autowired
-	AccountRepository accountRepository;
+	private AccountRepository accountRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(ApiJavaSpringBootJpaSocialMediaApplication.class, args);

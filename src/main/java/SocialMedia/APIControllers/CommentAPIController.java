@@ -29,11 +29,9 @@ public class CommentAPIController {
 	ICommentService commentService;
 	
 	@GetMapping("/{postId}")
-	public ResponseEntity<Response> getConversationsWithUsername(
-			@PathVariable(value = "postId") Long postId, 
-			HttpServletRequest request, 
-			Model model){
-		
+	public ResponseEntity<Response> getCommentByPostId(
+			@PathVariable(value = "postId") Long postId)
+	{
 		List<Comment> comments = commentService.findCommentsByPostId(postId);
 		List<CommentModel> CommentModels = new ArrayList<>();
 		
@@ -72,7 +70,7 @@ public class CommentAPIController {
 				commentOld.setCommentTimeAt(java.time.LocalDateTime.now());
 				commentService.save(commentOld);
 			}
-			return new ResponseEntity<Response>(new Response(true, "Cập nhật Thành công", null),
+			return new ResponseEntity<Response>(new Response(true, "Cập nhật Thành công", commentModel),
 					HttpStatus.OK);
 		}
 	}

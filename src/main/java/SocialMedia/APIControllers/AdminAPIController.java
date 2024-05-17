@@ -17,29 +17,26 @@ import io.swagger.v3.oas.annotations.Hidden;
 public class AdminAPIController {
 
 	@GetMapping
-	@PreAuthorize("hasAuthority('admin:read')")
-	public ResponseEntity<String> sayHello() {
+    @PreAuthorize("hasAuthority('admin:read')")
+    public ResponseEntity<String> sayHello(){
 		return ResponseEntity.ok("Hi Admin");
 	}
-
-	@PostMapping
-	@PreAuthorize("hasAuthority('admin:create')")
-	@Hidden
-	public String post() {
-		return "POST:: admin controller";
-	}
-
-	@PutMapping
-	@PreAuthorize("hasAuthority('admin:update')")
-	@Hidden
-	public String put() {
-		return "PUT:: admin controller";
-	}
-
-	@DeleteMapping
-	@PreAuthorize("hasAuthority('admin:delete')")
-	@Hidden
-	public String delete() {
-		return "DELETE:: admin controller";
-	}
+    @PostMapping
+    @PreAuthorize("hasAuthority('admin:create')")
+    @Hidden
+    public String post() {
+        return "POST:: admin controller";
+    }
+    @PutMapping
+    @PreAuthorize("hasAuthority('admin:update')")
+    @Hidden
+    public String put() {
+        return "PUT:: admin controller";
+    }
+    @DeleteMapping
+    @PreAuthorize("hasAuthority('admin:delete')")
+    @Hidden
+    public String delete() {
+        return "DELETE:: admin controller";
+    }
 }
