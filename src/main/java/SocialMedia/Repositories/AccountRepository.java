@@ -2,6 +2,7 @@ package SocialMedia.Repositories;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -36,4 +37,16 @@ public interface AccountRepository extends JpaRepository<Account, String> {
             "SET a.password = ?1 " +
             "WHERE a.email = ?2")
     int updatePassword(String newPassword, String email);
+    
+    @Query("SELECT COUNT(f) "
+    	     + "FROM Friend f "
+    	     + "WHERE f.IsAccepted = true "
+    	     + "AND (f.friendId.usernameFriend = :username OR f.friendId.usernameYou = :username)")
+    Long countFriend(String username);
+    
+    @Query("SELECT f.friendId.usernameYou FROM Friend f WHERE f.friendId.usernameFriend = :username AND f.IsAccepted = true")
+    Set<String> findAcceptedFriendsAsYou(String username);
+
+    @Query("SELECT f.friendId.usernameFriend FROM Friend f WHERE f.friendId.usernameYou = :username AND f.IsAccepted = true")
+    Set<String> findAcceptedFriendsAsFriend(String username);
 }

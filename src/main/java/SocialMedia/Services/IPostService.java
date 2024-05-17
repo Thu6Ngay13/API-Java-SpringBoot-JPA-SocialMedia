@@ -19,4 +19,6 @@ public interface IPostService {
 	void share(String username, long postId);
 	
 	int existAccountsharePost(String username, long postId);
+	
+	List<Post> findAllPostByUsernameOrderByPostTimeAtDesc(String username);
 }

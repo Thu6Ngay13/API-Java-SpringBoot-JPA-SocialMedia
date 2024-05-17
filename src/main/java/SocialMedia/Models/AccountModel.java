@@ -1,5 +1,7 @@
 package SocialMedia.Models;
 
+import java.util.List;
+
 import SocialMedia.Enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,4 +27,7 @@ public class AccountModel {
 	private String location;
 	private boolean isSingle;
 	private Role role;
+	private long countFriend;
+	private List<AccountModel> friends;
+	private List<PostModel> posts;
 }
