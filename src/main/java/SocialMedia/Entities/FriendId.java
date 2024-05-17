@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Embeddable
 public class FriendId implements Serializable{
 	private static final long serialVersionUID = 3808802474750908577L;
@@ -21,4 +20,11 @@ public class FriendId implements Serializable{
 	
 	@Column(columnDefinition = "varchar(50)")
 	private String usernameFriend;
+
+	public FriendId(String usernameYou, String usernameFriend) {
+		super();
+		this.usernameYou = usernameYou;
+		this.usernameFriend = usernameFriend;
+	}
+
 }

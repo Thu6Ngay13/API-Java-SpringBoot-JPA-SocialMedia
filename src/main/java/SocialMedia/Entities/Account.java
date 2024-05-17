@@ -2,11 +2,9 @@ package SocialMedia.Entities;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import SocialMedia.Auth.Registration.Token.ConfirmationToken;
@@ -26,11 +24,13 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
-@Data 
+@Getter
+@Setter
 @NoArgsConstructor 
 @AllArgsConstructor
 @Entity

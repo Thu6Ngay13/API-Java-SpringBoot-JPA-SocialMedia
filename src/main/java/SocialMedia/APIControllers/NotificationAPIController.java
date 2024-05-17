@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,15 +22,14 @@ import jakarta.servlet.http.HttpServletRequest;
 public class NotificationAPIController {
 	@Autowired
 	INotificationService notificationService;
-	
+
 	@GetMapping("/{username}")
-	public ResponseEntity<?> getNotificationReceiptsWithUsername(
-			@PathVariable(value = "username") String username, 
+	public ResponseEntity<?> getNotificationReceiptsWithUsername(@PathVariable(value = "username") String username,
 			HttpServletRequest request) {
-		
+
 		List<Notification> notifications = notificationService.findAllNotificationReceipts(username);
 		List<NotificationModel> notificationModels = new ArrayList<>();
-		
+
 		for (Notification notification : notifications) {
 			NotificationModel notificationModel = new NotificationModel();
 			notificationModel.setAvatar(notification.getAccountCreate().getAvatarURL());
@@ -42,10 +40,8 @@ public class NotificationAPIController {
 			notificationModel.setNotifyTimeAt(notification.getNotificationTimeAt().toString());
 			notificationModels.add(notificationModel);
 		}
-		
-		return new ResponseEntity<Response>(
-				new Response(true, "Thành công", notificationModels), 
-				HttpStatus.OK
-		);
+
+		return new ResponseEntity<Response>(new Response(true, "Thành công", notificationModels), HttpStatus.OK);
 	}
+
 }

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import SocialMedia.Entities.Account;
 import SocialMedia.Entities.Post;
-import SocialMedia.Enums.Role;
 import SocialMedia.Models.AccountModel;
 import SocialMedia.Models.PostModel;
 import SocialMedia.Response.Response;
@@ -28,20 +27,20 @@ public class UserAPIController {
 
 	@Autowired
 	IAccountService accountService;
-	
+
 	@Autowired
 	IPostService postService;
-	
+
 	@GetMapping("/my-account/{username}")
-	public ResponseEntity<?> getAccountByUsername(@PathVariable(value = "username") String username, 
-			HttpServletRequest request){
+	public ResponseEntity<?> getAccountByUsername(@PathVariable(value = "username") String username,
+			HttpServletRequest request) {
 		Optional<Account> optAcc = accountService.findByUsername(username);
 		Account myAccount = optAcc.orElse(null);
 		AccountModel modelAcc = new AccountModel();
 		List<AccountModel> listFriend = new ArrayList<>();
 		if (myAccount != null) {
 			modelAcc.setUsername(myAccount.getUsername());
-			modelAcc.setFullname(myAccount.getFullname()); 
+			modelAcc.setFullname(myAccount.getFullname());
 			modelAcc.setGender(myAccount.getGender());
 			modelAcc.setAvatarURL(myAccount.getAvatarURL());
 			modelAcc.setEmail(myAccount.getEmail());
@@ -57,7 +56,7 @@ public class UserAPIController {
 					Account a = accountService.findByUsername(u).get();
 					AccountModel modelFriend = new AccountModel();
 					modelFriend.setUsername(a.getUsername());
-					modelFriend.setFullname(a.getFullname()); 
+					modelFriend.setFullname(a.getFullname());
 					modelFriend.setGender(a.getGender());
 					modelFriend.setAvatarURL(a.getAvatarURL());
 					modelFriend.setEmail(a.getEmail());
@@ -71,10 +70,10 @@ public class UserAPIController {
 				}
 			}
 			modelAcc.setFriends(listFriend);
-			
+
 			List<Post> posts = postService.findAllPostByUsernameOrderByPostTimeAtDesc(username);
 			List<PostModel> postModels = new ArrayList<>();
-			
+
 			for (Post post : posts) {
 				PostModel postModel = new PostModel();
 				postModel.setAvatar(post.getPosterAccount().getAvatarURL());
@@ -88,10 +87,9 @@ public class UserAPIController {
 				postModels.add(postModel);
 			}
 			modelAcc.setPosts(postModels);
-		}
-		else {
+		} else {
 			modelAcc = null;
 		}
-		return new ResponseEntity<Response> (new Response(true, "My account", modelAcc), HttpStatus.OK);
+		return new ResponseEntity<Response>(new Response(true, "My account", modelAcc), HttpStatus.OK);
 	}
 }

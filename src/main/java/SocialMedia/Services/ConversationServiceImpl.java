@@ -28,5 +28,19 @@ public class ConversationServiceImpl implements IConversationService {
 	public List<Conversation> findAllConversations(String username){
 		return conversationRepository.findAllConversations(username);
 	}
+
+	@Override
+	public Optional<Long> findConversationIdWithFriend(String username1, String username2) {
+		return conversationRepository.findConversationIdWithFriend(username1, username2);
+	}
+
+	@Override
+	public <S extends Conversation> S save(S entity) {
+		return conversationRepository.save(entity);
+	}
+
+	
+	
+	
 }
 	
