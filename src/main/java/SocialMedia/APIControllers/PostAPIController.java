@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import SocialMedia.Entities.Account;
 import SocialMedia.Entities.Mode;
 import SocialMedia.Entities.Post;
-import SocialMedia.Entities.SocialGroup;
 import SocialMedia.Models.PostModel;
 import SocialMedia.Response.Response;
 import SocialMedia.Services.IAccountService;
@@ -35,20 +34,20 @@ public class PostAPIController {
 
 	@Autowired
 	IPostService postService;
-	
+
 	@Autowired
 	IAccountService accountService;
-	
+
 	@Autowired
 	IModeService modeService;
-	
+
 	@Autowired
 	ISocialGroupService socialGroupService;
 
 	@GetMapping("/{username}/{page}/{pageSize}")
 	public ResponseEntity<?> getPostOfNewFeedWithUsername(@PathVariable(value = "username") String username,
-			@PathVariable(value = "page") int page,
-			@PathVariable(value = "pageSize") int pageSize, HttpServletRequest request) {
+			@PathVariable(value = "page") int page, @PathVariable(value = "pageSize") int pageSize,
+			HttpServletRequest request) {
 
 		Pageable pageable = PageRequest.of(page, pageSize);
 		List<Post> posts = postService.findPostOfNewFeedWithUsername(username, pageable);
@@ -88,16 +87,10 @@ public class PostAPIController {
 		if (post.isPresent()) {
 			postService.likePost(post.get(), username);
 
-    		return new ResponseEntity<Response>(
-    				new Response(true, "Thành công", null), 
-    				HttpStatus.OK
-    		);
-    	}
-    	
-    	return new ResponseEntity<Response>(
-				new Response(false, "Thất bại", null), 
-				HttpStatus.OK
-		);
+			return new ResponseEntity<Response>(new Response(true, "Thành công", null), HttpStatus.OK);
+		}
+
+		return new ResponseEntity<Response>(new Response(false, "Thất bại", null), HttpStatus.OK);
 	}
 
 	@PostMapping("/{username}/unlike/{postId}")
@@ -108,16 +101,10 @@ public class PostAPIController {
 		if (post.isPresent()) {
 			postService.unlikePost(post.get(), username);
 
-    		return new ResponseEntity<Response>(
-    				new Response(true, "Thành công", null), 
-    				HttpStatus.OK
-    		);
-    	}
-    	
-    	return new ResponseEntity<Response>(
-				new Response(false, "Thất bại", null), 
-				HttpStatus.OK
-		);
+			return new ResponseEntity<Response>(new Response(true, "Thành công", null), HttpStatus.OK);
+		}
+
+		return new ResponseEntity<Response>(new Response(false, "Thất bại", null), HttpStatus.OK);
 	}
 
 	@PostMapping("/{username}/share/{postId}")
@@ -128,18 +115,12 @@ public class PostAPIController {
 		if (post.isPresent()) {
 			postService.sharePost(post.get(), username);
 
-    		return new ResponseEntity<Response>(
-    				new Response(true, "Thành công", null), 
-    				HttpStatus.OK
-    		);
-    	}
-    	
-    	return new ResponseEntity<Response>(
-				new Response(false, "Thất bại", null), 
-				HttpStatus.OK
-		);
+			return new ResponseEntity<Response>(new Response(true, "Thành công", null), HttpStatus.OK);
+		}
+
+		return new ResponseEntity<Response>(new Response(false, "Thất bại", null), HttpStatus.OK);
 	}
-	
+
 //    @PostMapping("/share/{sharedPostId}")
 //    public ResponseEntity<?> share(@PathVariable(value = "sharedPostId") Long sharedPostId,
 //    		@RequestBody PostModel postModel)
@@ -175,46 +156,34 @@ public class PostAPIController {
 //				HttpStatus.OK
 //		);
 //    }
+//}
+
+	@PostMapping("/create")
+	public ResponseEntity<?> createPost(@RequestBody PostModel postModel) {
+		if (postModel.getPostText() == "" && postModel.getPostMedia() == "") {
+			return new ResponseEntity<Response>(new Response(false, "Create post false", null), HttpStatus.BAD_REQUEST);
+		} else {
+			Post post = new Post();
+			post.setText(postModel.getPostText());
+			post.setMediaURL(postModel.getPostMedia());
+
+			// post.setPostTimeAt(LocalDateTime.parse(postModel.getPostingTimeAt()));
+			post.setPostTimeAt(LocalDateTime.now());
+			post.setDeleted(false);
+
+			Optional<Account> optionalAccount = accountService.findByUsername(postModel.getUsername());
+			Account posterAccount = optionalAccount.orElse(null);
+			post.setPosterAccount(posterAccount);
+
+			Optional<Mode> optionalMode = modeService.findByModeId(postModel.getMode());
+			Mode mode = optionalMode.orElse(null);
+			post.setMode(mode);
+
+			postService.save(post);
+
+			postModel.setPostId(post.getPostId());
+			postModel.setPostingTimeAt(post.getPostTimeAt().toString());
+			return new ResponseEntity<Response>(new Response(true, "Thành công", postModel), HttpStatus.OK);
+		}
+	}
 }
-    
-
-
-    @PostMapping("/create")
-    public ResponseEntity<?> createPost(@RequestBody PostModel postModel) {
-    	if (postModel.getPostText() == "" && postModel.getPostMedia() == "")
-    	{
-            return new ResponseEntity<Response>(
-    				new Response(false, "Create post false", null), 
-    				HttpStatus.BAD_REQUEST
-    		);
-    	}
-    	else 
-    	{
-    		Post post = new Post();
-        	post.setText(postModel.getPostText());
-        	post.setMediaURL(postModel.getPostMedia());
-        	
-        	//post.setPostTimeAt(LocalDateTime.parse(postModel.getPostingTimeAt()));
-        	post.setPostTimeAt(LocalDateTime.now());
-        	post.setDeleted(false);
-        	
-        	Optional<Account> optionalAccount = accountService.findByUsername(postModel.getUsername());
-        	Account posterAccount = optionalAccount.orElse(null); 
-        	post.setPosterAccount(posterAccount);
-        	
-        	Optional<Mode> optionalMode = modeService.findByModeId(postModel.getMode());
-        	Mode mode = optionalMode.orElse(null);
-        	post.setMode(mode);
-        	
-        	postService.save(post);
-        	
-        	postModel.setPostId(post.getPostId());
-        	postModel.setPostingTimeAt(post.getPostTimeAt().toString());
-            return new ResponseEntity<Response>(
-    				new Response(true, "Thành công", postModel), 
-    				HttpStatus.OK
-    		);
-    	}
-    	
-    }
-    

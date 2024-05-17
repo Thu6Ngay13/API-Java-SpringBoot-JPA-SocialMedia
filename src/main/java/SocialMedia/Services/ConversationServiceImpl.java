@@ -1,4 +1,3 @@
-import SocialMedia.Repositories.ConversationRepository;
 package SocialMedia.Services;
 
 import java.util.List;
