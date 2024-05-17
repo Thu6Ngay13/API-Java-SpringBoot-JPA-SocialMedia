@@ -20,6 +20,10 @@ public class PostServiceImpl implements IPostService {
 	}
 	
 	@Override
+	public List<Post> findPostsByGroupId(long groupId) {
+		return postRepository.findPostsByGroupId(groupId);
+	}
+	@Override
 	public Optional<Post> findById(Long id) {
 		return postRepository.findById(id);
 	}

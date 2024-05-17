@@ -22,14 +22,15 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 	@Query("SELECT p FROM Post p WHERE p.posterAccount.username = :username")
     List<Post> findAllPostByUsername(String username);
 	
+	@Query("SELECT p FROM Post p WHERE p.group.groupId = :groupId")
+    List<Post> findPostsByGroupId(long groupId);
+	
 	@Query(value = "SELECT COUNT(*) FROM Comment WHERE postId = :postId", nativeQuery = true)
     int countCommentsByPostId(@Param("postId") long postId);
 	
-	@Override
-	default Post getById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	@Query("SELECT p FROM Post p WHERE p.posterAccount.username = :username")
+    List<Post> findPostInGroupsByUsername(String username);
 	
     @Modifying
     @Transactional

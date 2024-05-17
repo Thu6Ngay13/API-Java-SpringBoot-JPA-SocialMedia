@@ -71,7 +71,7 @@ public class PostAPIController {
 	}
 	
     @PostMapping("/create")
-    public ResponseEntity<?> register(@RequestBody PostModel postModel) {
+    public ResponseEntity<?> createPost(@RequestBody PostModel postModel) {
     	if (postModel.getPostText() == "" && postModel.getPostMedia() == "")
     	{
             return new ResponseEntity<Response>(
@@ -114,7 +114,7 @@ public class PostAPIController {
     }
     
     @PostMapping("/share/{sharedPostId}")
-    public ResponseEntity<?> share(@PathVariable(value = "sharedPostId") Long sharedPostId,
+    public ResponseEntity<?> sharePost(@PathVariable(value = "sharedPostId") Long sharedPostId,
     		@RequestBody PostModel postModel)
     {
 		// Post duoc share
