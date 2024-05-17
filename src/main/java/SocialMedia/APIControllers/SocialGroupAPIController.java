@@ -1,4 +1,5 @@
 package SocialMedia.APIControllers;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,12 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import SocialMedia.Entities.Account;
 import SocialMedia.Entities.Account_SocialGroup;
+import SocialMedia.Entities.Mode;
 import SocialMedia.Entities.Post;
 import SocialMedia.Entities.SocialGroup;
 import SocialMedia.Models.PostModel;
@@ -210,5 +213,48 @@ public class SocialGroupAPIController {
 				HttpStatus.OK
 		);
 	}
+    
+    @PostMapping("/create")
+    public ResponseEntity<?> createPost(@RequestBody PostModel postModel) {
+    	if (postModel.getPostText() == "" && postModel.getPostMedia() == "")
+    	{
+            return new ResponseEntity<Response>(
+    				new Response(false, "Create post false", null), 
+    				HttpStatus.BAD_REQUEST
+    		);
+    	}
+    	else 
+    	{
+    		Post post = new Post();
+        	post.setText(postModel.getPostText());
+        	post.setMediaURL(postModel.getPostMedia());
+        	
+        	//post.setPostTimeAt(LocalDateTime.parse(postModel.getPostingTimeAt()));
+        	post.setPostTimeAt(LocalDateTime.now());
+        	post.setDeleted(false);
+        	
+        	Optional<Account> optionalAccount = accountService.findByUsername(postModel.getUsername());
+        	Account posterAccount = optionalAccount.orElse(null); 
+        	post.setPosterAccount(posterAccount);
+        	
+        	Optional<Mode> optionalMode = modeService.findByModeId(postModel.getMode());
+        	Mode mode = optionalMode.orElse(null);
+        	post.setMode(mode);
+        	
+        	// Bai viet trong group
+        	//if (postModel.getMode() == 4)
+        	//{
+            //	Optional<SocialGroup> optionalSocialGroup = socialGroupService.findByGroupId(postModel.getGroupId());
+            //	SocialGroup socialGroup = optionalSocialGroup.orElse(null);
+        	//	post.setGroup(socialGroup);
+        	//}
+        	postService.save(post);
+            return new ResponseEntity<Response>(
+    				new Response(true, "Thành công", postModel), 
+    				HttpStatus.OK
+    		);
+    	}
+    	
+    }
 	
 }

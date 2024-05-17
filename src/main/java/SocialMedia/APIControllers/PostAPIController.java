@@ -97,14 +97,10 @@ public class PostAPIController {
         	Mode mode = optionalMode.orElse(null);
         	post.setMode(mode);
         	
-        	// Bai viet trong group
-        	if (postModel.getMode() == 4)
-        	{
-            	Optional<SocialGroup> optionalSocialGroup = socialGroupService.findByGroupId(postModel.getGroupId());
-            	SocialGroup socialGroup = optionalSocialGroup.orElse(null);
-        		post.setGroup(socialGroup);
-        	}
         	postService.save(post);
+        	
+        	postModel.setPostId(post.getPostId());
+        	postModel.setPostingTimeAt(post.getPostTimeAt().toString());
             return new ResponseEntity<Response>(
     				new Response(true, "Thành công", postModel), 
     				HttpStatus.OK

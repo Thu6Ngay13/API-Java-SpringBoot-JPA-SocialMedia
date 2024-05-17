@@ -15,10 +15,10 @@ public class PostModel {
     private String avatar;
     private String username;
     private String fullName;
+    private long postId;
     private String postingTimeAt;
     private long mode;
     private String postText;
     private String postMedia;
     private boolean liked;
-    private long groupId = -1;
 }
