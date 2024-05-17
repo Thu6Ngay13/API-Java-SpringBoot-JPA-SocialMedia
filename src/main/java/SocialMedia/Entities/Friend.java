@@ -1,6 +1,7 @@
 package SocialMedia.Entities;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
@@ -21,6 +22,9 @@ public class Friend implements Serializable{
 	
 	@EmbeddedId
 	private FriendId friendId;
+	
+	@Column
+	private LocalDateTime requestTimeAt;
 	
 	@Column
 	private boolean IsAccepted;

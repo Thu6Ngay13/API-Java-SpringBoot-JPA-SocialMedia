@@ -29,16 +29,16 @@ public class Comment implements Serializable{
 	private String mediaURL;
 	
 	@Column
-	private boolean isDeleted;
+	private Boolean isDeleted;
 	
 	@Column
 	private LocalDateTime commentTimeAt;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "postId")
 	private Post post;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "username")
-	private Account account;
+	private Account commenterAccount;
 }
