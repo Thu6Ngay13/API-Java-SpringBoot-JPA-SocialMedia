@@ -57,7 +57,7 @@ public class Account implements UserDetails{
 	private LocalDateTime dateOfBirth;
 	
 	@Column(columnDefinition = "nvarchar(100)")
-	private String avatarURL;
+	private String avatarURL = "https://drive.google.com/uc?export=view&id=1LZuoz5KlfRIOJiolzkcGDva0GaCN_NCl";
 	
 	@Column(columnDefinition = "nvarchar(50)")
 	private String email;
