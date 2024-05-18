@@ -158,6 +158,7 @@ public class SocialGroupAPIController {
 				groupModel.setCreationTimeAt(group.getCreationTimeAt().toString());
 				groupModel.setModeId(group.getMode().getModeId());
 				groupModel.setHolderFullName(group.getHolderAccount().getFullname());
+				groupModel.setHolderUsername(username);
 			}
 			return new ResponseEntity<Response>(new Response(true, "Thành công", groupModel), HttpStatus.OK);
 		}
