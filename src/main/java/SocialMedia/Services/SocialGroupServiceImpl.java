@@ -1,4 +1,5 @@
 package SocialMedia.Services;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -21,8 +22,8 @@ import SocialMedia.Repositories.NotificationRepository;
 import SocialMedia.Repositories.SocialGroupRepository;
 
 @Service
-public class SocialGroupServiceImpl implements ISocialGroupService{
-	
+public class SocialGroupServiceImpl implements ISocialGroupService {
+
 	@Autowired
 	SocialGroupRepository socialGroupRepo;
 	@Autowired
@@ -33,12 +34,12 @@ public class SocialGroupServiceImpl implements ISocialGroupService{
 	AccountRepository accRepo;
 	@Autowired
 	NotificationRepository notiRepo;
-	
+
 	@Override
 	public Optional<SocialGroup> findByGroupId(long groupId) {
 		return socialGroupRepo.findByGroupId(groupId);
 	}
-	
+
 	@Override
 	public void save(SocialGroup socialGroup) {
 		socialGroupRepo.save(socialGroup);
@@ -55,33 +56,32 @@ public class SocialGroupServiceImpl implements ISocialGroupService{
 		accGroup.setId(new Account_SocialGroup_id(group.getGroupId(), account.getUsername()));
 		accGroup.setAccepted(false);
 		accGroupRepo.save(accGroup);
-		
-		
+
 		Notification noti = new Notification();
 		noti.setNotificationTimeAt((LocalDateTime.now()));
 		noti.setText(account.getFullname() + " vừa gửi yêu cầu vào nhóm " + group.getGroupName());
-		Set<Account> listAcc = new	HashSet<>();
+		Set<Account> listAcc = new HashSet<>();
 		listAcc.add(account);
 		noti.setAccountReceipts(listAcc);
 		noti.setAccountCreate(account);
 		notiRepo.save(noti);
 	}
-	
+
 	@Override
 	public void acceptMember(String username, long groupId) {
 		Account_SocialGroup accGroup = accGroupRepo.findOne(username, groupId);
 		accGroup.setAccepted(true);
 		accGroupRepo.save(accGroup);
-		
+
 		Notification noti = new Notification();
 		noti.setNotificationTimeAt((LocalDateTime.now()));
 		Optional<SocialGroup> optionalGroup = socialGroupRepo.findByGroupId(groupId);
-		SocialGroup group = optionalGroup.orElse(null); 
+		SocialGroup group = optionalGroup.orElse(null);
 		noti.setText("Bạn đã được chấp nhận vào nhóm " + group.getGroupName());
-		
-		Set<Account> listAcc = new	HashSet<>();
+
+		Set<Account> listAcc = new HashSet<>();
 		Optional<Account> optionalAccount = accRepo.findByUsername(username);
-    	Account account = optionalAccount.orElse(null); 
+		Account account = optionalAccount.orElse(null);
 		listAcc.add(account);
 		noti.setAccountReceipts(listAcc);
 		notiRepo.save(noti);
@@ -115,10 +115,11 @@ public class SocialGroupServiceImpl implements ISocialGroupService{
 		newGroup.setMode(mode);
 		newGroup.setGroupName(groupName);
 		Optional<Account> optionalAccount = accRepo.findByUsername(username);
-		Account account = optionalAccount.orElse(null); 
+		Account account = optionalAccount.orElse(null);
 		newGroup.setHolderAccount(account);
 		newGroup.setCreationTimeAt(LocalDateTime.now());
-		newGroup.setAvatarURL("https://png.pngtree.com/element_our/20200610/ourlarge/pngtree-social-networking-image_2239654.jpg");
+		newGroup.setAvatarURL(
+				"https://png.pngtree.com/element_our/20200610/ourlarge/pngtree-social-networking-image_2239654.jpg");
 		newGroup.setDeleted(false);
 		socialGroupRepo.save(newGroup);
 		this.sendRequestToGroup(account, newGroup);
@@ -129,36 +130,35 @@ public class SocialGroupServiceImpl implements ISocialGroupService{
 	@Override
 	public void leaveGroup(String username, long groupId) {
 		Account_SocialGroup accGroup = accGroupRepo.findOne(username, groupId);
-		
+
 		Notification noti = new Notification();
 		noti.setNotificationTimeAt((LocalDateTime.now()));
-		
+
 		Optional<SocialGroup> optionalGroup = socialGroupRepo.findByGroupId(groupId);
-		SocialGroup group = optionalGroup.orElse(null); 
+		SocialGroup group = optionalGroup.orElse(null);
 		noti.setText("Bạn không còn là thành viên của nhóm " + group.getGroupName());
-		
-		Set<Account> listAcc = new	HashSet<>();
+
+		Set<Account> listAcc = new HashSet<>();
 		Optional<Account> optionalAccount = accRepo.findByUsername(username);
-    	Account account = optionalAccount.orElse(null); 
+		Account account = optionalAccount.orElse(null);
 		listAcc.add(account);
 		noti.setAccountReceipts(listAcc);
 		notiRepo.save(noti);
-		
+
 		accGroupRepo.delete(accGroup);
 	}
 
 	@Override
 	public boolean deleteGroup(String username, long groupId) {
 		Optional<Account> optionalAccount = accRepo.findByUsername(username);
-    	Account account = optionalAccount.orElse(null); 
-		
+		Account account = optionalAccount.orElse(null);
+
 		Optional<SocialGroup> optionalGroup = socialGroupRepo.findByGroupId(groupId);
-		SocialGroup group = optionalGroup.orElse(null); 
-		if (group.getHolderAccount() == account) 
-		{
+		SocialGroup group = optionalGroup.orElse(null);
+		if (group.getHolderAccount() == account) {
 			group.setDeleted(true);
 			socialGroupRepo.save(group);
-			
+
 			Notification noti = new Notification();
 			noti.setNotificationTimeAt((LocalDateTime.now()));
 			noti.setText("Group " + group.getGroupName() + "đã bị xóa!!!");
@@ -167,11 +167,27 @@ public class SocialGroupServiceImpl implements ISocialGroupService{
 			return true;
 		}
 		return false;
-		
+
 	}
 
 	@Override
 	public List<SocialGroup> findByGroupNameContainingIgnoreCase(String searchString) {
 		return socialGroupRepo.findByGroupNameContainingIgnoreCase(searchString);
 	}
+
+	@Override
+	public List<SocialGroup> searchJoinedGroup(String username, String searchString) {
+		return socialGroupRepo.searchJoinedGroup(username, searchString);
+	}
+
+	@Override
+	public List<SocialGroup> searchJoinGroup(String username, String searchString) {
+		return socialGroupRepo.searchJoinGroup(username, searchString);
+	}
+
+	@Override
+	public List<SocialGroup> searchUnjoinGroup(String username, String searchString) {
+		return socialGroupRepo.searchUnjoinGroup(username, searchString);
+	}
+
 }

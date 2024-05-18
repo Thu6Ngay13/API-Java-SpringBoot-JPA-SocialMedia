@@ -9,7 +9,7 @@ import SocialMedia.Entities.SocialGroup;
 
 public interface ISocialGroupService {
 	Optional<SocialGroup> findByGroupId(long groupId);
-	
+
 	public void save(SocialGroup group);
 
 	List<SocialGroup> findByGroupsByName(String searchString);
@@ -19,7 +19,7 @@ public interface ISocialGroupService {
 	List<Account_SocialGroup> findAccountSocialGroupByGroupId(long groupId);
 
 	List<Account_SocialGroup> findAllAccountSocialGroup();
-	
+
 	void sendRequestToGroup(Account account, SocialGroup group);
 
 	void acceptMember(String username, long groupId);
@@ -27,8 +27,14 @@ public interface ISocialGroupService {
 	boolean createGroup(String username, String groupName, long modeId);
 
 	void leaveGroup(String username, long groupId);
-	
+
 	boolean deleteGroup(String username, long groupId);
-	
+
 	List<SocialGroup> findByGroupNameContainingIgnoreCase(String searchString);
+	
+	List<SocialGroup> searchJoinedGroup(String username, String searchString);
+
+	List<SocialGroup> searchJoinGroup(String username, String searchString);
+
+	List<SocialGroup> searchUnjoinGroup(String username, String searchString);
 }

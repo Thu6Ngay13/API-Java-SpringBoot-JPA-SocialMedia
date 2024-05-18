@@ -16,36 +16,68 @@ import SocialMedia.Entities.FriendId;
 public interface FriendRepository extends JpaRepository<Friend, FriendId> {
 	@Query("SELECT a FROM Account a "
 			+ "JOIN Friend f ON a.username LIKE f.friendId.usernameYou OR a.username LIKE f.friendId.usernameFriend "
-			+ "WHERE "
-				+ "(f.friendId.usernameYou LIKE :username OR f.friendId.usernameFriend LIKE :username) "
-				+ "AND a.username NOT LIKE :username "
-				+ "AND f.IsAccepted = true")
-    List<Account> findAllYourFriends(@Param("username") String username);
-	
-	@Query("SELECT a, f.requestTimeAt FROM Account a "
+			+ "WHERE " + "(f.friendId.usernameYou LIKE :username OR f.friendId.usernameFriend LIKE :username) "
+			+ "AND a.username NOT LIKE :username " + "AND f.isAccepted = true")
+	List<Account> findAllYourFriends(@Param("username") String username);
+
+	@Query("SELECT a FROM Account a "
 			+ "JOIN Friend f ON a.username LIKE f.friendId.usernameYou OR a.username LIKE f.friendId.usernameFriend "
-			+ "WHERE "
-				+ "(f.friendId.usernameYou LIKE :username OR f.friendId.usernameFriend LIKE :username) "
-				+ "AND a.username NOT LIKE :username "
-				+ "AND f.IsAccepted = false "
+			+ "WHERE " 
+			+ "(f.friendId.usernameYou LIKE :username OR f.friendId.usernameFriend LIKE :username) "
+				+ "AND a.username NOT LIKE :username " 
+				+ "AND f.isAccepted = true " 
+				+ "AND a.fullname LIKE %:keyword%")
+	List<Account> searchAllYourFriends(@Param("username") String username, @Param("keyword") String keyword);
+
+	@Query("SELECT a, f.requestTimeAt FROM Account a " 
+			+ "JOIN Friend f ON a.username LIKE f.friendId.usernameYou "
+			+ "WHERE " + "f.friendId.usernameFriend LIKE :username " + "AND f.isAccepted = false "
 			+ "ORDER BY f.requestTimeAt DESC")
 	List<Object[]> findAllFriendRequests(@Param("username") String username);
-	
+
+	@Query("SELECT a, f.requestTimeAt FROM Account a " + "JOIN Friend f ON a.username LIKE f.friendId.usernameYou "
+			+ "WHERE " + "f.friendId.usernameFriend LIKE :username " + "AND f.isAccepted = false "
+			+ "AND a.fullname LIKE %:keyword% " + "ORDER BY f.requestTimeAt DESC")
+	List<Object[]> searchAllFriendRequests(@Param("username") String username, @Param("keyword") String keyword);
+
 	@Query("SELECT a FROM Account a "
 			+ "JOIN Friend f ON a.username LIKE f.friendId.usernameYou OR a.username LIKE f.friendId.usernameFriend "
-			+ "WHERE "
-				+ "a.username LIKE :username2 "
-				+ "AND (f.friendId.usernameYou LIKE :username1 OR f.friendId.usernameFriend LIKE :username1)"
-				+ "AND f.IsAccepted = false ")
-	Optional<Account> findFriendRequestWith2To1(@Param("username1") String username1, @Param("username2") String username2);
-	
+			+ "WHERE " + "a.username LIKE :username2 "
+			+ "AND (f.friendId.usernameYou LIKE :username1 OR f.friendId.usernameFriend LIKE :username1)"
+			+ "AND f.isAccepted = false ")
+	Optional<Account> findFriendRequestWith2To1(@Param("username1") String username1,
+			@Param("username2") String username2);
+
 	@Query("SELECT a FROM Account a "
 			+ "JOIN Friend f ON a.username LIKE f.friendId.usernameYou OR a.username LIKE f.friendId.usernameFriend "
-			+ "WHERE "
-				+ "a.username LIKE :username2 "
-				+ "AND (f.friendId.usernameYou LIKE :username1 OR f.friendId.usernameFriend LIKE :username1)"
-				+ "AND f.IsAccepted = true ")
+			+ "WHERE " + "a.username LIKE :username2 "
+			+ "AND (f.friendId.usernameYou LIKE :username1 OR f.friendId.usernameFriend LIKE :username1)"
+			+ "AND f.isAccepted = true ")
 	Optional<Account> checkIsFriend(@Param("username1") String username1, @Param("username2") String username2);
-	
-	
+
+	@Query("SELECT a " 
+			+ "FROM Account a " 
+			+ "WHERE a.username != :username " 
+			+ "AND a.username NOT IN "
+				+ "(SELECT f.friendId.usernameFriend " 
+				+ "FROM Friend f " 
+				+ "WHERE f.friendId.usernameYou = :username " 
+					+ "AND (f.isAccepted = true OR f.isAccepted = false)) " 
+			+ "AND a.username NOT IN "
+				+ "( SELECT f.friendId.usernameYou " 
+				+ "FROM Friend f " 
+				+ "WHERE f.friendId.usernameFriend = :username " 
+				+ "AND (f.isAccepted = true OR f.isAccepted = false)) "
+			+ "AND a.fullname LIKE %:keyword%")
+	List<Account> searchNotFriend(@Param("username") String username, @Param("keyword") String keyword);
+
+	@Query("SELECT a, f.requestTimeAt FROM Account a " 
+			+ "JOIN Friend f ON a.username LIKE f.friendId.usernameFriend "
+			+ "WHERE " 
+				+ "f.friendId.usernameYou LIKE :username " 
+				+ "AND f.isAccepted = false "
+				+ "AND a.fullname LIKE %:keyword% "
+			+ "ORDER BY f.requestTimeAt DESC ")
+	List<Account> searchMakedFriendSearchs(@Param("username") String username, @Param("keyword") String keyword);
+
 }
