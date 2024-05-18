@@ -1,4 +1,4 @@
-package SocialMedia.Response;
+package SocialMedia.Auth.Otp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,12 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class Response {
-	private boolean success;
+@AllArgsConstructor
+@Builder
+public class OtpResponse {
 	private String message;
-	private Object result;
+	private boolean success;
+	private boolean error;
 }
-
