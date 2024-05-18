@@ -48,4 +48,9 @@ public interface AccountRepository extends JpaRepository<Account, String> {
 
     @Query("SELECT f.friendId.usernameFriend FROM Friend f WHERE f.friendId.usernameYou = :username AND f.IsAccepted = true")
     Set<String> findAcceptedFriendsAsFriend(String username);
+    
+    @Transactional
+    @Modifying
+    @Query("UPDATE Account a SET a.fullname = ?1, a.gender = ?2, a.description = ?3, a.company = ?4, a.location = ?5, a.isSingle = ?6 WHERE a.username = ?7")
+    int updateProfile(String fullname, String gender, String description, String company, String location, boolean isSingle, String username);
 }
