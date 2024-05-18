@@ -19,9 +19,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 			+ "JOIN Friend f ON p.posterAccount.username LIKE f.friendId.usernameYou OR p.posterAccount.username LIKE f.friendId.usernameFriend "
 			+ "WHERE (p.posterAccount.username LIKE :username "
 			+ "OR (p.posterAccount.username NOT LIKE :username AND (p.mode.modeId = 0 OR p.mode.modeId = 1))) "
-			+ "AND p.isDeleted = false "
-			//+ "AND p.group.groupId = -1 "
-			+ "" )
+			+ "AND p.isDeleted = false")
 	List<Post> findPostOfNewFeedWithUsername(@Param("username") String username, Pageable pageable);
 
 	Optional<Post> findByPostId(Integer id);
@@ -30,9 +28,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 			+ "JOIN Friend f ON p.posterAccount.username LIKE f.friendId.usernameYou OR p.posterAccount.username LIKE f.friendId.usernameFriend "
 			+ "WHERE (p.posterAccount.username LIKE :username "
 			+ "OR (p.posterAccount.username NOT LIKE :username AND (p.mode.modeId = 0 OR p.mode.modeId = 1))) "
-			+ "AND p.isDeleted = false " + "AND p.postId = :postId "
-			//+ "AND p.group.groupId = -1 "
-			+ "")
+			+ "AND p.isDeleted = false " + "AND p.postId = :postId ")
 	Optional<Post> findPostWithUsernameAndPostId(@Param("username") String username, @Param("postId") long postId);
 
 	@Query(value = "SELECT COUNT(*) FROM Comment WHERE postId = :postId", nativeQuery = true)
@@ -61,27 +57,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 	@Query("SELECT p FROM Post p WHERE p.group.groupId = :groupId")
 	List<Post> findPostsByGroupId(long groupId);
 
-	@Query(value = "Select p from Post p where p.posterAccount.username = :username "
-			+ "AND (p.mode.modeId = 1 OR p.mode.modeId = 2 OR p.mode.modeId = 3) "
-			+ "AND p.isDeleted = false "
-			//+ "AND p.group.groupId = -1 "
-			+ "ORDER BY p.postTimeAt desc")
-	List<Post> findAllPostByUsernameOrderByPostTimeAtDesc(String username);
-	
-	@Query(value = "Select p from Post p where p.posterAccount.username = :username "
-			+ "AND (p.mode.modeId = 1 OR p.mode.modeId = 2) "
-			+ "AND p.isDeleted = false "
-			//+ "AND p.group.groupId = -1 "
-			+ "ORDER BY p.postTimeAt desc")
-	List<Post> findAllPostOfFriendByUsernameOrderByPostTimeAtDesc(String username);
-	
-	@Query(value = "Select p from Post p "
-			+ "JOIN Account_SocialGroup a ON p.group.groupId = a.id.groupId "
-			+ "where a.id.username = :username "
-			+ "AND a.isAccepted = true "
-			+ "AND (p.mode.modeId = 1 OR p.mode.modeId = 2 OR p.mode.modeId = 3) "
-			//+ "AND p.group.groupId != -1 "
-			+ "AND p.isDeleted = false "
-			+ "ORDER BY p.postTimeAt desc ")
+	@Query("SELECT p FROM Post p WHERE p.posterAccount.username = :username")
 	List<Post> findPostInGroupsByUsername(String username);
+
+	@Query(value = "Select p from Post p where p.posterAccount.username = :username ORDER BY p.postTimeAt desc")
+	List<Post> findAllPostByUsernameOrderByPostTimeAtDesc(String username);
 }

@@ -73,28 +73,15 @@ public class SocialGroupAPIController {
 		return new ResponseEntity<Response>(new Response(true, "Thành công", groupModels), HttpStatus.OK);
 	}
 
-<<<<<<< HEAD
-	@GetMapping("/postInOneGroup")
-	public ResponseEntity<?> getPostByGroupId(@RequestParam("username") String username,
-			@RequestParam("groupId") long groupId) {
-=======
 	@GetMapping("/{groupId}")
 	public ResponseEntity<?> getPostByGroupId(@PathVariable(value = "groupId") long groupId,
 			HttpServletRequest request) {
->>>>>>> f225d5c2f1e0c490c8cc523833d84f952092d1ac
 
 		List<Post> posts = postService.findPostsByGroupId(groupId);
 		List<PostModel> postModels = new ArrayList<>();
 
 		for (Post post : posts) {
-<<<<<<< HEAD
-			
 			PostModel postModel = new PostModel();
-
-			postModel.setPostId(post.getPostId());
-=======
-			PostModel postModel = new PostModel();
->>>>>>> f225d5c2f1e0c490c8cc523833d84f952092d1ac
 			postModel.setAvatar(post.getPosterAccount().getAvatarURL());
 			postModel.setUsername(post.getPosterAccount().getUsername());
 			postModel.setFullName(post.getPosterAccount().getFullname());
@@ -102,54 +89,6 @@ public class SocialGroupAPIController {
 			postModel.setMode(post.getMode().getModeId());
 			postModel.setPostText(post.getText());
 			postModel.setPostMedia(post.getMediaURL());
-<<<<<<< HEAD
-			postModel.setGroupId(post.getGroup().getGroupId());
-			boolean liked = false;
-			for (Account account : post.getAccountLikes()) {
-				if (account.getUsername().equals(username)) {
-					liked = true;
-					break;
-				}
-			}
-
-			postModel.setLiked(liked);
-			postModels.add(postModel);
-		}
-
-		return new ResponseEntity<Response>(new Response(true, "Thành công", postModels), HttpStatus.OK);
-	}
-	
-	@GetMapping("/posts/{username}") 
-	public ResponseEntity<?> getPostInGroupsByUsername(@PathVariable(value = "username") String username,
-			HttpServletRequest request) {
-
-		List<Post> posts = postService.findPostInGroupsByUsername(username);
-		List<PostModel> postModels = new ArrayList<>();
-
-		for (Post post : posts) {
-			
-			PostModel postModel = new PostModel();
-
-			postModel.setPostId(post.getPostId());
-			postModel.setAvatar(post.getPosterAccount().getAvatarURL());
-			postModel.setUsername(post.getPosterAccount().getUsername());
-			postModel.setFullName(post.getPosterAccount().getFullname());
-			postModel.setPostingTimeAt(post.getPostTimeAt().toString());
-			postModel.setMode(post.getMode().getModeId());
-			postModel.setPostText(post.getText());
-			postModel.setPostMedia(post.getMediaURL());
-			postModel.setGroupId(post.getGroup().getGroupId());
-			boolean liked = false;
-			for (Account account : post.getAccountLikes()) {
-				if (account.getUsername().equals(username)) {
-					liked = true;
-					break;
-				}
-			}
-
-			postModel.setLiked(liked);
-=======
->>>>>>> f225d5c2f1e0c490c8cc523833d84f952092d1ac
 			postModels.add(postModel);
 		}
 
@@ -243,13 +182,8 @@ public class SocialGroupAPIController {
 		return new ResponseEntity<Response>(new Response(true, "Thành công", null), HttpStatus.OK);
 	}
 
-<<<<<<< HEAD
-	@PostMapping("/createPost")
-	public ResponseEntity<?> createPostInGroup(@RequestBody PostModel postModel) {
-=======
 	@PostMapping("/create")
 	public ResponseEntity<?> createPost(@RequestBody PostModel postModel) {
->>>>>>> f225d5c2f1e0c490c8cc523833d84f952092d1ac
 		if (postModel.getPostText() == "" && postModel.getPostMedia() == "") {
 			return new ResponseEntity<Response>(new Response(false, "Create post false", null), HttpStatus.BAD_REQUEST);
 		} else {
@@ -268,17 +202,6 @@ public class SocialGroupAPIController {
 			Optional<Mode> optionalMode = modeService.findByModeId(postModel.getMode());
 			Mode mode = optionalMode.orElse(null);
 			post.setMode(mode);
-<<<<<<< HEAD
-			
-			Optional<SocialGroup> optionalSocialGroup = socialGroupService.findByGroupId(postModel.getGroupId());
-			SocialGroup socialGroup = optionalSocialGroup.orElse(null);
-			post.setGroup(socialGroup);
-			postService.save(post);
-			
-
-			postModel.setPostId(post.getPostId());
-			postModel.setPostingTimeAt(post.getPostTimeAt().toString());
-=======
 
 			// Bai viet trong group
 			// if (postModel.getMode() == 4)
@@ -289,13 +212,9 @@ public class SocialGroupAPIController {
 			// post.setGroup(socialGroup);
 			// }
 			postService.save(post);
->>>>>>> f225d5c2f1e0c490c8cc523833d84f952092d1ac
 			return new ResponseEntity<Response>(new Response(true, "Thành công", postModel), HttpStatus.OK);
 		}
 
 	}
-<<<<<<< HEAD
-=======
 
->>>>>>> f225d5c2f1e0c490c8cc523833d84f952092d1ac
 }

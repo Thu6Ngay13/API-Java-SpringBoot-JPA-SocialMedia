@@ -27,9 +27,5 @@ public class Friend implements Serializable{
 	private LocalDateTime requestTimeAt;
 	
 	@Column
-<<<<<<< HEAD
 	private boolean isAccepted;
-=======
-	private boolean IsAccepted;
->>>>>>> f225d5c2f1e0c490c8cc523833d84f952092d1ac
 }
