@@ -5,15 +5,22 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< HEAD
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+=======
+>>>>>>> f225d5c2f1e0c490c8cc523833d84f952092d1ac
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+<<<<<<< HEAD
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+=======
+import org.springframework.web.bind.annotation.RequestMapping;
+>>>>>>> f225d5c2f1e0c490c8cc523833d84f952092d1ac
 import org.springframework.web.bind.annotation.RestController;
 
 import SocialMedia.Entities.Account;
@@ -74,12 +81,19 @@ public class UserAPIController {
 				}
 			}
 			modelAcc.setFriends(listFriend);
+<<<<<<< HEAD
+=======
+
+>>>>>>> f225d5c2f1e0c490c8cc523833d84f952092d1ac
 			List<Post> posts = postService.findAllPostByUsernameOrderByPostTimeAtDesc(username);
 			List<PostModel> postModels = new ArrayList<>();
 
 			for (Post post : posts) {
 				PostModel postModel = new PostModel();
+<<<<<<< HEAD
 				postModel.setPostId(post.getPostId());
+=======
+>>>>>>> f225d5c2f1e0c490c8cc523833d84f952092d1ac
 				postModel.setAvatar(post.getPosterAccount().getAvatarURL());
 				postModel.setUsername(post.getPosterAccount().getUsername());
 				postModel.setFullName(post.getPosterAccount().getFullname());
@@ -87,6 +101,7 @@ public class UserAPIController {
 				postModel.setMode(post.getMode().getModeId());
 				postModel.setPostText(post.getText());
 				postModel.setPostMedia(post.getMediaURL());
+<<<<<<< HEAD
 				boolean liked = false;
 				for (Account account : post.getAccountLikes()) {
 					if (account.getUsername().equals(username)) {
@@ -96,6 +111,9 @@ public class UserAPIController {
 				}
 
 				postModel.setLiked(liked);
+=======
+				postModel.setLiked(false);
+>>>>>>> f225d5c2f1e0c490c8cc523833d84f952092d1ac
 				postModels.add(postModel);
 			}
 			modelAcc.setPosts(postModels);
@@ -104,6 +122,7 @@ public class UserAPIController {
 		}
 		return new ResponseEntity<Response>(new Response(true, "My account", modelAcc), HttpStatus.OK);
 	}
+<<<<<<< HEAD
 	@GetMapping("/my-account/{username}/friend-account/{usernameFriend}")
 	public ResponseEntity<?> getFriendAccountByUsername(@PathVariable(value = "username") String username,
 			@PathVariable(value = "usernameFriend") String usernameFriend,
@@ -185,4 +204,6 @@ public class UserAPIController {
         	return new ResponseEntity<Response>(new Response(false, "Update fail", null), HttpStatus.OK);
         }
     }
+=======
+>>>>>>> f225d5c2f1e0c490c8cc523833d84f952092d1ac
 }
