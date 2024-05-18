@@ -154,4 +154,9 @@ public class PostServiceImpl implements IPostService {
 		// TODO Auto-generated method stub
 		return postRepository.findAllPostOfFriendByUsernameOrderByPostTimeAtDesc(username);
 	}
+	
+	@Override
+	public List<Post> findPostInGroupsByUsername(String username) {
+		return postRepository.findPostInGroupsByUsername(username);
+	}
 }
