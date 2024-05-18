@@ -79,6 +79,7 @@ public class UserAPIController {
 
 			for (Post post : posts) {
 				PostModel postModel = new PostModel();
+				postModel.setPostId(post.getPostId());
 				postModel.setAvatar(post.getPosterAccount().getAvatarURL());
 				postModel.setUsername(post.getPosterAccount().getUsername());
 				postModel.setFullName(post.getPosterAccount().getFullname());
