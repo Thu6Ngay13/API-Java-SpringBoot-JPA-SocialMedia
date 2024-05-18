@@ -39,14 +39,14 @@ public interface AccountRepository extends JpaRepository<Account, String> {
     
     @Query("SELECT COUNT(f) "
     	     + "FROM Friend f "
-    	     + "WHERE f.IsAccepted = true "
+    	     + "WHERE f.isAccepted = true "
     	     + "AND (f.friendId.usernameFriend = :username OR f.friendId.usernameYou = :username)")
     Long countFriend(String username);
     
-    @Query("SELECT f.friendId.usernameYou FROM Friend f WHERE f.friendId.usernameFriend = :username AND f.IsAccepted = true")
+    @Query("SELECT f.friendId.usernameYou FROM Friend f WHERE f.friendId.usernameFriend = :username AND f.isAccepted = true")
     Set<String> findAcceptedFriendsAsYou(String username);
 
-    @Query("SELECT f.friendId.usernameFriend FROM Friend f WHERE f.friendId.usernameYou = :username AND f.IsAccepted = true")
+    @Query("SELECT f.friendId.usernameFriend FROM Friend f WHERE f.friendId.usernameYou = :username AND f.isAccepted = true")
     Set<String> findAcceptedFriendsAsFriend(String username);
     
     @Transactional

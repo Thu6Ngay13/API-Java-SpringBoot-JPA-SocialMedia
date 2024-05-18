@@ -39,22 +39,40 @@ public class FriendServiceImpl implements IFriendService{
 
 	@Override
 	public void acceptFriend(String username1, String username2) {
-		Optional<Friend> friendRequest = friendRepository.findById(new FriendId(username1, username2));
-		
+		Optional<Friend> friendRequest = friendRepository.findById(new FriendId(username2, username1));
 		if(friendRequest.isPresent()) {
 			Friend friend = friendRequest.get();
-			friend.setIsAccepted(true);
+			friend.setAccepted(true);
 			friendRepository.save(friend);
 		}
 	}
 
 	@Override
 	public void declineFriend(String username1, String username2) {
-		Optional<Friend> friendRequest = friendRepository.findById(new FriendId(username1, username2));
+		Optional<Friend> friendRequest = friendRepository.findById(new FriendId(username2, username1));
 		if(friendRequest.isPresent()) {
 			Friend friend = friendRequest.get();
 			friendRepository.delete(friend);
 		}
 	}
 
+	@Override
+	public List<Account> searchAllYourFriends(String username, String keyword) {
+		return friendRepository.searchAllYourFriends(username, keyword);
+	}
+
+	@Override
+	public List<Object[]> searchAllFriendRequests(String username, String keyword) {
+		return friendRepository.searchAllFriendRequests(username, keyword);
+	}
+
+	@Override
+	public List<Account> searchNotFriend(String username, String keyword) {
+		return friendRepository.searchNotFriend(username, keyword);
+	}
+	
+	@Override
+	public List<Account> searchMakedFriendSearchs(String username, String keyword) {
+		return friendRepository.searchMakedFriendSearchs(username, keyword);
+	}
 }
