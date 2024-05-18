@@ -9,6 +9,6 @@ import SocialMedia.Entities.Comment;
 
 @Repository
 public interface CommentRepository  extends JpaRepository<Comment, Long>{
-	@Query("SELECT c FROM Comment c JOIN c.post p WHERE p.postId = :postId")
-	List<Comment> findCommentsByPostId(Long postId);
+	@Query("SELECT c FROM Comment c JOIN c.post p WHERE p.postId = :postId and c.isDeleted = false")
+	List<Comment> findCommentsByPostId(Long postId); 
 }

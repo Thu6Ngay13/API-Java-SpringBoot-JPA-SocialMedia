@@ -205,8 +205,8 @@ public class PostAPIController {
 	}
 	
 	@PostMapping("/media")
-	public ResponseEntity<Response> media(		
-			@RequestParam("media") MultipartFile media) {
+	public ResponseEntity<Response> mediaPost(		
+			@RequestParam("media") MultipartFile media, HttpServletRequest request) {
 		String mediaUrl = "";
 		try
 		{
