@@ -148,4 +148,10 @@ public class PostServiceImpl implements IPostService {
 	public List<Post> findPostsByGroupId(long groupId) {
 		return postRepository.findPostsByGroupId(groupId);
 	}
+
+	@Override
+	public List<Post> findAllPostOfFriendByUsernameOrderByPostTimeAtDesc(String username) {
+		// TODO Auto-generated method stub
+		return postRepository.findAllPostOfFriendByUsernameOrderByPostTimeAtDesc(username);
+	}
 }

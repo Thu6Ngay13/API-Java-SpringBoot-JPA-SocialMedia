@@ -60,6 +60,15 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 	@Query("SELECT p FROM Post p WHERE p.posterAccount.username = :username")
 	List<Post> findPostInGroupsByUsername(String username);
 
-	@Query(value = "Select p from Post p where p.posterAccount.username = :username ORDER BY p.postTimeAt desc")
+	@Query(value = "Select p from Post p where p.posterAccount.username = :username "
+			+ "AND (p.mode.modeId = 1 OR p.mode.modeId = 2 OR p.mode.modeId = 3) "
+			+ "AND p.isDeleted = false "
+			+ "ORDER BY p.postTimeAt desc")
 	List<Post> findAllPostByUsernameOrderByPostTimeAtDesc(String username);
+	
+	@Query(value = "Select p from Post p where p.posterAccount.username = :username "
+			+ "AND (p.mode.modeId = 1 OR p.mode.modeId = 2) "
+			+ "AND p.isDeleted = false "
+			+ "ORDER BY p.postTimeAt desc")
+	List<Post> findAllPostOfFriendByUsernameOrderByPostTimeAtDesc(String username);
 }
