@@ -19,4 +19,6 @@ public class SearchModel {
     private String username;
     private String fullName;
     private String requestTimeAt;
+    private long groupModeId;
+    private String groupModeType;
 }

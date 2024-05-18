@@ -4,10 +4,13 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import SocialMedia.Entities.Account_SocialGroup;
+import SocialMedia.Entities.Account_SocialGroup_id;
 
-public interface Account_SocialGroupRepository extends JpaRepository<Account_SocialGroup, Long> {
+@Repository
+public interface Account_SocialGroupRepository extends JpaRepository<Account_SocialGroup, Account_SocialGroup_id> {
 	@Query("SELECT a FROM Account_SocialGroup a WHERE a.id.username = :username")
     List<Account_SocialGroup> findAccountSocialGroupByUsername(String username);
     

@@ -16,4 +16,5 @@ public interface IFriendService {
 	List<Object[]> searchAllFriendRequests(String username, String keyword);
 	List<Account> searchNotFriend(String username, String keyword);
 	List<Account> searchMakedFriendSearchs(String username, String keyword);
+	void makeFriend(String username1, String username2);
 }

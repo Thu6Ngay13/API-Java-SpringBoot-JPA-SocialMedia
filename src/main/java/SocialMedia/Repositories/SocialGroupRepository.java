@@ -35,5 +35,12 @@ public interface SocialGroupRepository  extends JpaRepository<SocialGroup, Long>
 				+ "AND asg.id.username = :username "
 				+ "AND s.groupName LIKE %:keyword% ")
 	List<SocialGroup> searchUnjoinGroup(@Param("username") String username, @Param("keyword") String keyword);
+	
+	@Query("SELECT s FROM SocialGroup s "
+			+ "JOIN Account_SocialGroup asg ON s.groupId = asg.id.groupId "
+			+ "WHERE asg.id.username = :username "
+				+ "AND asg.isAccepted = true "
+				+ "AND s.groupId = :groupId")
+	Optional<SocialGroup> findGroupByUsernameAndGroupId(@Param("username") String username, @Param("groupId") long groupId);
 
 }

@@ -81,7 +81,7 @@ public class SocialGroupAPIController {
 		List<PostModel> postModels = new ArrayList<>();
 
 		for (Post post : posts) {
-			
+
 			PostModel postModel = new PostModel();
 
 			postModel.setPostId(post.getPostId());
@@ -107,8 +107,8 @@ public class SocialGroupAPIController {
 
 		return new ResponseEntity<Response>(new Response(true, "Thành công", postModels), HttpStatus.OK);
 	}
-	
-	@GetMapping("/posts/{username}") 
+
+	@GetMapping("/posts/{username}")
 	public ResponseEntity<?> getPostInGroupsByUsername(@PathVariable(value = "username") String username,
 			HttpServletRequest request) {
 
@@ -116,7 +116,7 @@ public class SocialGroupAPIController {
 		List<PostModel> postModels = new ArrayList<>();
 
 		for (Post post : posts) {
-			
+
 			PostModel postModel = new PostModel();
 
 			postModel.setPostId(post.getPostId());
@@ -251,17 +251,64 @@ public class SocialGroupAPIController {
 			Optional<Mode> optionalMode = modeService.findByModeId(postModel.getMode());
 			Mode mode = optionalMode.orElse(null);
 			post.setMode(mode);
-			
+
 			Optional<SocialGroup> optionalSocialGroup = socialGroupService.findByGroupId(postModel.getGroupId());
 			SocialGroup socialGroup = optionalSocialGroup.orElse(null);
 			post.setGroup(socialGroup);
 			postService.save(post);
-			
 
 			postModel.setPostId(post.getPostId());
 			postModel.setPostingTimeAt(post.getPostTimeAt().toString());
 			return new ResponseEntity<Response>(new Response(true, "Thành công", postModel), HttpStatus.OK);
 		}
+	}
+	
+	@GetMapping("/{username}/viewgroup/{groupId}")
+	public ResponseEntity<?> viewGroup(@PathVariable("username") String username,
+			@PathVariable("groupId")long groupId) {
+		
+		Optional<SocialGroup> socialGroup = socialGroupService.findGroupByUsernameAndGroupId(username, groupId);
+		if (socialGroup.isPresent()) {
+			
+			SocialGroup sg = socialGroup.get();
+			List<SocialGroupModel> socialGroupModels = new ArrayList<>();
+			
+			SocialGroupModel socialGroupModel = new SocialGroupModel();
+			socialGroupModel.setGroupId(sg.getGroupId());
+			socialGroupModel.setAvatarURL(sg.getAvatarURL());
+			socialGroupModel.setGroupName(sg.getGroupName());
+			socialGroupModel.setCreationTimeAt(sg.getCreationTimeAt().toString());
+			socialGroupModel.setModeId(sg.getMode().getModeId());
+			
+			socialGroupModel.setHolderFullName(sg.getHolderAccount().getFullname());
+			socialGroupModel.setHolderUsername(sg.getHolderAccount().getUsername());
+			
+			socialGroupModels.add(socialGroupModel);
+			return new ResponseEntity<Response>(new Response(true, "Thành công", socialGroupModels), HttpStatus.OK);
+		}
 
+		return new ResponseEntity<Response>(new Response(false, "Thất bại", null), HttpStatus.OK);
+	}
+	
+	@GetMapping("/{username}/joingroup/{groupId}")
+	public ResponseEntity<?> joinGroupx(@PathVariable("username") String username,
+			@PathVariable("groupId")long groupId) {
+
+		Optional<SocialGroup> socialGroup = socialGroupService.findGroupByUsernameAndGroupId(username, groupId);
+		if (socialGroup.isEmpty()) {
+			socialGroupService.joinGroup(username, groupId);
+		} 
+		
+		return new ResponseEntity<Response>(new Response(true, "Thành công", null), HttpStatus.OK);
+
+	}
+	
+	@GetMapping("/{username}/unjoingroup/{groupId}")
+	public ResponseEntity<?> unjoinGroupx(@PathVariable("username") String username,
+			@PathVariable("groupId")long groupId) {
+
+		socialGroupService.unjoinGroup(username, groupId);
+		
+		return new ResponseEntity<Response>(new Response(true, "Thành công", null), HttpStatus.OK);
 	}
 }
