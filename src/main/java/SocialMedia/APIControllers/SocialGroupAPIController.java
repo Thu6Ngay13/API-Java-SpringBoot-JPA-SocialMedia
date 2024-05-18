@@ -73,15 +73,18 @@ public class SocialGroupAPIController {
 		return new ResponseEntity<Response>(new Response(true, "Thành công", groupModels), HttpStatus.OK);
 	}
 
-	@GetMapping("/{groupId}")
-	public ResponseEntity<?> getPostByGroupId(@PathVariable(value = "groupId") long groupId,
-			HttpServletRequest request) {
+	@GetMapping("/postInOneGroup")
+	public ResponseEntity<?> getPostByGroupId(@RequestParam("username") String username,
+			@RequestParam("groupId") long groupId) {
 
 		List<Post> posts = postService.findPostsByGroupId(groupId);
 		List<PostModel> postModels = new ArrayList<>();
 
 		for (Post post : posts) {
+			
 			PostModel postModel = new PostModel();
+
+			postModel.setPostId(post.getPostId());
 			postModel.setAvatar(post.getPosterAccount().getAvatarURL());
 			postModel.setUsername(post.getPosterAccount().getUsername());
 			postModel.setFullName(post.getPosterAccount().getFullname());
@@ -89,6 +92,51 @@ public class SocialGroupAPIController {
 			postModel.setMode(post.getMode().getModeId());
 			postModel.setPostText(post.getText());
 			postModel.setPostMedia(post.getMediaURL());
+			postModel.setGroupId(post.getGroup().getGroupId());
+			boolean liked = false;
+			for (Account account : post.getAccountLikes()) {
+				if (account.getUsername().equals(username)) {
+					liked = true;
+					break;
+				}
+			}
+
+			postModel.setLiked(liked);
+			postModels.add(postModel);
+		}
+
+		return new ResponseEntity<Response>(new Response(true, "Thành công", postModels), HttpStatus.OK);
+	}
+	
+	@GetMapping("/posts/{username}") 
+	public ResponseEntity<?> getPostInGroupsByUsername(@PathVariable(value = "username") String username,
+			HttpServletRequest request) {
+
+		List<Post> posts = postService.findPostInGroupsByUsername(username);
+		List<PostModel> postModels = new ArrayList<>();
+
+		for (Post post : posts) {
+			
+			PostModel postModel = new PostModel();
+
+			postModel.setPostId(post.getPostId());
+			postModel.setAvatar(post.getPosterAccount().getAvatarURL());
+			postModel.setUsername(post.getPosterAccount().getUsername());
+			postModel.setFullName(post.getPosterAccount().getFullname());
+			postModel.setPostingTimeAt(post.getPostTimeAt().toString());
+			postModel.setMode(post.getMode().getModeId());
+			postModel.setPostText(post.getText());
+			postModel.setPostMedia(post.getMediaURL());
+			postModel.setGroupId(post.getGroup().getGroupId());
+			boolean liked = false;
+			for (Account account : post.getAccountLikes()) {
+				if (account.getUsername().equals(username)) {
+					liked = true;
+					break;
+				}
+			}
+
+			postModel.setLiked(liked);
 			postModels.add(postModel);
 		}
 
@@ -182,8 +230,8 @@ public class SocialGroupAPIController {
 		return new ResponseEntity<Response>(new Response(true, "Thành công", null), HttpStatus.OK);
 	}
 
-	@PostMapping("/create")
-	public ResponseEntity<?> createPost(@RequestBody PostModel postModel) {
+	@PostMapping("/createPost")
+	public ResponseEntity<?> createPostInGroup(@RequestBody PostModel postModel) {
 		if (postModel.getPostText() == "" && postModel.getPostMedia() == "") {
 			return new ResponseEntity<Response>(new Response(false, "Create post false", null), HttpStatus.BAD_REQUEST);
 		} else {
@@ -202,19 +250,17 @@ public class SocialGroupAPIController {
 			Optional<Mode> optionalMode = modeService.findByModeId(postModel.getMode());
 			Mode mode = optionalMode.orElse(null);
 			post.setMode(mode);
-
-			// Bai viet trong group
-			// if (postModel.getMode() == 4)
-			// {
-			// Optional<SocialGroup> optionalSocialGroup =
-			// socialGroupService.findByGroupId(postModel.getGroupId());
-			// SocialGroup socialGroup = optionalSocialGroup.orElse(null);
-			// post.setGroup(socialGroup);
-			// }
+			
+			Optional<SocialGroup> optionalSocialGroup = socialGroupService.findByGroupId(postModel.getGroupId());
+			SocialGroup socialGroup = optionalSocialGroup.orElse(null);
+			post.setGroup(socialGroup);
 			postService.save(post);
+			
+
+			postModel.setPostId(post.getPostId());
+			postModel.setPostingTimeAt(post.getPostTimeAt().toString());
 			return new ResponseEntity<Response>(new Response(true, "Thành công", postModel), HttpStatus.OK);
 		}
 
 	}
-
 }

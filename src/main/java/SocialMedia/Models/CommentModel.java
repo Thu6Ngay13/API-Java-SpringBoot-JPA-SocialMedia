@@ -16,7 +16,9 @@ public class CommentModel {
     private String fullName;
 	private Long commentId;
 	private String commentText;
-	private String mediaURL;
+	private String commentImage;
 	private Boolean isDeleted = false;
 	private String commentTimeAt;
+	private Long postId;
+	
 }

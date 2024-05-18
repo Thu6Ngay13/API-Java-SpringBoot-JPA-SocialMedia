@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import SocialMedia.Entities.Account;
@@ -70,8 +74,77 @@ public class UserAPIController {
 				}
 			}
 			modelAcc.setFriends(listFriend);
-
 			List<Post> posts = postService.findAllPostByUsernameOrderByPostTimeAtDesc(username);
+			List<PostModel> postModels = new ArrayList<>();
+
+			for (Post post : posts) {
+				PostModel postModel = new PostModel();
+				postModel.setPostId(post.getPostId());
+				postModel.setAvatar(post.getPosterAccount().getAvatarURL());
+				postModel.setUsername(post.getPosterAccount().getUsername());
+				postModel.setFullName(post.getPosterAccount().getFullname());
+				postModel.setPostingTimeAt(post.getPostTimeAt().toString());
+				postModel.setMode(post.getMode().getModeId());
+				postModel.setPostText(post.getText());
+				postModel.setPostMedia(post.getMediaURL());
+				boolean liked = false;
+				for (Account account : post.getAccountLikes()) {
+					if (account.getUsername().equals(username)) {
+						liked = true;
+						break;
+					}
+				}
+
+				postModel.setLiked(liked);
+				postModels.add(postModel);
+			}
+			modelAcc.setPosts(postModels);
+		} else {
+			modelAcc = null;
+		}
+		return new ResponseEntity<Response>(new Response(true, "My account", modelAcc), HttpStatus.OK);
+	}
+	@GetMapping("/my-account/{username}/friend-account/{usernameFriend}")
+	public ResponseEntity<?> getFriendAccountByUsername(@PathVariable(value = "username") String username,
+			@PathVariable(value = "usernameFriend") String usernameFriend,
+			HttpServletRequest request) {
+		Optional<Account> optAcc = accountService.findByUsername(usernameFriend);
+		Account friendAccount = optAcc.orElse(null);
+		AccountModel modelAcc = new AccountModel();
+		List<AccountModel> listFriend = new ArrayList<>();
+		if (friendAccount != null) {
+			modelAcc.setUsername(friendAccount.getUsername());
+			modelAcc.setFullname(friendAccount.getFullname());
+			modelAcc.setGender(friendAccount.getGender());
+			modelAcc.setAvatarURL(friendAccount.getAvatarURL());
+			modelAcc.setEmail(friendAccount.getEmail());
+			modelAcc.setPhoneNumber(friendAccount.getPhoneNumber());
+			modelAcc.setDescription(friendAccount.getDescription());
+			modelAcc.setCompany(friendAccount.getCompany());
+			modelAcc.setLocation(friendAccount.getLocation());
+			modelAcc.setSingle(friendAccount.isSingle());
+			modelAcc.setRole(friendAccount.getRole());
+			modelAcc.setCountFriend(accountService.countFriend(usernameFriend));
+			for (String u : accountService.getAcceptedFriends(usernameFriend)) {
+				if (accountService.findByUsername(u).get() != null) {
+					Account a = accountService.findByUsername(u).get();
+					AccountModel modelFriend = new AccountModel();
+					modelFriend.setUsername(a.getUsername());
+					modelFriend.setFullname(a.getFullname());
+					modelFriend.setGender(a.getGender());
+					modelFriend.setAvatarURL(a.getAvatarURL());
+					modelFriend.setEmail(a.getEmail());
+					modelFriend.setPhoneNumber(a.getPhoneNumber());
+					modelFriend.setDescription(a.getDescription());
+					modelFriend.setCompany(a.getCompany());
+					modelFriend.setLocation(a.getLocation());
+					modelFriend.setSingle(a.isSingle());
+					modelFriend.setRole(a.getRole());
+					listFriend.add(modelFriend);
+				}
+			}
+			modelAcc.setFriends(listFriend);
+			List<Post> posts = postService.findAllPostOfFriendByUsernameOrderByPostTimeAtDesc(usernameFriend);
 			List<PostModel> postModels = new ArrayList<>();
 
 			for (Post post : posts) {
@@ -83,13 +156,33 @@ public class UserAPIController {
 				postModel.setMode(post.getMode().getModeId());
 				postModel.setPostText(post.getText());
 				postModel.setPostMedia(post.getMediaURL());
-				postModel.setLiked(false);
+				boolean liked = false;
+				for (Account account : post.getAccountLikes()) {
+					if (account.getUsername().equals(username)) {
+						liked = true;
+						break;
+					}
+				}
+
+				postModel.setLiked(liked);
 				postModels.add(postModel);
 			}
 			modelAcc.setPosts(postModels);
 		} else {
 			modelAcc = null;
 		}
-		return new ResponseEntity<Response>(new Response(true, "My account", modelAcc), HttpStatus.OK);
+		return new ResponseEntity<Response>(new Response(true, "My friend account", modelAcc), HttpStatus.OK);
 	}
+	@PutMapping("/my-account/update")
+    public ResponseEntity<Response> updateProfile(@RequestParam String fullname, @RequestParam String gender, 
+                                                @RequestParam String description, @RequestParam String company, 
+                                                @RequestParam String location, @RequestParam boolean isSingle, 
+                                                @RequestParam String username) {
+        int result = accountService.updateProfile(fullname, gender, description, company, location, isSingle, username);
+        if (result > 0) {
+            return new ResponseEntity<Response>(new Response(true, "Update profile successfully", null), HttpStatus.OK);
+        } else {
+        	return new ResponseEntity<Response>(new Response(false, "Update fail", null), HttpStatus.OK);
+        }
+    }
 }

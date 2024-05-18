@@ -32,4 +32,8 @@ public interface IPostService {
 	List<Post> findAllPostByUsernameOrderByPostTimeAtDesc(String username);
 	
 	List<Post> findPostsByGroupId(long groupId);
+	
+	List<Post> findAllPostOfFriendByUsernameOrderByPostTimeAtDesc(String username);
+	
+	List<Post> findPostInGroupsByUsername(String username);
 }

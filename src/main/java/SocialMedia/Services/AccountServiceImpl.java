@@ -65,4 +65,10 @@ public class AccountServiceImpl implements IAccountService, UserDetailsService {
 
         return allAcceptedFriends;
     }
+
+	@Override
+	public int updateProfile(String fullname, String gender, String description, String company, String location,
+			boolean isSingle, String username) {
+		return accountRepository.updateProfile(fullname, gender, description, company, location, isSingle, username);
+	}
 }
