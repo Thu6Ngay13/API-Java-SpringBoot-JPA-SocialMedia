@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import SocialMedia.Entities.Account;
@@ -170,4 +172,16 @@ public class UserAPIController {
 		}
 		return new ResponseEntity<Response>(new Response(true, "My friend account", modelAcc), HttpStatus.OK);
 	}
+	@PutMapping("/my-account/update")
+    public ResponseEntity<Response> updateProfile(@RequestParam String fullname, @RequestParam String gender, 
+                                                @RequestParam String description, @RequestParam String company, 
+                                                @RequestParam String location, @RequestParam boolean isSingle, 
+                                                @RequestParam String username) {
+        int result = accountService.updateProfile(fullname, gender, description, company, location, isSingle, username);
+        if (result > 0) {
+            return new ResponseEntity<Response>(new Response(true, "Update profile successfully", null), HttpStatus.OK);
+        } else {
+        	return new ResponseEntity<Response>(new Response(false, "Update fail", null), HttpStatus.OK);
+        }
+    }
 }

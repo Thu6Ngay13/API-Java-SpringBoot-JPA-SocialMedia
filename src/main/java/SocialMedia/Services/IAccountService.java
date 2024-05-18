@@ -12,4 +12,5 @@ public interface IAccountService {
 	<S extends Account> S save(S entity);
 	long countFriend(String username);
 	Set<String> getAcceptedFriends(String username);
+	int updateProfile(String fullname, String gender, String description, String company, String location, boolean isSingle, String username);
 }
