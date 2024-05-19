@@ -127,4 +127,9 @@ public class FriendServiceImpl implements IFriendService{
 		
 		return accountSuggests;
 	}
+
+	@Override
+	public int unfriend(String usernameYou, String usernameFriend) {
+		return friendRepository.unfriend(usernameYou, usernameFriend);
+	}
 }

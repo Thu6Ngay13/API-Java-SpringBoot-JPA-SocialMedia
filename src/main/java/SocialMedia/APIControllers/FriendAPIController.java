@@ -125,4 +125,13 @@ public class FriendAPIController {
 
 		return new ResponseEntity<Response>(new Response(false, "Thất bại", null), HttpStatus.OK);
 	}
+	@PostMapping("/{usernameYou}/unfriend/{usernameFriend}")
+	public ResponseEntity<?> unfriend(@PathVariable("usernameYou") String usernameYou,
+			@PathVariable("usernameFriend") String usernameFriend) {
+		int result = friendService.unfriend(usernameYou, usernameFriend);
+		if (result > 0) {
+			return new ResponseEntity<Response>(new Response(true, "Thành công", null), HttpStatus.OK);
+		}
+		return new ResponseEntity<Response>(new Response(false, "Thất bại", null), HttpStatus.OK);
+	}
 }

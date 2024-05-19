@@ -19,4 +19,5 @@ public interface IFriendService {
 	List<Account> searchMakedFriendSearchs(String username, String keyword);
 	void makeFriend(String username1, String username2);
 	Set<Account> getSearchFriend(String username);
+	int unfriend(String usernameYou, String usernameFriend);
 }
