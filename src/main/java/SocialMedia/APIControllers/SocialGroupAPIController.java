@@ -46,6 +46,7 @@ public class SocialGroupAPIController {
 
 	@Autowired
 	ISocialGroupService socialGroupService;
+	
 
 	@GetMapping("/groups/{username}")
 	public ResponseEntity<?> getGroupsByUsername(@PathVariable(value = "username") String username) {
@@ -176,7 +177,8 @@ public class SocialGroupAPIController {
 
 	@PostMapping("/createGroup")
 	public ResponseEntity<?> createGroup(@RequestParam("username") String username,
-			@RequestParam("groupName") String groupName, @RequestParam("modeId") long modeId, @RequestParam("description") String description) {
+			@RequestParam("groupName") String groupName, @RequestParam("modeId") long modeId,
+			@RequestParam("description") String description) {
 		boolean success = socialGroupService.createGroup(username, groupName, modeId, description);
 
 		if (success) {
@@ -189,7 +191,36 @@ public class SocialGroupAPIController {
 				groupModel.setCreationTimeAt(group.getCreationTimeAt().toString());
 				groupModel.setModeId(group.getMode().getModeId());
 				groupModel.setHolderFullName(group.getHolderAccount().getFullname());
-				groupModel.setHolderUsername(username);
+				groupModel.setHolderUsername(group.getHolderAccount().getUsername());
+				groupModel.setDescription(group.getDescription());
+			}
+			return new ResponseEntity<Response>(new Response(true, "Thành công", groupModel), HttpStatus.OK);
+		}
+
+		else
+			return new ResponseEntity<Response>(new Response(false, "Thất bại", null), HttpStatus.BAD_REQUEST);
+	}
+	
+	@PostMapping("/updateGroup")
+	public ResponseEntity<?> updateGroup(
+			@RequestParam("groupId") long groupId,
+			@RequestParam("username") String username,
+			@RequestParam("groupName") String groupName, 
+			@RequestParam("modeId") long modeId,
+			@RequestParam("description") String description,
+			@RequestParam("groupImage") String groupImage) {
+		boolean success = socialGroupService.updateGroup(groupId, username, groupName, modeId, description, groupImage);
+		if (success) {
+			SocialGroupModel groupModel = new SocialGroupModel();
+			List<SocialGroup> listGroup = socialGroupService.findByGroupNameContainingIgnoreCase(groupName);
+			for (SocialGroup group : listGroup) {
+				groupModel.setGroupId(group.getGroupId());
+				groupModel.setGroupName(group.getGroupName());
+				groupModel.setAvatarURL(group.getAvatarURL());
+				groupModel.setCreationTimeAt(group.getCreationTimeAt().toString());
+				groupModel.setModeId(group.getMode().getModeId());
+				groupModel.setHolderFullName(group.getHolderAccount().getFullname());
+				groupModel.setHolderUsername(group.getHolderAccount().getUsername());
 				groupModel.setDescription(group.getDescription());
 			}
 			return new ResponseEntity<Response>(new Response(true, "Thành công", groupModel), HttpStatus.OK);
@@ -337,7 +368,6 @@ public class SocialGroupAPIController {
 		} 
 		
 		return new ResponseEntity<Response>(new Response(true, "Thành công", null), HttpStatus.OK);
-
 	}
 	
 	@GetMapping("/{username}/unjoingroup/{groupId}")
@@ -347,5 +377,30 @@ public class SocialGroupAPIController {
 		socialGroupService.unjoinGroup(username, groupId);
 		
 		return new ResponseEntity<Response>(new Response(true, "Thành công", null), HttpStatus.OK);
+	}
+	
+	@GetMapping("/isAcceptGroup")
+	public ResponseEntity<?> isAcceptGroup(
+			@RequestParam("username") String username,
+			@RequestParam("groupId") long groupId) {
+		Optional<SocialGroup> socialGroup = socialGroupService.findGroupByUsernameAndGroupId(username, groupId);
+		if (socialGroup.isPresent()) {
+			return new ResponseEntity<Response>(new Response(true, "Thành công", "Out Group"), HttpStatus.OK);
+		} 
+		else
+		{
+			if (socialGroupService.findOneAccountSocialGroup(username, groupId) == null)
+			{
+				return new ResponseEntity<Response>(new Response(true, "false", "Join Group"), HttpStatus.OK);
+				
+			}
+			else
+			{
+				return new ResponseEntity<Response>(new Response(true, "false", "Waiting"), HttpStatus.OK);
+				
+			}
+		}
+			
+			
 	}
 }

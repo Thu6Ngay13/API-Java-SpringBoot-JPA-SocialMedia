@@ -101,6 +101,11 @@ public class SocialGroupServiceImpl implements ISocialGroupService {
 	public List<Account_SocialGroup> findAllAccountSocialGroup() {
 		return accGroupRepo.findAll();
 	}
+	
+	@Override
+	public Account_SocialGroup findOneAccountSocialGroup(String username, long groupId) {
+		return accGroupRepo.findOne(username, groupId);
+	}
 
 	@Override
 	public boolean createGroup(String username, String groupName, long modeId, String description) {
@@ -125,6 +130,32 @@ public class SocialGroupServiceImpl implements ISocialGroupService {
 		socialGroupRepo.save(newGroup);
 		this.sendRequestToGroup(account, newGroup);
 		this.acceptMember(username, newGroup.getGroupId());
+		return true;
+	}
+	
+	@Override
+	public boolean updateGroup(long groupId, String username, String groupName, long modeId, String description, String groupImage) {
+
+		Optional<SocialGroup> optionalGroup = socialGroupRepo.findByGroupId(groupId);
+		SocialGroup group = optionalGroup.orElse(null);
+		
+		Mode mode = new Mode();
+		mode = modeRepo.findById(modeId).get();
+		group.setMode(mode);
+		group.setGroupName(groupName);
+		group.setDescription(description);
+		group.setAvatarURL(groupImage);
+		socialGroupRepo.save(group);
+		
+		List<SocialGroup> listGroup = socialGroupRepo.findByGroupNameContainingIgnoreCase(groupName);
+		for (SocialGroup gr : listGroup) {
+			if (gr.getGroupName().equals(groupName))
+			{
+				if (groupName == group.getGroupName())
+					return true;
+				else return false;
+			}
+		}
 		return true;
 	}
 

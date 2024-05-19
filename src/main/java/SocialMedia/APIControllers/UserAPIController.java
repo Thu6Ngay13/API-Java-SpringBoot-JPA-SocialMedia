@@ -149,6 +149,7 @@ public class UserAPIController {
 
 			for (Post post : posts) {
 				PostModel postModel = new PostModel();
+				postModel.setPostId(post.getPostId());
 				postModel.setAvatar(post.getPosterAccount().getAvatarURL());
 				postModel.setUsername(post.getPosterAccount().getUsername());
 				postModel.setFullName(post.getPosterAccount().getFullname());
@@ -165,7 +166,12 @@ public class UserAPIController {
 				}
 
 				postModel.setLiked(liked);
-				postModels.add(postModel);
+				if (accountService.getAcceptedFriends(usernameFriend).contains(username)) {
+					postModels.add(postModel);
+				}
+				else if (postModel.getMode() == 1) {
+					postModels.add(postModel);
+				}
 			}
 			modelAcc.setPosts(postModels);
 		} else {
