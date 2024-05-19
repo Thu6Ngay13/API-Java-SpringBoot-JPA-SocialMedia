@@ -135,6 +135,9 @@ public class Account implements UserDetails {
 
 	@OneToMany(mappedBy = "senderAccount", fetch = FetchType.LAZY)
 	private Set<Message> sendMessages;
+	
+	@OneToMany(mappedBy = "reporterAccount", fetch = FetchType.LAZY)
+	private Set<Report> doReports;
 
 	@OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
 	private Set<ConfirmationToken> confirmationTokens;

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -43,4 +44,8 @@ public class Report implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "postId")
 	private Post post;
+	
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name="reporterUsername")
+	private Account reporterAccount;
 }

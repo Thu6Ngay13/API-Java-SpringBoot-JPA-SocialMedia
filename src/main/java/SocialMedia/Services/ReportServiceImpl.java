@@ -40,7 +40,7 @@ public class ReportServiceImpl implements IReportService{
 			Report report = new Report();
 			report.setPost(post.get());
 			report.setReportingTimeAt(LocalDateTime.now());
-			report.setText("");
+			report.setText(text);
 			report.setIsHandled(false);	
 			reportRepository.save(report);
 		}
@@ -50,7 +50,6 @@ public class ReportServiceImpl implements IReportService{
 	public void handleReport(long postId) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	
+	}	
+
 }

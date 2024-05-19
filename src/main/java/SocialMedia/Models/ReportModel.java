@@ -13,6 +13,7 @@ import lombok.Setter;
 @Setter
 public class ReportModel {
 	private long reportId;
+	private String fullname;
 	private String reportingTimeAt;
 	private String text;
 	private PostModel postModel;
