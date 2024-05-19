@@ -6,11 +6,13 @@ import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import SocialMedia.Entities.Account;
 import SocialMedia.Enums.Role;
 
+@Repository
 public interface AccountRepository extends JpaRepository<Account, String> {
 	
 	Optional<Account> findByUsername(String username);

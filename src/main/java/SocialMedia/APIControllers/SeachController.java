@@ -22,26 +22,24 @@ import SocialMedia.Services.ISocialGroupService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api/search")	
+@RequestMapping("/api/search")
 public class SeachController {
-	
+
 	@Autowired
 	IFriendService friendService;
-	
+
 	@Autowired
 	ISocialGroupService socialGroupService;
 
 	@GetMapping("/{username}/{keyword}")
-	public ResponseEntity<?> getSeach(
-			@PathVariable(value = "username") String username,
-			@PathVariable(value = "keyword") String keyword, 
-			HttpServletRequest request) {
+	public ResponseEntity<?> getSeach(@PathVariable(value = "username") String username,
+			@PathVariable(value = "keyword") String keyword, HttpServletRequest request) {
 
 		List<Account> yourFriendSearchs = friendService.searchAllYourFriends(username, keyword);
 		List<Object[]> friendRequestSearchs = friendService.searchAllFriendRequests(username, keyword);
 		List<Account> makeFriendSearchs = friendService.searchNotFriend(username, keyword);
 		List<Account> makedFriendSearchs = friendService.searchMakedFriendSearchs(username, keyword);
-		
+
 		List<SocialGroup> joinedSocialGroupSearchs = socialGroupService.searchJoinedGroup(username, keyword);
 		List<SocialGroup> joinSocialGroupSearchs = socialGroupService.searchJoinGroup(username, keyword);
 		List<SocialGroup> unjoinSocialGroupSearchs = socialGroupService.searchUnjoinGroup(username, keyword);
@@ -57,8 +55,7 @@ public class SeachController {
 			searchModel.setGroupdId(-1);
 			searchModels.add(searchModel);
 		}
-		
-		
+
 		for (Object[] temp : friendRequestSearchs) {
 			SearchModel searchModel = new SearchModel();
 			Account account = (Account) temp[0];
@@ -71,7 +68,7 @@ public class SeachController {
 			searchModel.setGroupdId(-1);
 			searchModels.add(searchModel);
 		}
-		
+
 		for (Account account : makeFriendSearchs) {
 			SearchModel searchModel = new SearchModel();
 			searchModel.setViewType(TypeSearchEnum.MAKE_FRIEND);
@@ -82,7 +79,7 @@ public class SeachController {
 			searchModel.setGroupdId(-1);
 			searchModels.add(searchModel);
 		}
-		
+
 		for (Account account : makedFriendSearchs) {
 			SearchModel searchModel = new SearchModel();
 			searchModel.setViewType(TypeSearchEnum.MAKED_FRIEND);
@@ -93,7 +90,7 @@ public class SeachController {
 			searchModel.setGroupdId(-1);
 			searchModels.add(searchModel);
 		}
-		
+
 		for (SocialGroup socialGroup : joinedSocialGroupSearchs) {
 			SearchModel searchModel = new SearchModel();
 			searchModel.setViewType(TypeSearchEnum.JOINED_GROUP);
@@ -102,28 +99,42 @@ public class SeachController {
 			searchModel.setFullName(socialGroup.getGroupName());
 			searchModel.setRequestTimeAt("");
 			searchModel.setGroupdId(socialGroup.getGroupId());
+			searchModel.setGroupModeId(socialGroup.getMode().getModeId());
+			searchModel.setGroupModeType(socialGroup.getMode().getModeType());
 			searchModels.add(searchModel);
 		}
-		
+
 		for (SocialGroup socialGroup : joinSocialGroupSearchs) {
 			SearchModel searchModel = new SearchModel();
-			searchModel.setViewType(TypeSearchEnum.JOIN_GROUP);
+			if (socialGroup.getMode().getModeId() == 3) {
+				searchModel.setViewType(TypeSearchEnum.JOIN_GROUP_PRIVATE);
+			} else {
+				searchModel.setViewType(TypeSearchEnum.JOIN_GROUP_PUBLIC);
+			}
 			searchModel.setAvatar(socialGroup.getAvatarURL());
 			searchModel.setUsername("");
 			searchModel.setFullName(socialGroup.getGroupName());
 			searchModel.setRequestTimeAt("");
 			searchModel.setGroupdId(socialGroup.getGroupId());
+			searchModel.setGroupModeId(socialGroup.getMode().getModeId());
+			searchModel.setGroupModeType(socialGroup.getMode().getModeType());
 			searchModels.add(searchModel);
 		}
-		
+
 		for (SocialGroup socialGroup : unjoinSocialGroupSearchs) {
 			SearchModel searchModel = new SearchModel();
-			searchModel.setViewType(TypeSearchEnum.UNJOIN_GROUP);
+			if (socialGroup.getMode().getModeId() == 3) {
+				searchModel.setViewType(TypeSearchEnum.UNJOIN_GROUP_PRIVATE);
+			} else {
+				searchModel.setViewType(TypeSearchEnum.UNJOIN_GROUP_PUBLIC);
+			}
 			searchModel.setAvatar(socialGroup.getAvatarURL());
 			searchModel.setUsername("");
 			searchModel.setFullName(socialGroup.getGroupName());
 			searchModel.setRequestTimeAt("");
 			searchModel.setGroupdId(socialGroup.getGroupId());
+			searchModel.setGroupModeId(socialGroup.getMode().getModeId());
+			searchModel.setGroupModeType(socialGroup.getMode().getModeType());
 			searchModels.add(searchModel);
 		}
 

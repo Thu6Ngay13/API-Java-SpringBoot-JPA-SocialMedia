@@ -190,4 +190,26 @@ public class SocialGroupServiceImpl implements ISocialGroupService {
 		return socialGroupRepo.searchUnjoinGroup(username, searchString);
 	}
 
+	@Override
+	public Optional<SocialGroup> findGroupByUsernameAndGroupId(String username, long groupId) {
+		return socialGroupRepo.findGroupByUsernameAndGroupId(username, groupId);
+	}
+
+	@Override
+	public void joinGroup(String username, long groupId) {
+		Account_SocialGroup_id account_SocialGroup_id = new Account_SocialGroup_id(groupId, username);
+		Account_SocialGroup account_SocialGroup = new Account_SocialGroup(account_SocialGroup_id, false);
+		accGroupRepo.save(account_SocialGroup);
+	}
+
+	@Override
+	public void unjoinGroup(String username, long groupId) {
+		Account_SocialGroup_id account_SocialGroup_id = new Account_SocialGroup_id(groupId, username);
+		Optional<Account_SocialGroup> account_SocialGroup = accGroupRepo.findById(account_SocialGroup_id);
+		if (account_SocialGroup.isPresent()) {
+			Account_SocialGroup as  = account_SocialGroup.get();
+			accGroupRepo.delete(as);
+		}
+		
+	}
 }

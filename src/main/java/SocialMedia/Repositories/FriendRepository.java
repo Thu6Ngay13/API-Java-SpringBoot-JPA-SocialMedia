@@ -68,7 +68,8 @@ public interface FriendRepository extends JpaRepository<Friend, FriendId> {
 				+ "FROM Friend f " 
 				+ "WHERE f.friendId.usernameFriend = :username " 
 				+ "AND (f.isAccepted = true OR f.isAccepted = false)) "
-			+ "AND a.fullname LIKE %:keyword%")
+			+ "AND a.fullname LIKE %:keyword% "
+			+ "AND a.username NOT LIKE 'admin'")
 	List<Account> searchNotFriend(@Param("username") String username, @Param("keyword") String keyword);
 
 	@Query("SELECT a, f.requestTimeAt FROM Account a " 

@@ -37,4 +37,10 @@ public interface ISocialGroupService {
 	List<SocialGroup> searchJoinGroup(String username, String searchString);
 
 	List<SocialGroup> searchUnjoinGroup(String username, String searchString);
+	
+	Optional<SocialGroup> findGroupByUsernameAndGroupId(String username, long groupId);
+
+	void joinGroup(String username, long groupId);
+
+	void unjoinGroup(String username, long groupId);
 }

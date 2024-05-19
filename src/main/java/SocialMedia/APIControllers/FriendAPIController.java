@@ -58,7 +58,7 @@ public class FriendAPIController {
 		for (Object[] friend : friends) {
 			Account account = (Account) friend[0];
 			LocalDateTime requestTimeAt = (LocalDateTime) friend[1];
-			
+
 			FriendModel friendModel = new FriendModel();
 			friendModel.setViewType(TypeFriendEnum.FRIEND_REQUEST);
 			friendModel.setAvatar(account.getAvatarURL());
@@ -74,7 +74,7 @@ public class FriendAPIController {
 	@PostMapping("/friendrequest/{username1}/accept/{username2}")
 	public ResponseEntity<?> acceptFriend(@PathVariable("username1") String username1,
 			@PathVariable("username2") String username2) {
-		
+
 		Optional<Account> account = friendService.findFriendRequestWith2To1(username1, username2);
 		if (account.isPresent()) {
 			friendService.acceptFriend(username1, username2);
@@ -91,6 +91,34 @@ public class FriendAPIController {
 		Optional<Account> account = friendService.findFriendRequestWith2To1(username1, username2);
 		if (account.isPresent()) {
 			friendService.declineFriend(username1, username2);
+
+			return new ResponseEntity<Response>(new Response(true, "Thành công", null), HttpStatus.OK);
+		}
+
+		return new ResponseEntity<Response>(new Response(false, "Thất bại", null), HttpStatus.OK);
+	}
+
+	@PostMapping("/{username1}/make/{username2}")
+	public ResponseEntity<?> makeFriend(@PathVariable("username1") String username1,
+			@PathVariable("username2") String username2) {
+
+		Optional<Account> account = friendService.findFriendRequestWith2To1(username1, username2);
+		if (account.isPresent()) {
+			friendService.acceptFriend(username2, username1);
+		} else {
+			friendService.makeFriend(username1, username2);
+		}
+
+		return new ResponseEntity<Response>(new Response(true, "Thành công", null), HttpStatus.OK);
+	}
+
+	@PostMapping("/{username1}/unmake/{username2}")
+	public ResponseEntity<?> unmakeFriend(@PathVariable("username1") String username1,
+			@PathVariable("username2") String username2) {
+
+		Optional<Account> account = friendService.findFriendRequestWith2To1(username2, username1);
+		if (account.isPresent()) {
+			friendService.declineFriend(username2, username1);
 
 			return new ResponseEntity<Response>(new Response(true, "Thành công", null), HttpStatus.OK);
 		}

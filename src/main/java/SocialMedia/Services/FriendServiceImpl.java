@@ -1,5 +1,6 @@
 package SocialMedia.Services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import SocialMedia.Entities.Account;
 import SocialMedia.Entities.Friend;
 import SocialMedia.Entities.FriendId;
+import SocialMedia.Repositories.AccountRepository;
 import SocialMedia.Repositories.FriendRepository;
 
 @Service
@@ -17,6 +19,9 @@ public class FriendServiceImpl implements IFriendService{
 	@Autowired
 	FriendRepository friendRepository;
 
+	@Autowired
+	AccountRepository accountRepository;
+	
 	@Override
 	public List<Account> findAllYourFriends(String username) {
 		return friendRepository.findAllYourFriends(username);
@@ -74,5 +79,18 @@ public class FriendServiceImpl implements IFriendService{
 	@Override
 	public List<Account> searchMakedFriendSearchs(String username, String keyword) {
 		return friendRepository.searchMakedFriendSearchs(username, keyword);
+	}
+
+	@Override
+	public void makeFriend(String username1, String username2) {
+		Optional<Account> acocount1 = accountRepository.findByUsername(username1);
+		Optional<Account> acocount2 = accountRepository.findByUsername(username2);
+		
+		if (acocount1.isPresent() && acocount2.isPresent()) {
+			
+			FriendId friendId = new FriendId(username1, username2);
+			Friend friend = new Friend(friendId, LocalDateTime.now(), false);
+			friendRepository.save(friend);
+		}
 	}
 }
