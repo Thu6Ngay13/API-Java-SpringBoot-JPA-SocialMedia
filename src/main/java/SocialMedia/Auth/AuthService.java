@@ -70,6 +70,7 @@ public class AuthService {
                     .username(request.getUsername())
                     .dateOfBirth(dateOfBirth)
                     .email(request.getEmail())
+                    .avatarURL("https://drive.google.com/uc?export=view&id=1LZuoz5KlfRIOJiolzkcGDva0GaCN_NCl")
                     .password(passwordEncoder.encode(request.getPassword()))
                     .enable(false)
                     .role(Role.USER)

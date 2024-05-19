@@ -60,6 +60,7 @@ public class AuthController {
     	Optional<Account> optionalAccount = service.findByEmail(email);
     	Account account = optionalAccount.orElse(null); 
     	AccountModel model = new AccountModel();
+    	model.setAvatarURL(account.getAvatarURL());
     	model.setUsername(account.getUsername());
     	model.setFullname(account.getFullname());
     	model.setEmail(account.getEmail());
