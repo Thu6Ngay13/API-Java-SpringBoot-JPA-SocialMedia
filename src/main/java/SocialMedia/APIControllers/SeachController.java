@@ -2,6 +2,7 @@ package SocialMedia.APIControllers;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -33,7 +34,8 @@ public class SeachController {
 	ISocialGroupService socialGroupService;
 
 	@GetMapping("/{username}")
-	public ResponseEntity<?> getSuggestFriend(@PathVariable(value = "username") String username, HttpServletRequest request) {
+	public ResponseEntity<?> getSuggestFriend(@PathVariable(value = "username") String username,
+			HttpServletRequest request) {
 
 		Set<Account> makeFriendSearchs = friendService.getSearchFriend(username);
 
@@ -49,9 +51,10 @@ public class SeachController {
 			searchModels.add(searchModel);
 		}
 
+		Collections.shuffle(searchModels);
 		return new ResponseEntity<Response>(new Response(true, "Thành công", searchModels), HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/{username}/{keyword}")
 	public ResponseEntity<?> getSeach(@PathVariable(value = "username") String username,
 			@PathVariable(value = "keyword") String keyword, HttpServletRequest request) {

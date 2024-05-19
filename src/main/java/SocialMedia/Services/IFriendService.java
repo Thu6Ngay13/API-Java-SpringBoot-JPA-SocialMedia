@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import SocialMedia.Entities.Account;
+import SocialMedia.Entities.Friend;
+import SocialMedia.Entities.FriendId;
 
 public interface IFriendService {
 	List<Account> findAllYourFriends(String username);
@@ -19,4 +21,5 @@ public interface IFriendService {
 	List<Account> searchMakedFriendSearchs(String username, String keyword);
 	void makeFriend(String username1, String username2);
 	Set<Account> getSearchFriend(String username);
+	Optional<Friend> findById(FriendId friendId);
 }
