@@ -1,8 +1,11 @@
 package SocialMedia.Services;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +24,7 @@ public class FriendServiceImpl implements IFriendService{
 
 	@Autowired
 	AccountRepository accountRepository;
-	
+		
 	@Override
 	public List<Account> findAllYourFriends(String username) {
 		return friendRepository.findAllYourFriends(username);
@@ -92,5 +95,47 @@ public class FriendServiceImpl implements IFriendService{
 			Friend friend = new Friend(friendId, LocalDateTime.now(), false);
 			friendRepository.save(friend);
 		}
+	}
+
+	@Override
+	public Set<Account> getSearchFriend(String username) {
+		Optional<Account> accountYou = accountRepository.findByUsername(username);
+		Set<Account> accountSuggests = new HashSet<>();		
+		
+		if (accountYou.isPresent()) {
+			List<Account> accountYourFriends = findAllYourFriends(username);
+			List<Account> accountFriendRequests = new ArrayList<>();
+			
+			List<Object[]> accountFriendRequestAndTimeRequests = findAllFriendRequests(username);
+			for (Object[] objects : accountFriendRequestAndTimeRequests) {
+				Account account = (Account) objects[0];
+				accountFriendRequests.add(account);
+			}
+
+			List<Account> accountTemps = new ArrayList<>();
+			accountTemps.add(accountYou.get());
+			accountTemps.addAll(accountYourFriends);
+			accountTemps.addAll(accountFriendRequests);
+			
+			for (Account account : accountYourFriends) {
+				List<Account> accountFriendOfFriends = findAllYourFriends(account.getUsername());			
+				accountSuggests.addAll(accountFriendOfFriends);
+			}
+			
+			accountSuggests.removeAll(accountTemps);
+		}
+		
+		return accountSuggests;
+	}
+
+	@Override
+	public int unfriend(String usernameYou, String usernameFriend) {
+		return friendRepository.unfriend(usernameYou, usernameFriend);
+	}
+
+	@Override
+	public Optional<Friend> findById(FriendId friendId) {
+		// TODO Auto-generated method stub
+		return Optional.empty();
 	}
 }

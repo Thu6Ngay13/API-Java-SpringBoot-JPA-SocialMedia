@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import SocialMedia.Entities.Account;
+import SocialMedia.Entities.Friend;
+import SocialMedia.Entities.FriendId;
 import SocialMedia.Enums.TypeFriendEnum;
 import SocialMedia.Models.FriendModel;
 import SocialMedia.Response.Response;
@@ -91,7 +93,6 @@ public class FriendAPIController {
 		Optional<Account> account = friendService.findFriendRequestWith2To1(username1, username2);
 		if (account.isPresent()) {
 			friendService.declineFriend(username1, username2);
-
 			return new ResponseEntity<Response>(new Response(true, "Thành công", null), HttpStatus.OK);
 		}
 
@@ -102,10 +103,9 @@ public class FriendAPIController {
 	public ResponseEntity<?> makeFriend(@PathVariable("username1") String username1,
 			@PathVariable("username2") String username2) {
 
-		Optional<Account> account = friendService.findFriendRequestWith2To1(username1, username2);
-		if (account.isPresent()) {
-			friendService.acceptFriend(username2, username1);
-		} else {
+		Optional<Friend> friendCheck = friendService.findById(new FriendId(username2, username1));
+
+		if (friendCheck.isEmpty()) {
 			friendService.makeFriend(username1, username2);
 		}
 
@@ -119,10 +119,18 @@ public class FriendAPIController {
 		Optional<Account> account = friendService.findFriendRequestWith2To1(username2, username1);
 		if (account.isPresent()) {
 			friendService.declineFriend(username2, username1);
-
 			return new ResponseEntity<Response>(new Response(true, "Thành công", null), HttpStatus.OK);
 		}
 
+		return new ResponseEntity<Response>(new Response(false, "Thất bại", null), HttpStatus.OK);
+	}
+	@PostMapping("/{usernameYou}/unfriend/{usernameFriend}")
+	public ResponseEntity<?> unfriend(@PathVariable("usernameYou") String usernameYou,
+			@PathVariable("usernameFriend") String usernameFriend) {
+		int result = friendService.unfriend(usernameYou, usernameFriend);
+		if (result > 0) {
+			return new ResponseEntity<Response>(new Response(true, "Thành công", null), HttpStatus.OK);
+		}
 		return new ResponseEntity<Response>(new Response(false, "Thất bại", null), HttpStatus.OK);
 	}
 }
