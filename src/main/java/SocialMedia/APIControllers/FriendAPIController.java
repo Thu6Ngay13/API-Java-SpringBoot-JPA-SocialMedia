@@ -105,7 +105,7 @@ public class FriendAPIController {
 
 		Optional<Friend> friendCheck = friendService.findById(new FriendId(username2, username1));
 
-		if (friendCheck.isPresent()) {
+		if (friendCheck.isEmpty()) {
 			friendService.makeFriend(username1, username2);
 		}
 
