@@ -56,7 +56,7 @@ public class SocialGroupServiceImpl implements ISocialGroupService {
 		accGroup.setId(new Account_SocialGroup_id(group.getGroupId(), account.getUsername()));
 		accGroup.setAccepted(false);
 		accGroupRepo.save(accGroup);
-
+/*
 		Notification noti = new Notification();
 		noti.setNotificationTimeAt((LocalDateTime.now()));
 		noti.setText(account.getFullname() + " vừa gửi yêu cầu vào nhóm " + group.getGroupName());
@@ -64,7 +64,7 @@ public class SocialGroupServiceImpl implements ISocialGroupService {
 		listAcc.add(account);
 		noti.setAccountReceipts(listAcc);
 		noti.setAccountCreate(account);
-		notiRepo.save(noti);
+		notiRepo.save(noti);*/
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class SocialGroupServiceImpl implements ISocialGroupService {
 		Account_SocialGroup accGroup = accGroupRepo.findOne(username, groupId);
 		accGroup.setAccepted(true);
 		accGroupRepo.save(accGroup);
-
+/*
 		Notification noti = new Notification();
 		noti.setNotificationTimeAt((LocalDateTime.now()));
 		Optional<SocialGroup> optionalGroup = socialGroupRepo.findByGroupId(groupId);
@@ -84,7 +84,7 @@ public class SocialGroupServiceImpl implements ISocialGroupService {
 		Account account = optionalAccount.orElse(null);
 		listAcc.add(account);
 		noti.setAccountReceipts(listAcc);
-		notiRepo.save(noti);
+		notiRepo.save(noti);*/
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class SocialGroupServiceImpl implements ISocialGroupService {
 	}
 
 	@Override
-	public boolean createGroup(String username, String groupName, long modeId) {
+	public boolean createGroup(String username, String groupName, long modeId, String description) {
 		List<SocialGroup> listGroup = socialGroupRepo.findByGroupNameContainingIgnoreCase(groupName);
 		for (SocialGroup group : listGroup) {
 			if (group.getGroupName().equals(groupName))
@@ -121,6 +121,7 @@ public class SocialGroupServiceImpl implements ISocialGroupService {
 		newGroup.setAvatarURL(
 				"https://png.pngtree.com/element_our/20200610/ourlarge/pngtree-social-networking-image_2239654.jpg");
 		newGroup.setDeleted(false);
+		newGroup.setDescription(description);
 		socialGroupRepo.save(newGroup);
 		this.sendRequestToGroup(account, newGroup);
 		this.acceptMember(username, newGroup.getGroupId());
@@ -131,7 +132,7 @@ public class SocialGroupServiceImpl implements ISocialGroupService {
 	public void leaveGroup(String username, long groupId) {
 		Account_SocialGroup accGroup = accGroupRepo.findOne(username, groupId);
 
-		Notification noti = new Notification();
+	/*	Notification noti = new Notification();
 		noti.setNotificationTimeAt((LocalDateTime.now()));
 
 		Optional<SocialGroup> optionalGroup = socialGroupRepo.findByGroupId(groupId);
@@ -144,7 +145,7 @@ public class SocialGroupServiceImpl implements ISocialGroupService {
 		listAcc.add(account);
 		noti.setAccountReceipts(listAcc);
 		notiRepo.save(noti);
-
+*/
 		accGroupRepo.delete(accGroup);
 	}
 
@@ -158,12 +159,12 @@ public class SocialGroupServiceImpl implements ISocialGroupService {
 		if (group.getHolderAccount() == account) {
 			group.setDeleted(true);
 			socialGroupRepo.save(group);
-
+/*
 			Notification noti = new Notification();
 			noti.setNotificationTimeAt((LocalDateTime.now()));
 			noti.setText("Group " + group.getGroupName() + "đã bị xóa!!!");
 			noti.setAccountReceipts(group.getJoinedAccounts());
-			notiRepo.save(noti);
+			notiRepo.save(noti);*/
 			return true;
 		}
 		return false;

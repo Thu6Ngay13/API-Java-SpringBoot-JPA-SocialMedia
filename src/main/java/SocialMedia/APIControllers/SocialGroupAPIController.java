@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import SocialMedia.Entities.Account_SocialGroup;
 import SocialMedia.Entities.Mode;
 import SocialMedia.Entities.Post;
 import SocialMedia.Entities.SocialGroup;
+import SocialMedia.Models.AccountModel;
 import SocialMedia.Models.PostModel;
 import SocialMedia.Models.SocialGroupModel;
 import SocialMedia.Response.Response;
@@ -66,6 +68,8 @@ public class SocialGroupAPIController {
 			groupModel.setCreationTimeAt(group.getCreationTimeAt().toString());
 			groupModel.setModeId(group.getMode().getModeId());
 			groupModel.setHolderFullName(group.getHolderAccount().getFullname());
+			groupModel.setHolderUsername(group.getHolderAccount().getUsername());
+			groupModel.setDescription(group.getDescription());
 			groupModels.add(groupModel);
 
 		}
@@ -107,6 +111,33 @@ public class SocialGroupAPIController {
 
 		return new ResponseEntity<Response>(new Response(true, "Thành công", postModels), HttpStatus.OK);
 	}
+	
+	@GetMapping("/memberInOneGroup")
+	public ResponseEntity<?> getMemberByGroupId(
+			@RequestParam("groupId") long groupId) {
+		Optional<SocialGroup> optionalGroup = socialGroupService.findByGroupId(groupId);
+		SocialGroup group = optionalGroup.orElse(null);
+
+		Set<Account> accs = group.getJoinedAccounts();
+		List<AccountModel> ListAccModels = new ArrayList<>();
+		for (Account acc: accs)
+		{
+			AccountModel model = new AccountModel();
+			model.setUsername(acc.getUsername());
+			model.setFullname(acc.getFullname());
+			model.setGender(acc.getGender());
+			model.setAvatarURL(acc.getAvatarURL());
+			model.setEmail(acc.getEmail());
+			model.setPhoneNumber(acc.getPhoneNumber());
+			model.setDescription(acc.getDescription());
+			model.setCompany(acc.getCompany());
+			model.setLocation(acc.getLocation());
+			model.setSingle(acc.isSingle());
+			model.setRole(acc.getRole());
+			ListAccModels.add(model);
+		}
+		return new ResponseEntity<Response>(new Response(true, "Thành công", ListAccModels), HttpStatus.OK);
+	}
 
 	@GetMapping("/posts/{username}")
 	public ResponseEntity<?> getPostInGroupsByUsername(@PathVariable(value = "username") String username,
@@ -145,8 +176,8 @@ public class SocialGroupAPIController {
 
 	@PostMapping("/createGroup")
 	public ResponseEntity<?> createGroup(@RequestParam("username") String username,
-			@RequestParam("groupName") String groupName, @RequestParam("modeId") long modeId) {
-		boolean success = socialGroupService.createGroup(username, groupName, modeId);
+			@RequestParam("groupName") String groupName, @RequestParam("modeId") long modeId, @RequestParam("description") String description) {
+		boolean success = socialGroupService.createGroup(username, groupName, modeId, description);
 
 		if (success) {
 			SocialGroupModel groupModel = new SocialGroupModel();
@@ -159,6 +190,7 @@ public class SocialGroupAPIController {
 				groupModel.setModeId(group.getMode().getModeId());
 				groupModel.setHolderFullName(group.getHolderAccount().getFullname());
 				groupModel.setHolderUsername(username);
+				groupModel.setDescription(group.getDescription());
 			}
 			return new ResponseEntity<Response>(new Response(true, "Thành công", groupModel), HttpStatus.OK);
 		}
@@ -183,6 +215,9 @@ public class SocialGroupAPIController {
 			groupModel.setCreationTimeAt(gr.getCreationTimeAt().toString());
 			groupModel.setModeId(gr.getMode().getModeId());
 			groupModel.setHolderFullName(gr.getHolderAccount().getFullname());
+
+			groupModel.setHolderUsername(gr.getHolderAccount().getUsername());
+			groupModel.setDescription(gr.getDescription());
 			groupModels.add(groupModel);
 
 		}
@@ -282,6 +317,8 @@ public class SocialGroupAPIController {
 			
 			socialGroupModel.setHolderFullName(sg.getHolderAccount().getFullname());
 			socialGroupModel.setHolderUsername(sg.getHolderAccount().getUsername());
+
+			socialGroupModel.setDescription(sg.getDescription());
 			
 			socialGroupModels.add(socialGroupModel);
 			return new ResponseEntity<Response>(new Response(true, "Thành công", socialGroupModels), HttpStatus.OK);

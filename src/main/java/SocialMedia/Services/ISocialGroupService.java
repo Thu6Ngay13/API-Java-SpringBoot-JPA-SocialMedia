@@ -24,7 +24,7 @@ public interface ISocialGroupService {
 
 	void acceptMember(String username, long groupId);
 
-	boolean createGroup(String username, String groupName, long modeId);
+	boolean createGroup(String username, String groupName, long modeId, String description);
 
 	void leaveGroup(String username, long groupId);
 
