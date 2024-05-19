@@ -27,12 +27,17 @@ public class ReportServiceImpl implements IReportService{
 	AccountRepository accountRepository;
 	
 	@Override
-	public List<Report> findAll() {
-		return reportRepository.findAll();
+	public List<Report> findAllReport() {
+		return reportRepository.findAllReport();
+	}
+	
+	@Override
+	public List<Report> findAllReportsWithPostId(long postId) {
+		return reportRepository.findAllReportsWithPostId(postId);
 	}
 
 	@Override
-	public void reportPort(String username, long postId, String text) {
+	public void reportPort(String username, long postId, String content) {
 		Optional<Post> post = postRepository.findById(postId);
 		Optional<Account> account = accountRepository.findByUsername(username);
 		
@@ -40,7 +45,7 @@ public class ReportServiceImpl implements IReportService{
 			Report report = new Report();
 			report.setPost(post.get());
 			report.setReportingTimeAt(LocalDateTime.now());
-			report.setText(text);
+			report.setContent(content);
 			report.setIsHandled(false);	
 			reportRepository.save(report);
 		}

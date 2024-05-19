@@ -33,7 +33,7 @@ public class Report implements Serializable{
 	private long reportId;
 	
 	@Column(columnDefinition = "nvarchar(300)")
-	private String text;
+	private String content;
 	
 	@Column
 	private Boolean isHandled;
