@@ -19,4 +19,5 @@ public class SocialGroupModel {
 	private long modeId;
 	private String holderFullName;
 	private String holderUsername;
+	private String description;
 }
