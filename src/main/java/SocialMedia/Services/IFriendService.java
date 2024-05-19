@@ -2,6 +2,7 @@ package SocialMedia.Services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import SocialMedia.Entities.Account;
 
@@ -17,4 +18,5 @@ public interface IFriendService {
 	List<Account> searchNotFriend(String username, String keyword);
 	List<Account> searchMakedFriendSearchs(String username, String keyword);
 	void makeFriend(String username1, String username2);
+	Set<Account> getSearchFriend(String username);
 }

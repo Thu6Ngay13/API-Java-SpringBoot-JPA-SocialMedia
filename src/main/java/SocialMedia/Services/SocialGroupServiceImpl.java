@@ -212,4 +212,10 @@ public class SocialGroupServiceImpl implements ISocialGroupService {
 		}
 		
 	}
+
+	@Override
+	public Set<SocialGroup> getSearchGroup(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

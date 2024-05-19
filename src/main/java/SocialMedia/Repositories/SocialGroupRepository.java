@@ -42,5 +42,4 @@ public interface SocialGroupRepository  extends JpaRepository<SocialGroup, Long>
 				+ "AND asg.isAccepted = true "
 				+ "AND s.groupId = :groupId")
 	Optional<SocialGroup> findGroupByUsernameAndGroupId(@Param("username") String username, @Param("groupId") long groupId);
-
 }
