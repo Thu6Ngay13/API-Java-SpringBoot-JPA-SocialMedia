@@ -45,6 +45,10 @@ public class SocialGroup implements Serializable{
 	@Column
 	private LocalDateTime creationTimeAt;
 	
+	
+	@Column(columnDefinition = "nvarchar(500)")
+	private String description;
+	
 	@ManyToOne
 	@JoinColumn(name = "modeId")
 	private Mode mode;

@@ -3,6 +3,7 @@ package SocialMedia.APIControllers;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,26 @@ public class SeachController {
 	@Autowired
 	ISocialGroupService socialGroupService;
 
+	@GetMapping("/{username}")
+	public ResponseEntity<?> getSuggestFriend(@PathVariable(value = "username") String username, HttpServletRequest request) {
+
+		Set<Account> makeFriendSearchs = friendService.getSearchFriend(username);
+
+		List<SearchModel> searchModels = new ArrayList<>();
+		for (Account account : makeFriendSearchs) {
+			SearchModel searchModel = new SearchModel();
+			searchModel.setViewType(TypeSearchEnum.MAKE_FRIEND);
+			searchModel.setAvatar(account.getAvatarURL());
+			searchModel.setUsername(account.getUsername());
+			searchModel.setFullName(account.getFullname());
+			searchModel.setRequestTimeAt("");
+			searchModel.setGroupdId(-1);
+			searchModels.add(searchModel);
+		}
+
+		return new ResponseEntity<Response>(new Response(true, "Thành công", searchModels), HttpStatus.OK);
+	}
+	
 	@GetMapping("/{username}/{keyword}")
 	public ResponseEntity<?> getSeach(@PathVariable(value = "username") String username,
 			@PathVariable(value = "keyword") String keyword, HttpServletRequest request) {
