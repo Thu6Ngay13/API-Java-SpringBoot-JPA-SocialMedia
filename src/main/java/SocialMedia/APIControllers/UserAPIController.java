@@ -166,7 +166,12 @@ public class UserAPIController {
 				}
 
 				postModel.setLiked(liked);
-				postModels.add(postModel);
+				if (accountService.getAcceptedFriends(usernameFriend).contains(username)) {
+					postModels.add(postModel);
+				}
+				else if (postModel.getMode() == 1) {
+					postModels.add(postModel);
+				}
 			}
 			modelAcc.setPosts(postModels);
 		} else {
