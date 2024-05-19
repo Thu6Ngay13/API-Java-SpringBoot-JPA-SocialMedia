@@ -27,6 +27,7 @@ public class ApiJavaSpringBootJpaSocialMediaApplication implements CommandLineRu
 			Account account = new Account();
 			account.setUsername("admin");
 			account.setEmail("caothithuthuy00000@gmail.com");
+			account.setAvatarURL("https://drive.google.com/uc?export=view&id=11TZstci09GnRw559j1zbbiKErlJep5Ko");
 			account.setFullname("admin");
 			account.setRole(Role.ADMIN);
 			account.setEnable(true);

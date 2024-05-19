@@ -24,7 +24,7 @@ public class FriendServiceImpl implements IFriendService{
 
 	@Autowired
 	AccountRepository accountRepository;
-	
+		
 	@Override
 	public List<Account> findAllYourFriends(String username) {
 		return friendRepository.findAllYourFriends(username);
@@ -131,5 +131,11 @@ public class FriendServiceImpl implements IFriendService{
 	@Override
 	public int unfriend(String usernameYou, String usernameFriend) {
 		return friendRepository.unfriend(usernameYou, usernameFriend);
+	}
+
+	@Override
+	public Optional<Friend> findById(FriendId friendId) {
+		// TODO Auto-generated method stub
+		return Optional.empty();
 	}
 }
