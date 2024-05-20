@@ -41,9 +41,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 				+ "a.isBanned = false "
 				+ "AND a.enable = true "
 				+ "AND p.isDeleted = false "
-				+ "AND (p.mode.modeId = 1 "
+				+ "AND ((f.id.usernameYou LIKE :username OR f.id.usernameFriend LIKE :username) "
+					+ "AND p.mode.modeId = 1 "
 					+ "OR (p.mode.modeId = 2 AND f.isAccepted = true)) "
-				+ "AND p.posterAccount.username LIKE :username " 
+				+ "" 
 				+ "AND p.postId = :postId "
 				//+ "AND p.group.groupId = -1 "
 				+ "")

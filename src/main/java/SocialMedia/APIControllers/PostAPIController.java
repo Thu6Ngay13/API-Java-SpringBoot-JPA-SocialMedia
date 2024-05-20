@@ -96,9 +96,7 @@ public class PostAPIController {
 			@PathVariable(value = "postId") long postId, HttpServletRequest request) {
 
 		Optional<Post> post = postService.findPostWithUsernameAndPostId(username, postId);
-		System.out.println("XXXXXXXXXXXXXXXXXXXXX"  + post.isPresent() + postId + username);
 		if (post.isPresent()) {
-			System.out.println("xxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxx" + username + postId);
 			postService.likePost(post.get(), username);
 
 			return new ResponseEntity<Response>(new Response(true, "Thành công", null), HttpStatus.OK);
