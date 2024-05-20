@@ -250,4 +250,9 @@ public class SocialGroupServiceImpl implements ISocialGroupService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Set<Account> listAcceptMemberGroup(long groupId) {
+		return socialGroupRepo.listAcceptMemberGroup(groupId);
+	}
 }

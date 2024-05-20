@@ -80,4 +80,9 @@ public class AccountServiceImpl implements IAccountService, UserDetailsService {
 			boolean isSingle, String username) {
 		return accountRepository.updateProfile(fullname, gender, description, company, location, isSingle, username);
 	}
+
+	@Override
+	public int updateAvatar(String username, String avatarURL) {
+		return accountRepository.updateAvatar(username, avatarURL);
+	}
 }

@@ -391,16 +391,66 @@ public class SocialGroupAPIController {
 		{
 			if (socialGroupService.findOneAccountSocialGroup(username, groupId) == null)
 			{
-				return new ResponseEntity<Response>(new Response(true, "false", "Join Group"), HttpStatus.OK);
+				return new ResponseEntity<Response>(new Response(true, "Thất bại", "Join Group"), HttpStatus.OK);
 				
 			}
 			else
 			{
-				return new ResponseEntity<Response>(new Response(true, "false", "Waiting"), HttpStatus.OK);
+				return new ResponseEntity<Response>(new Response(true, "Thất bại", "Waiting"), HttpStatus.OK);
 				
 			}
 		}
 			
-			
 	}
+	@GetMapping("/listAcceptMemberGroup")
+	public ResponseEntity<?> listAcceptMemberGroup(
+			@RequestParam("groupId") long groupId) {
+		Set<Account> listAcceptMemberGroup = socialGroupService.listAcceptMemberGroup(groupId);
+		List<AccountModel> ListAccModels = new ArrayList<>();
+		for (Account acc: listAcceptMemberGroup)
+		{
+			AccountModel model = new AccountModel();
+			model.setUsername(acc.getUsername());
+			model.setFullname(acc.getFullname());
+			model.setGender(acc.getGender());
+			model.setAvatarURL(acc.getAvatarURL());
+			model.setEmail(acc.getEmail());
+			model.setPhoneNumber(acc.getPhoneNumber());
+			model.setDescription(acc.getDescription());
+			model.setCompany(acc.getCompany());
+			model.setLocation(acc.getLocation());
+			model.setSingle(acc.isSingle());
+			model.setRole(acc.getRole());
+			ListAccModels.add(model);
+		}
+		return new ResponseEntity<Response>(new Response(true, "Thành công", ListAccModels), HttpStatus.OK);
+	}
+	
+	@GetMapping("/acceptMember")
+	public ResponseEntity<?> acceptMember(
+			@RequestParam("username") String username,
+			@RequestParam("groupId") long groupId) {
+		socialGroupService.acceptMember(username,groupId);
+
+		return new ResponseEntity<Response>(new Response(true, "Thành công", null), HttpStatus.OK);
+	}
+	
+	@GetMapping("/findOne")
+	public ResponseEntity<?> findOne(
+			@RequestParam("groupId") long groupId) {
+		Optional<SocialGroup> optionalGroup = socialGroupService.findByGroupId(groupId);
+		SocialGroup gr = optionalGroup.orElse(null);
+		SocialGroupModel groupModel = new SocialGroupModel();
+		groupModel.setGroupId(gr.getGroupId());
+		groupModel.setGroupName(gr.getGroupName());
+		groupModel.setAvatarURL(gr.getAvatarURL());
+		groupModel.setCreationTimeAt(gr.getCreationTimeAt().toString());
+		groupModel.setModeId(gr.getMode().getModeId());
+		groupModel.setHolderFullName(gr.getHolderAccount().getFullname());
+
+		groupModel.setHolderUsername(gr.getHolderAccount().getUsername());
+		groupModel.setDescription(gr.getDescription());
+		return new ResponseEntity<Response>(new Response(true, "Thành công", groupModel), HttpStatus.OK);
+	}
+
 }

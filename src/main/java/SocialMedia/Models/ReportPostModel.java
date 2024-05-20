@@ -1,5 +1,6 @@
 package SocialMedia.Models;
 
+import SocialMedia.Enums.TypeReportPostEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -11,10 +12,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ReportModel {
+public class ReportPostModel {
+	private TypeReportPostEnum viewType;
 	private long reportId;
+	private String fullname;
 	private String reportingTimeAt;
-	private String text;
+	private String content;
 	private PostModel postModel;
 	
 }
