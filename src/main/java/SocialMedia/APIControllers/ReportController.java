@@ -28,7 +28,7 @@ public class ReportController {
 			HttpServletRequest request) {
 		try {
 			JSONObject jsonObject = new JSONObject(jsonBody);
-			String reportContent = jsonObject.getString("jsonContent");
+			String reportContent = jsonObject.getString("contentReport");
 			
 			reportService.reportPort(username, postId, reportContent);
 		} catch (JSONException e) {

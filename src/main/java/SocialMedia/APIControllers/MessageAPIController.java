@@ -208,6 +208,7 @@ public class MessageAPIController {
 				for (Iterator<Account> iterator = accounts.iterator(); iterator.hasNext();) {
 					Account account = (Account) iterator.next();
 					usernameReceivers.add(account.getUsername());
+					System.out.println("XXX" + account.getUsername());
 				}
 				
 				notificationService.createNotification(usernameOfSender, usernameReceivers, "a new message");
