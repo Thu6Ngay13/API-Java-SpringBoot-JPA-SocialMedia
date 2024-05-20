@@ -129,6 +129,7 @@ public class AuthService {
                 .avatarurl(account.getAvatarURL())
                 .role(account.getRole())
                 .avatarurl(account.getAvatarURL())
+                .isBanned(account.isBanned() == true ? 1 : 0)
                 .error(false)
                 .success(true)
                 .message("Successfully!")
