@@ -10,7 +10,7 @@ import io.socket.emitter.Emitter;
 
 @Configuration
 public class SocketIOConfig {
-    private static final String SERVER_PATH = "ws://192.168.1.10:1234";
+    private static final String SERVER_PATH = "ws://192.168.110.201:1234";
     public static Socket socketServer;
 
     @Bean

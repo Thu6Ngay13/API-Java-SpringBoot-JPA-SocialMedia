@@ -36,7 +36,7 @@ public class SocialGroup implements Serializable{
 	@Column(columnDefinition = "nvarchar(50)")
 	private String groupName;
 	
-	@Column(columnDefinition = "nvarchar(100)")
+	@Column(columnDefinition = "nvarchar(1000)")
 	private String avatarURL;
 	
 	@Column

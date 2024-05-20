@@ -29,5 +29,8 @@ public class Mode implements Serializable{
 	private Set<Post> posts;
 	
 	@OneToMany(mappedBy = "mode", fetch = FetchType.LAZY)
+	private Set<Share> shares;
+	
+	@OneToMany(mappedBy = "mode", fetch = FetchType.LAZY)
 	private Set<SocialGroup> groups;
 }

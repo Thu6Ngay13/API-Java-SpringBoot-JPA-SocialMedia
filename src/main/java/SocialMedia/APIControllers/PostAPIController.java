@@ -133,43 +133,6 @@ public class PostAPIController {
 		return new ResponseEntity<Response>(new Response(false, "Thất bại", null), HttpStatus.OK);
 	}
 
-//    @PostMapping("/share/{sharedPostId}")
-//    public ResponseEntity<?> share(@PathVariable(value = "sharedPostId") Long sharedPostId,
-//    		@RequestBody PostModel postModel)
-//    {
-//		// Post duoc share
-//		Optional<Post> optionalPost = postService.findById(sharedPostId);
-//		Post sharedPost = optionalPost.orElse(null);
-//		
-//		// Nguoi share post
-//    	Optional<Account> optionalAccount = accountService.findByUsername(postModel.getUsername());
-//    	Account posterAccount = optionalAccount.orElse(null); 
-//		
-//    	if (postService.existAccountsharePost(posterAccount.getUsername(), sharedPostId)== 0)
-//    	{
-//    		postService.share(posterAccount.getUsername(), sharedPostId);
-//    	}
-//		//---------------------------------------------------------------
-//		// Create new post
-//		Post post = new Post();
-//    	post.setText(postModel.getPostText());
-//    	// post.setMediaURL(postModel.getPostMedia());
-//    	// post.setPostTimeAt(LocalDateTime.parse(postModel.getPostingTimeAt()));
-//    	post.setPostTimeAt(LocalDateTime.now());
-//    	post.setDeleted(false);
-//    	post.setPosterAccount(posterAccount);
-//    	
-//    	Optional<Mode> optionalMode = modeService.findByModeId(postModel.getMode());
-//    	Mode mode = optionalMode.orElse(null);
-//    	post.setMode(mode);
-//    	postService.save(post);
-//        return new ResponseEntity<Response>(
-//				new Response(true, "Share thành công", postModel), 
-//				HttpStatus.OK
-//		);
-//    }
-//}
-
 	@PostMapping("/create")
 	public ResponseEntity<?> createPost(@RequestBody PostModel postModel) {
 		if (postModel.getPostText() == "" && postModel.getPostMedia() == "") {

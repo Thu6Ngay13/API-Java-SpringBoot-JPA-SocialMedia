@@ -139,10 +139,21 @@ public class CommentAPIController {
 		} else {
 			if (commentText != commentOld.getText()) {
 				commentOld.setText(commentText);
-				commentOld.setCommentTimeAt(java.time.LocalDateTime.now());
 				commentService.save(commentOld);
 			}
-			return new ResponseEntity<Response>(new Response(true, "Cập nhật Thành công", null),
+			CommentModel commentModel = new CommentModel();
+			commentModel.setAvatar(commentOld.getCommenterAccount().getAvatarURL());
+			commentModel.setUsername(commentOld.getCommenterAccount().getUsername());
+			commentModel.setFullName(commentOld.getCommenterAccount().getFullname());
+			commentModel.setCommentId(commentOld.getCommentId());
+			commentModel.setCommentText(commentOld.getText());
+			commentModel.setCommentImage(commentOld.getMediaURL());
+			commentModel.setIsDeleted(commentOld.getIsDeleted());
+			commentModel.setCommentTimeAt(commentOld.getCommentTimeAt().toString());
+			commentModel.setCommentImage(commentOld.getMediaURL());
+			commentModel.setPostId(commentOld.getPost().getPostId());
+			
+			return new ResponseEntity<Response>(new Response(true, "Cập nhật Thành công", commentModel),
 					HttpStatus.OK);
 		}
 	}

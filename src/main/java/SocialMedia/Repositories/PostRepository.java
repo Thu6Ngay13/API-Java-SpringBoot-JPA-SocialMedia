@@ -15,24 +15,39 @@ import jakarta.transaction.Transactional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-	@Query(value = "SELECT p FROM Post p "
-			+ "JOIN Friend f ON p.posterAccount.username LIKE f.friendId.usernameYou OR p.posterAccount.username LIKE f.friendId.usernameFriend "
-			+ "WHERE (p.posterAccount.username LIKE :username "
-			+ "OR (p.posterAccount.username NOT LIKE :username AND (p.mode.modeId = 0 OR p.mode.modeId = 1))) "
-			+ "AND p.isDeleted = false "
+	@Query(value = "SELECT DISTINCT p " 
+			+ "FROM Post p "
+			+ "LEFT JOIN Friend f ON (p.posterAccount.username LIKE f.friendId.usernameYou "
+								+ "OR p.posterAccount.username LIKE f.friendId.usernameFriend) "
+			+ "JOIN Account a ON p.posterAccount.username LIKE a.username "
+			+ "WHERE "
+				+ "a.isBanned = false "
+				+ "AND a.enable = true "
+				+ "AND p.isDeleted = false "
+				+ "AND (p.mode.modeId = 1 "
+					+ "OR (p.mode.modeId = 2 AND f.isAccepted = true)) "
 			//+ "AND p.group.groupId = -1 "
 			+ "" )
 	List<Post> findPostOfNewFeedWithUsername(@Param("username") String username, Pageable pageable);
 
 	Optional<Post> findByPostId(Integer id);
 
-	@Query(value = "SELECT p FROM Post p "
-			+ "JOIN Friend f ON p.posterAccount.username LIKE f.friendId.usernameYou OR p.posterAccount.username LIKE f.friendId.usernameFriend "
-			+ "WHERE (p.posterAccount.username LIKE :username "
-			+ "OR (p.posterAccount.username NOT LIKE :username AND (p.mode.modeId = 0 OR p.mode.modeId = 1))) "
-			+ "AND p.isDeleted = false " + "AND p.postId = :postId "
-			//+ "AND p.group.groupId = -1 "
-			+ "")
+	@Query(value = "SELECT DISTINCT p " 
+			+ "FROM Post p "
+			+ "LEFT JOIN Friend f ON (p.posterAccount.username LIKE f.friendId.usernameYou "
+								+ "OR p.posterAccount.username LIKE f.friendId.usernameFriend) "
+			+ "JOIN Account a ON p.posterAccount.username LIKE a.username "
+			+ "WHERE "
+				+ "a.isBanned = false "
+				+ "AND a.enable = true "
+				+ "AND p.isDeleted = false "
+				+ "AND ((f.id.usernameYou LIKE :username OR f.id.usernameFriend LIKE :username) "
+					+ "AND p.mode.modeId = 1 "
+					+ "OR (p.mode.modeId = 2 AND f.isAccepted = true)) "
+				+ "" 
+				+ "AND p.postId = :postId "
+				//+ "AND p.group.groupId = -1 "
+				+ "")
 	Optional<Post> findPostWithUsernameAndPostId(@Param("username") String username, @Param("postId") long postId);
 
 	@Query(value = "SELECT COUNT(*) FROM Comment WHERE postId = :postId", nativeQuery = true)
