@@ -55,7 +55,7 @@ public class Account implements UserDetails {
 	@Column
 	private LocalDateTime dateOfBirth;
 
-	@Column(columnDefinition = "nvarchar(100)")
+	@Column(columnDefinition = "nvarchar(1000)")
 	private String avatarURL;
 	
 	@Column(columnDefinition = "nvarchar(50)")
