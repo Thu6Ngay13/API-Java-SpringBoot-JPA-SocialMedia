@@ -17,5 +17,6 @@ public class AuthenticationResponse {
     private String username;
     private String email;
     private String avatarurl;
+    private int isBanned;
     private Role role;
 }

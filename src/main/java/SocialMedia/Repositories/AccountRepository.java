@@ -6,10 +6,12 @@ import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import SocialMedia.Entities.Account;
+import SocialMedia.Entities.SocialGroup;
 import SocialMedia.Enums.Role;
 
 @Repository
@@ -55,4 +57,9 @@ public interface AccountRepository extends JpaRepository<Account, String> {
     @Modifying
     @Query("UPDATE Account a SET a.fullname = ?1, a.gender = ?2, a.description = ?3, a.company = ?4, a.location = ?5, a.isSingle = ?6 WHERE a.username = ?7")
     int updateProfile(String fullname, String gender, String description, String company, String location, boolean isSingle, String username);
+    
+    @Transactional
+    @Modifying
+    @Query("UPDATE Account a SET a.avatarURL = ?2 WHERE a.username = ?1")
+    int updateAvatar(String username, String avatarURL);
 }

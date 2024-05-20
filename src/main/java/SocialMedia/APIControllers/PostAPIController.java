@@ -6,14 +6,11 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -27,10 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import SocialMedia.Config.SocketIOConfig;
 import SocialMedia.Entities.Account;
-import SocialMedia.Entities.Conversation;
-import SocialMedia.Entities.Message;
 import SocialMedia.Entities.Mode;
 import SocialMedia.Entities.Post;
 import SocialMedia.Models.PostModel;
@@ -93,6 +87,7 @@ public class PostAPIController {
 			postModels.add(postModel);
 		}
 
+		Collections.shuffle(postModels);
 		return new ResponseEntity<Response>(new Response(true, "Thành công", postModels), HttpStatus.OK);
 	}
 
@@ -138,43 +133,6 @@ public class PostAPIController {
 		return new ResponseEntity<Response>(new Response(false, "Thất bại", null), HttpStatus.OK);
 	}
 
-//    @PostMapping("/share/{sharedPostId}")
-//    public ResponseEntity<?> share(@PathVariable(value = "sharedPostId") Long sharedPostId,
-//    		@RequestBody PostModel postModel)
-//    {
-//		// Post duoc share
-//		Optional<Post> optionalPost = postService.findById(sharedPostId);
-//		Post sharedPost = optionalPost.orElse(null);
-//		
-//		// Nguoi share post
-//    	Optional<Account> optionalAccount = accountService.findByUsername(postModel.getUsername());
-//    	Account posterAccount = optionalAccount.orElse(null); 
-//		
-//    	if (postService.existAccountsharePost(posterAccount.getUsername(), sharedPostId)== 0)
-//    	{
-//    		postService.share(posterAccount.getUsername(), sharedPostId);
-//    	}
-//		//---------------------------------------------------------------
-//		// Create new post
-//		Post post = new Post();
-//    	post.setText(postModel.getPostText());
-//    	// post.setMediaURL(postModel.getPostMedia());
-//    	// post.setPostTimeAt(LocalDateTime.parse(postModel.getPostingTimeAt()));
-//    	post.setPostTimeAt(LocalDateTime.now());
-//    	post.setDeleted(false);
-//    	post.setPosterAccount(posterAccount);
-//    	
-//    	Optional<Mode> optionalMode = modeService.findByModeId(postModel.getMode());
-//    	Mode mode = optionalMode.orElse(null);
-//    	post.setMode(mode);
-//    	postService.save(post);
-//        return new ResponseEntity<Response>(
-//				new Response(true, "Share thành công", postModel), 
-//				HttpStatus.OK
-//		);
-//    }
-//}
-
 	@PostMapping("/create")
 	public ResponseEntity<?> createPost(@RequestBody PostModel postModel) {
 		if (postModel.getPostText() == "" && postModel.getPostMedia() == "") {
@@ -203,26 +161,24 @@ public class PostAPIController {
 			return new ResponseEntity<Response>(new Response(true, "Thành công", postModel), HttpStatus.OK);
 		}
 	}
-	
+
 	@PostMapping("/media")
-	public ResponseEntity<Response> mediaPost(		
-			@RequestParam("media") MultipartFile media, HttpServletRequest request) {
+	public ResponseEntity<Response> mediaPost(@RequestParam("media") MultipartFile media, HttpServletRequest request) {
 		String mediaUrl = "";
-		try
-		{
-				File file = new File("D:/Lap_trinh_di_dong/File-SocialMedia/" + media.getOriginalFilename());
-				FileOutputStream fos = new FileOutputStream(file);
-				
-				fos.write(media.getBytes());
-				fos.close();
-				mediaUrl = storeFiles.uploadImageToDrive(file);
-				return new ResponseEntity<Response>(new Response(true, "Thành công", mediaUrl), HttpStatus.OK);
-				
+		try {
+			File file = new File("D:/Lap_trinh_di_dong/File-SocialMedia/" + media.getOriginalFilename());
+			FileOutputStream fos = new FileOutputStream(file);
+
+			fos.write(media.getBytes());
+			fos.close();
+			mediaUrl = storeFiles.uploadImageToDrive(file);
+			return new ResponseEntity<Response>(new Response(true, "Thành công", mediaUrl), HttpStatus.OK);
+
 		} catch (IOException | GeneralSecurityException e) {
 			e.printStackTrace();
 			return new ResponseEntity<Response>(new Response(false, "Thất bại", mediaUrl), HttpStatus.OK);
-			
+
 		}
 	}
-	
+
 }

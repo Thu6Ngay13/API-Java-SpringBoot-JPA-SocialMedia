@@ -6,9 +6,11 @@ import SocialMedia.Entities.Report;
 
 public interface IReportService {
 
-	List<Report> findAll();
+	List<Report> findAllReport();
 
-	void reportPort(String username, long postId, String text);
+	void reportPort(String username, long postId, String content);
 
 	void handleReport(long postId);
+
+	List<Report> findAllReportsWithPostId(long postId);
 }

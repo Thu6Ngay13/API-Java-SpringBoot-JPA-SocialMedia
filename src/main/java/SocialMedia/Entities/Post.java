@@ -28,7 +28,7 @@ public class Post implements Serializable{
 	@Column(columnDefinition = "nvarchar(300)")
 	private String text;
 	
-	@Column(columnDefinition = "nvarchar(100)")
+	@Column(columnDefinition = "nvarchar(1000)")
 	private String mediaURL;
 	
 	@Column

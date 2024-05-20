@@ -29,7 +29,7 @@ import SocialMedia.Enums.Role;
 import SocialMedia.Repositories.AccountRepository;
 import SocialMedia.Response.Response;
 import SocialMedia.Security.JWTService;
-import SocialMedia.Services.AccountServiceImpl;
+import SocialMedia.Services.IAccountService;
 import SocialMedia.Services.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 
@@ -45,7 +45,7 @@ public class AuthService {
     private ConfirmationTokenService confirmationTokenService;
 
     @Autowired
-    private AccountServiceImpl accountService;
+    private IAccountService accountService;
 
     @Autowired
     private EmailService emailService;
@@ -70,6 +70,8 @@ public class AuthService {
                     .username(request.getUsername())
                     .dateOfBirth(dateOfBirth)
                     .email(request.getEmail())
+                    .avatarURL("https://drive.google.com/uc?export=view&id=1LZuoz5KlfRIOJiolzkcGDva0GaCN_NCl")
+                    .isSingle(true)
                     .password(passwordEncoder.encode(request.getPassword()))
                     .enable(false)
                     .role(Role.USER)
@@ -127,6 +129,7 @@ public class AuthService {
                 .avatarurl(account.getAvatarURL())
                 .role(account.getRole())
                 .avatarurl(account.getAvatarURL())
+                .isBanned(account.isBanned() == true ? 1 : 0)
                 .error(false)
                 .success(true)
                 .message("Successfully!")

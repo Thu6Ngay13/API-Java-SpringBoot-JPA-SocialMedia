@@ -1,6 +1,7 @@
 package SocialMedia.Services;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -19,7 +20,13 @@ public class AccountServiceImpl implements IAccountService, UserDetailsService {
 
 	@Autowired
 	AccountRepository accountRepository;
-	
+
+	@Override
+	public List<Account> findAll() {
+		return accountRepository.findAll();
+	}
+
+	@Override
 	public Optional<Account> findByEmail(String email) {
 		return accountRepository.findByEmail(email);
 	}
@@ -34,6 +41,8 @@ public class AccountServiceImpl implements IAccountService, UserDetailsService {
 		return accountRepository.findByEmailOrUsername(emailOrUsername)
 				.orElseThrow(() -> new UsernameNotFoundException(String.format(EMAIL_NOT_FOUND_MSG)));
 	}
+	
+	@Override
 	public int enableUser(String email) {
 		return accountRepository.enableUser(email);
 	}
@@ -70,5 +79,10 @@ public class AccountServiceImpl implements IAccountService, UserDetailsService {
 	public int updateProfile(String fullname, String gender, String description, String company, String location,
 			boolean isSingle, String username) {
 		return accountRepository.updateProfile(fullname, gender, description, company, location, isSingle, username);
+	}
+
+	@Override
+	public int updateAvatar(String username, String avatarURL) {
+		return accountRepository.updateAvatar(username, avatarURL);
 	}
 }

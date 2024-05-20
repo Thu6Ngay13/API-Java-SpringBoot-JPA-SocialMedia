@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import SocialMedia.Entities.Account;
 import SocialMedia.Entities.Friend;
@@ -80,5 +82,11 @@ public interface FriendRepository extends JpaRepository<Friend, FriendId> {
 				+ "AND a.fullname LIKE %:keyword% "
 			+ "ORDER BY f.requestTimeAt DESC ")
 	List<Account> searchMakedFriendSearchs(@Param("username") String username, @Param("keyword") String keyword);
+	
+	@Transactional
+    @Modifying
+	@Query("DELETE FROM Friend f WHERE (f.friendId.usernameYou = :usernameYou AND f.friendId.usernameFriend = :usernameFriend) " +
+	           "OR (f.friendId.usernameYou = :usernameFriend AND f.friendId.usernameFriend = :usernameYou)")
+	int unfriend(String usernameYou, String usernameFriend);
 
 }

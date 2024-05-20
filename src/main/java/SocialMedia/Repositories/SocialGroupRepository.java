@@ -2,12 +2,15 @@ package SocialMedia.Repositories;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import SocialMedia.Entities.Account;
+import SocialMedia.Entities.Account_SocialGroup;
 import SocialMedia.Entities.SocialGroup;
 
 @Repository
@@ -42,5 +45,10 @@ public interface SocialGroupRepository  extends JpaRepository<SocialGroup, Long>
 				+ "AND asg.isAccepted = true "
 				+ "AND s.groupId = :groupId")
 	Optional<SocialGroup> findGroupByUsernameAndGroupId(@Param("username") String username, @Param("groupId") long groupId);
-
+	
+	@Query("SELECT a FROM Account a "
+			+ "JOIN Account_SocialGroup asg ON a.username = asg.id.username "
+			+ "WHERE asg.id.groupId = :groupId "
+				+ "AND asg.isAccepted = false ")
+	Set<Account> listAcceptMemberGroup(@Param("groupId") long groupId);
 }

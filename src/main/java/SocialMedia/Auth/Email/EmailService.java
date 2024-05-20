@@ -8,30 +8,54 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
 @Service
-public class EmailService implements EmailSender{
+public class EmailService implements EmailSender {
 
-	private final  static Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
+	private final static Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
+	private final String fromEmail = "147.qter@gmail.com";
+	private final String senderName = "Social Media PIE";
 
-    @Autowired
-    private JavaMailSender mailSender;
+	
+	@Autowired
+	private JavaMailSender mailSender;
+
 	@Override
 	@Async
 	public void send(String to, String email) {
-		// TODO Auto-generated method stub
 		try {
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-            helper.setText(email, true);
-            helper.setTo(to);
-            helper.setSubject("Confirm your email");
-            mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
-            LOGGER.error("Failed to send email!", e);
-            throw new IllegalStateException(("Failed to send email!"));
-        }
+			MimeMessage mimeMessage = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+			
+			helper.setTo(to);
+			helper.setSubject("Confirm your email");
+			helper.setText(email, true);
+			
+			mailSender.send(mimeMessage);
+		} catch (Exception e) {
+			LOGGER.error("Failed to send email!", e);
+			throw new IllegalStateException(("Failed to send email!"));
+		}
+	}
+
+	@Override
+	@Async
+	public void sendEmail(String toEmail, String subject, String body) {
+		try {
+			MimeMessage message = mailSender.createMimeMessage();
+			var messageHelper = new MimeMessageHelper(message, "utf-8");
+
+			messageHelper.setFrom(fromEmail, senderName);
+			messageHelper.setTo(toEmail);
+			messageHelper.setSubject(subject);
+			messageHelper.setText(body, true);
+
+			mailSender.send(message);
+		} catch (Exception e) {
+			LOGGER.error("Failed to send email!", e);
+			throw new IllegalStateException(("Failed to send email!"));
+		}
+
 	}
 }
