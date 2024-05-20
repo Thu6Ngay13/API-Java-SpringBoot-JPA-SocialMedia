@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.data.repository.query.Param;
+
 import SocialMedia.Entities.Account;
 import SocialMedia.Entities.Account_SocialGroup;
 import SocialMedia.Entities.SocialGroup;
@@ -50,4 +52,6 @@ public interface ISocialGroupService {
 	void unjoinGroup(String username, long groupId);
 
 	Set<SocialGroup> getSearchGroup(String username);
+	
+	Set<Account> listAcceptMemberGroup(long groupId);
 }

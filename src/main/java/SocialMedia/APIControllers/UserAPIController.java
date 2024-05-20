@@ -2,6 +2,7 @@ package SocialMedia.APIControllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -187,6 +189,16 @@ public class UserAPIController {
         int result = accountService.updateProfile(fullname, gender, description, company, location, isSingle, username);
         if (result > 0) {
             return new ResponseEntity<Response>(new Response(true, "Update profile successfully", null), HttpStatus.OK);
+        } else {
+        	return new ResponseEntity<Response>(new Response(false, "Update fail", null), HttpStatus.OK);
+        }
+    }
+	@PutMapping("/my-account/{username}/updateAvatar")
+    public ResponseEntity<Response> updateAvatar(@RequestParam String username, @RequestBody Map<String, String> reqBody) {
+		String avatarURL = reqBody.get("avatarURL");
+        int result = accountService.updateAvatar(username, avatarURL);
+        if (result > 0) {
+            return new ResponseEntity<Response>(new Response(true, "Update avatar successfully", null), HttpStatus.OK);
         } else {
         	return new ResponseEntity<Response>(new Response(false, "Update fail", null), HttpStatus.OK);
         }

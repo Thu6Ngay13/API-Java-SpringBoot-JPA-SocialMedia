@@ -53,6 +53,6 @@ public class Message implements Serializable{
 	private Conversation conversation;
 	
 	@ManyToOne (fetch = FetchType.LAZY)
-	@JoinColumn(name="username")
+	@JoinColumn(name="senderUsername")
 	private Account senderAccount;
 }
