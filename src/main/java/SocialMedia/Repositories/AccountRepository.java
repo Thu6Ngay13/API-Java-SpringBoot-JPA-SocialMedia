@@ -55,4 +55,9 @@ public interface AccountRepository extends JpaRepository<Account, String> {
     @Modifying
     @Query("UPDATE Account a SET a.fullname = ?1, a.gender = ?2, a.description = ?3, a.company = ?4, a.location = ?5, a.isSingle = ?6 WHERE a.username = ?7")
     int updateProfile(String fullname, String gender, String description, String company, String location, boolean isSingle, String username);
+    
+    @Transactional
+    @Modifying
+    @Query("UPDATE Account a SET a.avatarURL = ?2 WHERE a.username = ?1")
+    int updateAvatar(String username, String avatarURL);
 }

@@ -26,4 +26,6 @@ public interface IAccountService {
 	List<Account> findAll();
 
 	int enableUser(String email);
+	
+	int updateAvatar(String username, String avatarURL);
 }
