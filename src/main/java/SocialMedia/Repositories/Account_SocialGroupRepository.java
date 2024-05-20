@@ -19,4 +19,6 @@ public interface Account_SocialGroupRepository extends JpaRepository<Account_Soc
     
     @Query("SELECT a FROM Account_SocialGroup a WHERE a.id.username = :username and a.id.groupId=:groupId")
     Account_SocialGroup findOne(String username, long groupId);
+    
+    
 }
